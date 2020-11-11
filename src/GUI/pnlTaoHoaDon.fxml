@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.AutoCompleteTextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="623.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="88.0" prefWidth="1080.0">
+         <children>
+            <AnchorPane layoutX="14.0" layoutY="7.0" prefHeight="75.0" prefWidth="437.0" style="-fx-border-color: #000; -fx-background-color: #fff; -fx-background-radius: 10px; -fx-border-radius: 10px;">
+               <children>
+                  <Text layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Khách Hàng">
+                     <font>
+                        <Font name="Roboto Bold" size="13.0" />
+                     </font></Text>
+                  <Text fx:id="lblDiemTichLuy" fill="RED" layoutX="180.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Điểm tích lũy: 0đ">
+                     <font>
+                        <Font name="System Italic" size="13.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="txtMaKhachHang" layoutX="14.0" layoutY="38.0" promptText="Mã Khách Hàng..." />
+                  <TextField fx:id="txtTenKhachHang" layoutX="189.0" layoutY="38.0" prefHeight="26.0" prefWidth="234.0" promptText="Tên Khách Hàng..." />
+               </children></AnchorPane>
+            <AnchorPane layoutX="460.0" layoutY="7.0" prefHeight="75.0" prefWidth="263.0" style="-fx-border-color: #000; -fx-border-radius: 10px; -fx-background-color: #fff; -fx-background-radius: 10px;">
+               <children>
+                  <Text layoutX="14.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nhân Viên">
+                     <font>
+                        <Font name="Roboto Bold" size="13.0" />
+                     </font></Text>
+                  <TextField id="txtMaNhanVien" fx:id="txtMaNhanVien" editable="false" layoutX="86.0" layoutY="5.0" prefHeight="26.0" prefWidth="165.0" promptText="Mã Nhân Viên..." />
+                  <TextField id="txtTenNhanVien" fx:id="txtTenNhanVien" layoutX="86.0" layoutY="40.0" prefHeight="26.0" prefWidth="165.0" promptText="Tên Nhân Viên..." />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="733.0" layoutY="8.0" prefHeight="75.0" prefWidth="334.0" style="-fx-border-color: #000; -fx-border-radius: 10px; -fx-background-color: #fff; -fx-background-radius: 10px;">
+               <children>
+                  <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày Lập:" />
+                  <Text layoutX="14.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã HD:" />
+                  <DatePicker fx:id="dateNgayLap" disable="true" layoutX="82.0" layoutY="9.0" prefHeight="26.0" prefWidth="240.0" />
+                  <TextField fx:id="txtMaHoaDon" disable="true" layoutX="82.0" layoutY="40.0" prefHeight="26.0" prefWidth="240.0" />
+               </children></AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="94.0" prefHeight="66.0" prefWidth="1080.0" style="-fx-background-color: #fff;">
+         <children>
+            <AutoCompleteTextField fx:id="txtMaThuoc" layoutX="19.0" layoutY="35.0" />
+            <Text layoutX="19.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã Thuốc" />
+            <AutoCompleteTextField fx:id="txtTenThuoc" layoutX="192.0" layoutY="35.0" prefHeight="28.0" prefWidth="171.0" />
+            <Text layoutX="192.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên Thuốc" />
+            <Text layoutX="391.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Đơn Vị Tính" />
+            <Text layoutX="516.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Số Lượng" />
+            <Text layoutX="613.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Đơn Giá" />
+            <Text layoutX="753.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tổng Tiền" />
+            <Button fx:id="btnThem" layoutX="889.0" layoutY="6.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="177.0" style="-fx-background-color: #64AD4A; -fx-background-radius: 10px; -fx-font-size: 15px; -fx-font-weight: bold;" text="Thêm" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Bold" size="13.0" />
+               </font>
+            </Button>
+            <TextField fx:id="txtSoLuong" layoutX="516.0" layoutY="36.0" prefHeight="26.0" prefWidth="83.0" text="1" />
+            <TextField fx:id="txtDonViTinh" editable="false" layoutX="391.0" layoutY="36.0" prefHeight="26.0" prefWidth="111.0" />
+            <TextField fx:id="txtDonGia" editable="false" layoutX="613.0" layoutY="36.0" prefHeight="26.0" prefWidth="111.0" />
+            <TextField fx:id="txtTongTien" editable="false" layoutX="753.0" layoutY="36.0" prefHeight="26.0" prefWidth="111.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="14.0" layoutY="534.0" prefHeight="75.0" prefWidth="1052.0" style="-fx-background-color: #fff;">
+         <children>
+            <Text layoutX="21.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tổng Tiền:" />
+            <TextField fx:id="txtTongTienAll" editable="false" layoutX="21.0" layoutY="38.0" />
+            <Text layoutX="217.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thuế:" />
+            <TextField fx:id="txtThue" editable="false" layoutX="217.0" layoutY="38.0" />
+            <Text layoutX="406.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thành Tiền:" />
+            <TextField fx:id="txtThanhTien" editable="false" layoutX="406.0" layoutY="38.0" />
+            <Button fx:id="btnThanhToan" layoutX="584.0" layoutY="9.0" mnemonicParsing="false" onAction="#showDialogThanhToan" prefHeight="54.0" prefWidth="317.0" style="-fx-background-color: #64AD4A; -fx-background-radius: 10px; -fx-font-weight: bold; -fx-font-size: 17;" text="Thanh Toán" textFill="WHITE" />
+            <Button fx:id="btnHuy" layoutX="914.0" layoutY="9.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="121.0" style="-fx-background-color: #F5508B; -fx-background-radius: 10px; -fx-font-size: 17px; -fx-font-weight: bold;" text="Hủy" />
+         </children>
+      </AnchorPane>
+      <TableView layoutX="14.0" layoutY="170.0" prefHeight="355.0" prefWidth="1058.0">
+        <columns>
+          <TableColumn prefWidth="43.0" text="STT" />
+          <TableColumn prefWidth="107.0" text="Mã Thuốc" />
+            <TableColumn prefWidth="160.0" text="Tên Thuốc" />
+            <TableColumn prefWidth="100.0" text="Đơn Vị Tính" />
+            <TableColumn prefWidth="103.0" text="Số Lượng" />
+            <TableColumn prefWidth="125.0" text="Hạn Sử Dụng" />
+            <TableColumn prefWidth="96.0" text="Đơn Giá" />
+            <TableColumn prefWidth="113.0" text="Loại Thuốc" />
+            <TableColumn prefWidth="76.0" text="Thuế" />
+            <TableColumn prefWidth="134.0" text="Tổng Tiền" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
