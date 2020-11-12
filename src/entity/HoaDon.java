@@ -8,7 +8,14 @@ public class HoaDon {
 	private Timestamp thoiGianLap;
 	private ArrayList<ChiTietHoaDon> dsChiTietHoaDon;
 	private NhanVienBanThuoc nhanVienBanThuoc;
+	private KhachHang khachHang;
 
+	public KhachHang getKhachHang() {
+		return khachHang;
+	}
+	public void setKhachHang(KhachHang khachHang) {
+		this.khachHang = khachHang;
+	}
 	public NhanVienBanThuoc getNhanVienBanThuoc() {
 		return nhanVienBanThuoc;
 	}
@@ -34,13 +41,15 @@ public class HoaDon {
 		this.dsChiTietHoaDon = dsChiTietHoaDon;
 	}
 
+	
 	public HoaDon(String id, Timestamp thoiGianLap, ArrayList<ChiTietHoaDon> dsChiTietHoaDon,
-			NhanVienBanThuoc nhanVienBanThuoc) {
+			NhanVienBanThuoc nhanVienBanThuoc, KhachHang khachHang) {
 		super();
 		this.id = id;
 		this.thoiGianLap = thoiGianLap;
 		this.dsChiTietHoaDon = dsChiTietHoaDon;
 		this.nhanVienBanThuoc = nhanVienBanThuoc;
+		this.khachHang = khachHang;
 	}
 	public HoaDon() {
 		super();
@@ -52,10 +61,11 @@ public class HoaDon {
 		this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
 	}
 
+	
 	@Override
 	public String toString() {
 		return "HoaDon [id=" + id + ", thoiGianLap=" + thoiGianLap + ", dsChiTietHoaDon=" + dsChiTietHoaDon
-				+ ", nhanVienBanThuoc=" + nhanVienBanThuoc + "]";
+				+ ", nhanVienBanThuoc=" + nhanVienBanThuoc + ", khachHang=" + khachHang + "]";
 	}
 	@Override
 	public int hashCode() {
