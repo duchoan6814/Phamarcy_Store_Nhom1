@@ -25,8 +25,8 @@
                         <Font name="System Italic" size="13.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="txtMaKhachHang" layoutX="14.0" layoutY="38.0" promptText="Mã Khách Hàng..." />
                   <TextField fx:id="txtTenKhachHang" layoutX="189.0" layoutY="38.0" prefHeight="26.0" prefWidth="234.0" promptText="Tên Khách Hàng..." />
+                  <TextField fx:id="txtMaKhachHang" layoutX="14.0" layoutY="38.0" promptText="Số Điện Thoại..." />
                </children></AnchorPane>
             <AnchorPane layoutX="460.0" layoutY="7.0" prefHeight="75.0" prefWidth="263.0" style="-fx-border-color: #000; -fx-border-radius: 10px; -fx-background-color: #fff; -fx-background-radius: 10px;">
                <children>
