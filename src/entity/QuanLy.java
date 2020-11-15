@@ -12,4 +12,9 @@ public class QuanLy extends NhanVienBanThuoc {
 			boolean gioiTinh, String diaChi, byte[] avatar, TaiKhoan taiKhoan) {
 		super(id, hoTenDem, ten, soDienThoai, soCMND, ngaySinh, gioiTinh, diaChi, avatar, taiKhoan);
 	}
+
+	public QuanLy(String id) {
+		// TODO Auto-generated constructor stub
+		super(id);
+	}
 }

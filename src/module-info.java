@@ -11,6 +11,7 @@ module PhamarcyStore_Nhom1 {
 	requires java.sql;
 	requires charm.glisten;
 	requires org.controlsfx.controls;
+	requires javafx.controls;
 	
 	exports GUI;
 }

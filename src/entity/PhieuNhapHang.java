@@ -75,11 +75,14 @@ public class PhieuNhapHang {
 		return true;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "PhieuNhapHang [id=" + id + ", thoiGianLap=" + thoiGianLap + ", quanLy=" + quanLy + ", dsLoThuoc="
 				+ dsLoThuoc + "]";
 	}
+
+
 	public boolean themLoThuoc(LoThuoc loThuoc) {
 		if(this.dsLoThuoc.contains(loThuoc))		
 			return false;
