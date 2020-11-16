@@ -1,11 +1,65 @@
 package common;
 
 public class ChiTietHoaDon {
-	private final String maThuoc, tenThuoc, donViTinh, nuocSanXuat, loaiThuoc, donGia, tongTien;
-	private final int stt, soLuong;
+	private String maThuoc, tenThuoc, donViTinh, nuocSanXuat, loaiThuoc, donGia, tongTien;
+	private int stt, soLuong;
 	
 	
 	
+	public void setMaThuoc(String maThuoc) {
+		this.maThuoc = maThuoc;
+	}
+
+
+
+	public void setTenThuoc(String tenThuoc) {
+		this.tenThuoc = tenThuoc;
+	}
+
+
+
+	public void setDonViTinh(String donViTinh) {
+		this.donViTinh = donViTinh;
+	}
+
+
+
+	public void setNuocSanXuat(String nuocSanXuat) {
+		this.nuocSanXuat = nuocSanXuat;
+	}
+
+
+
+	public void setLoaiThuoc(String loaiThuoc) {
+		this.loaiThuoc = loaiThuoc;
+	}
+
+
+
+	public void setDonGia(String donGia) {
+		this.donGia = donGia;
+	}
+
+
+
+	public void setTongTien(String tongTien) {
+		this.tongTien = tongTien;
+	}
+
+
+
+	public void setStt(int stt) {
+		this.stt = stt;
+	}
+
+
+
+	public void setSoLuong(int soLuong) {
+		this.soLuong = soLuong;
+	}
+
+
+
 	public String getMaThuoc() {
 		return maThuoc;
 	}

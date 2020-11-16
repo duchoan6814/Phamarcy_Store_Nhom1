@@ -332,15 +332,30 @@ public class TaoHoaDonControl implements Initializable {
 		return false;
 	}
 
-	public boolean suaSoLuongKhiAddChiTietHoaDonTrung(ChiTietHoaDon chiTietHoaDon) {
-		for (ChiTietHoaDon i : hoaDon.getDsChiTietHoaDon()) {
-			if (i.getThuoc().getId() == chiTietHoaDon.getThuoc().getId()) {
-				i.setSoLuong(chiTietHoaDon.getSoLuong()+i.getSoLuong());
-				return true;
+	public void suaSoLuongKhiAddChiTietHoaDonTrung(ChiTietHoaDon chiTietHoaDon) {
+		for (int i = 0; i < hoaDon.getDsChiTietHoaDon().size(); i++) {
+			if (hoaDon.getDsChiTietHoaDon().get(i).getThuoc().getId().equals(chiTietHoaDon.getThuoc().getId())) {
+				ChiTietHoaDon _chiChiTietHoaDon = chiTietHoaDon;
+				_chiChiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong()+hoaDon.getDsChiTietHoaDon().get(i).getSoLuong());
+				hoaDon.getDsChiTietHoaDon().set(i, _chiChiTietHoaDon);
+				break;
 			}
 		}
-		return false;
+
 	}
+
+	public void suaSoLuongTrenTableViewKhiKhoaTrung(ChiTietHoaDon chiTietHoaDon) {
+		for (int i = 0; i < data.size(); i++) {
+			if (tblChiTietHoaDon.getItems().get(i).getMaThuoc().equals(chiTietHoaDon.getThuoc().getId())) {
+				common.ChiTietHoaDon cTietHoaDon = data.get(i);
+				cTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong());
+				cTietHoaDon.setTongTien(new Common().formatMoney(chiTietHoaDon.tinhTongTienChuaThue()));
+				data.set(i, cTietHoaDon);
+				break;
+			}
+		}
+	}
+
 
 	@FXML
 	public void actionWhenAddChiTietHoaDon() {
@@ -416,30 +431,39 @@ public class TaoHoaDonControl implements Initializable {
 
 									alert.showAndWait();
 								}else {
-									//									========================
+									suaSoLuongKhiAddChiTietHoaDonTrung(chiTietHoaDon);
+									suaSoLuongTrenTableViewKhiKhoaTrung(chiTietHoaDon);
+									chiTietHoaDon = null;
+									txtTenThuoc.setText("");
+									txtDonViTinh.setText("");
+									txtDonGia.setText("");
+									txtTongTien.setText("");
+									txtMaThuoc.setText("");
+									txtSoLuong.setText("1");
 								}
+							} else {
+								chiTietHoaDon.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+								hoaDon.setNhanVienBanThuoc(nhanVienBanThuoc);
+								hoaDon.getDsChiTietHoaDon().add(chiTietHoaDon);
+								data.add(new common.ChiTietHoaDon(chiTietHoaDon.getThuoc().getId(), 
+										chiTietHoaDon.getThuoc().getTenThuoc(),
+										chiTietHoaDon.getThuoc().getDonViTinh(),
+										chiTietHoaDon.getThuoc().getNuocSanXuat(),
+										chiTietHoaDon.getThuoc().getLoaiThuoc().getTenLoai(),
+										new Common().formatMoney(chiTietHoaDon.getGiaBan()),
+										new Common().formatMoney(chiTietHoaDon.tinhTongTienChuaThue()),
+										data.size(),
+										chiTietHoaDon.getSoLuong()));
+								chiTietHoaDon = null;
+								txtTenThuoc.setText("");
+								txtDonViTinh.setText("");
+								txtDonGia.setText("");
+								txtTongTien.setText("");
+								txtMaThuoc.setText("");
+								txtSoLuong.setText("1");
+								txtMaHoaDon.setText(hoaDon.getId());
+								dateNgayLap.setValue(LocalDate.now());
 							}
-							chiTietHoaDon.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
-							hoaDon.setNhanVienBanThuoc(nhanVienBanThuoc);
-							hoaDon.getDsChiTietHoaDon().add(chiTietHoaDon);
-							data.add(new common.ChiTietHoaDon(chiTietHoaDon.getThuoc().getId(), 
-									chiTietHoaDon.getThuoc().getTenThuoc(),
-									chiTietHoaDon.getThuoc().getDonViTinh(),
-									chiTietHoaDon.getThuoc().getNuocSanXuat(),
-									chiTietHoaDon.getThuoc().getLoaiThuoc().getTenLoai(),
-									new Common().formatMoney(chiTietHoaDon.getGiaBan()),
-									new Common().formatMoney(chiTietHoaDon.tinhTongTienChuaThue()),
-									data.size(),
-									chiTietHoaDon.getSoLuong()));
-							chiTietHoaDon = null;
-							txtTenThuoc.setText("");
-							txtDonViTinh.setText("");
-							txtDonGia.setText("");
-							txtTongTien.setText("");
-							txtMaThuoc.setText("");
-							txtSoLuong.setText("1");
-							txtMaHoaDon.setText(hoaDon.getId());
-							dateNgayLap.setValue(LocalDate.now());
 						}
 					}
 				}
