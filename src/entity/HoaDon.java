@@ -149,6 +149,15 @@ public class HoaDon {
 		}
 		return null;
 	}
+	
+	public boolean checkChiTietHoaDonTonTai(String ID) {
+		for (ChiTietHoaDon chiTietHoaDon : dsChiTietHoaDon) {
+			if (chiTietHoaDon.getThuoc().getId() == ID) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 
 }

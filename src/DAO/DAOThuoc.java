@@ -14,6 +14,23 @@ public class DAOThuoc extends DAO {
 	DAOLoaiThuoc daoLoaiThuoc = new DAOLoaiThuoc();
 	DAONhaCungCap daoNhaCungCap = new DAONhaCungCap();
 	
+	public int getSoLuongTon(String id) {
+		String sql = "select sum(SoLuong) as SoLuongTon from LoThuoc where ThuocId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("SoLuongTon");
+			}
+			return -1;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
 	public Set<String> getAllMaThuoc(){
 		Set<String> list = new HashSet<>();
 		String sql = "select ThuocId from Thuoc";

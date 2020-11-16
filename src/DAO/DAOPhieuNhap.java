@@ -6,16 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Set;
 
-import entity.HoaDon;
 import entity.LoThuoc;
 import entity.PhieuNhapHang;
 import entity.QuanLy;
 import entity.Thuoc;
 
 public class DAOPhieuNhap extends DAO {
+	DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
+	
 	public void autoNhap() {
 		Set<String> getListMaThuoc = new DAOThuoc().getAllMaThuoc();
 		PhieuNhapHang phieuNhapHang = new PhieuNhapHang();
@@ -61,7 +62,6 @@ public class DAOPhieuNhap extends DAO {
 	public PhieuNhapHang getPhieuNhapHangById(String id) {
 		PhieuNhapHang hang = new PhieuNhapHang();
 		String sql = "Select * from PhieuNhapHang where PhieuNhapHangId = ?";
-		String sql2 = "Select * from LoThuoc where PhieuNhapHangId = ?";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, id);
@@ -70,16 +70,7 @@ public class DAOPhieuNhap extends DAO {
 				hang.setId(rs.getString("PhieuNhapHangId"));
 				hang.setThoiGianLap(rs.getTimestamp("ThoiGianLap"));
 				hang.setQuanLy(new QuanLy(rs.getString("QuanLyId")));
-				PreparedStatement ps2 = conn.prepareStatement(sql2);
-				ps2.setString(1, id);
-				ResultSet rs2 = ps2.executeQuery();
-				while(rs2.next()) {
-					LoThuoc loThuoc = new LoThuoc();
-					loThuoc.setThuoc(new Thuoc(rs2.getString("ThuocId")));
-					loThuoc.setSoLuong(rs2.getInt("SoLuong"));
-					loThuoc.setNgaySanXuat(rs2.getDate("NgaySanXuat"));
-					hang.getDsLoThuoc().add(loThuoc);
-				}
+				hang.setDsLoThuoc((ArrayList<LoThuoc>) daoLoThuoc.getListLoThuocByIdPhieuNhap(id));
 			}
 			
 			return hang;
