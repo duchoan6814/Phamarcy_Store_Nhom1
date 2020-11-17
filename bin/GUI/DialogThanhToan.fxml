@@ -22,10 +22,10 @@
                      <Text fill="WHITE" layoutX="261.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Thanh Toán" />
                   </children>
                </AnchorPane>
-               <Text layoutX="29.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Khách Hàng:" />
-               <Text layoutX="121.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Nguyễn Thị Quỳnh Mai" wrappingWidth="246.59765625" />
-               <Text layoutX="384.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Điểm Tích Lũy:" />
-               <Text layoutX="486.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="100.000đ" wrappingWidth="152.59765625" />
+               <Text fx:id="lblKhachHang" layoutX="29.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Khách Hàng:" />
+               <Text fx:id="lblTenKhachHang" layoutX="121.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Nguyễn Thị Quỳnh Mai" wrappingWidth="246.59765625" />
+               <Text fx:id="lblDiemTichLuy" layoutX="384.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Điểm Tích Lũy:" />
+               <Text fx:id="lblDiemTichLuyKhachHang" layoutX="486.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="100.000đ" wrappingWidth="152.59765625" />
                <GridPane layoutX="26.0" layoutY="107.0" prefHeight="200.0" prefWidth="585.0">
                   <columnConstraints>
                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="296.0" minWidth="10.0" prefWidth="275.0" />
@@ -41,14 +41,14 @@
                   <children>
                      <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="Tổng Tiền:" />
                      <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="Thuế:" GridPane.rowIndex="1" />
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="Sử Dụng Điểm Tích Lũy:" GridPane.rowIndex="2" />
+                     <Text fx:id="lblSuDungDiemTichLuy" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="Sử Dụng Điểm Tích Lũy:" GridPane.rowIndex="2" />
                      <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="Thành Tiền:" GridPane.rowIndex="3" />
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="Điểm Tích Lũy Được:" GridPane.rowIndex="4" />
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="100.000đ" GridPane.columnIndex="1" />
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="100.000d" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                     <TextField prefHeight="26.0" prefWidth="356.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="100.000đ" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="100.000đ" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                     <Text fx:id="lblDiemTichLuyDuoc" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="Điểm Tích Lũy Được:" GridPane.rowIndex="4" />
+                     <Text fx:id="lblTongTien" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="100.000đ" GridPane.columnIndex="1" />
+                     <Text fx:id="lblThue" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="100.000d" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     <TextField fx:id="txtSuDungDiemTichLuy" prefHeight="26.0" prefWidth="356.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                     <Text fx:id="lblThanhTien" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="100.000đ" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                     <Text fx:id="lblSoDiemTichLuyDuoc" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="100.000đ" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   </children>
                </GridPane>
                <Button layoutX="105.0" layoutY="473.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="249.0" style="-fx-background-color: #64AD4A; -fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #fff;" text="Thanh Toán" />
@@ -62,17 +62,17 @@
                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                   <children>
-                     <TextField prefHeight="26.0" prefWidth="339.0" GridPane.rowIndex="1">
+                     <TextField fx:id="txtTienKhachDua" prefHeight="26.0" prefWidth="339.0" GridPane.rowIndex="1">
                         <GridPane.margin>
                            <Insets right="50.0" />
                         </GridPane.margin>
                      </TextField>
                      <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="Tiền Khách Đưa:" />
                      <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="Tiền Thừa:" GridPane.columnIndex="1" />
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="100.000đ" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     <Text fx:id="lblTienThua" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="0đ" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   </children>
                </GridPane>
-               <Button layoutX="372.0" layoutY="473.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="121.0" style="-fx-background-color: #F5508B; -fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #fff;" text="Thoát" />
+               <Button onAction="#btnThoat" fx:id="btnThoat" layoutX="372.0" layoutY="473.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="121.0" style="-fx-background-color: #F5508B; -fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #fff;" text="Thoát" />
                <Line endX="548.0" layoutX="105.0" layoutY="339.0" startX="-100.0" />
             </children></AnchorPane>
         </Scene>

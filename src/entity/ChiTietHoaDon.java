@@ -10,7 +10,7 @@ public class ChiTietHoaDon {
 
 	@Override
 	public String toString() {
-		return "ChiTietHoaDon [soLuong=" + soLuong + ", thuoc=" + thuoc + ", giaBan=" + giaBan + "]";
+		return "ChiTietHoaDon [soLuong=" + soLuong + ", thuoc=" + thuoc + ", giaBan=" + this.getGiaBan() + "]";
 	}
 
 
@@ -23,11 +23,10 @@ public class ChiTietHoaDon {
 
 
 
-	public ChiTietHoaDon(int soLuong, Thuoc thuoc, double giaBan) {
+	public ChiTietHoaDon(int soLuong, Thuoc thuoc) {
 		super();
 		this.soLuong = soLuong;
 		this.thuoc = thuoc;
-		this.giaBan = giaBan;
 	}
 
 
@@ -65,15 +64,6 @@ public class ChiTietHoaDon {
 		return tinhGiaBan();
 	}
 
-
-
-
-	public void setGiaBan(double giaBan) {
-		this.giaBan = giaBan;
-	}
-
-
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -110,7 +100,7 @@ public class ChiTietHoaDon {
 	}
 
 	public double tinhThueChiTietHoaDon() {
-		return tinhThueChiTietHoaDon()*this.getThuoc().getThue();
+		return this.soLuong*this.getThuoc().getThue()*this.getGiaBan();
 	}
 
 	public double tinhTongTienBaoGomThue() {

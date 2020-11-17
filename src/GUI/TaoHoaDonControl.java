@@ -30,6 +30,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,7 +48,9 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import javafx.util.converter.NumberStringConverter;
 
@@ -98,6 +101,10 @@ public class TaoHoaDonControl implements Initializable {
 	public TableColumn<common.ChiTietHoaDon, String> colTongTien;
 	public TableColumn colDelete;
 
+	public TextField txtTongTienAll;
+	public TextField txtThue;
+	public TextField txtThanhTien;
+
 
 	public TaoHoaDonControl(NhanVienBanThuoc nhanVienBanThuoc2) {
 		// TODO Auto-generated constructor stub
@@ -106,13 +113,49 @@ public class TaoHoaDonControl implements Initializable {
 
 	@FXML
 	public void showDialogThanhToan() {
-		try {
-			Stage thanhToanStage = FXMLLoader.load(getClass().getResource("DialogThanhToan.fxml"));
-			thanhToanStage.show();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (hoaDon == null) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Hoá đơn chưa được tạo, vui lòng tạo hóa đơn trước khi thanh toán!");
+
+			alert.showAndWait();
+		}else {
+			if (hoaDon.getDsChiTietHoaDon().size() <= 0) {
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Information Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Hóa đơn chưa có sản phẩm, vui lòng thêm sản phẩm vào hóa đơn!");
+
+				alert.showAndWait();
+			}else {
+				try {
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("DialogThanhToan.fxml"));
+					ThanhToanControl thanhToanControl = new ThanhToanControl();
+					thanhToanControl.setHoaDon(hoaDon);
+					loader.setController(thanhToanControl);
+
+					Stage thanhToanStage = loader.load();
+					thanhToanStage.setTitle("Thanh Toan");
+					thanhToanStage.initModality(Modality.APPLICATION_MODAL);
+					thanhToanStage.initStyle(StageStyle.UNDECORATED);
+					thanhToanStage.show();
+
+					//					Stage thanhToanStage = FXMLLoader.load(getClass().getResource("DialogThanhToan.fxml"));
+					//					thanhToanStage.show();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
+
+	}
+
+	public void handleWhenTableChange() {
+		txtTongTienAll.setText(new Common().formatMoney(hoaDon.tinhTienHoaDonChuaThue()));
+		txtThue.setText(new Common().formatMoney(hoaDon.tinhThueHoaDon()));
+		txtThanhTien.setText(new Common().formatMoney(hoaDon.tinhTienHoaDonBaoGomThue()));
 	}
 
 	@Override
@@ -220,6 +263,35 @@ public class TaoHoaDonControl implements Initializable {
 		};
 
 		colDelete.setCellFactory(cellFactory);
+
+		data.addListener(new ListChangeListener<common.ChiTietHoaDon>() {
+
+			@Override
+			public void onChanged(Change<? extends common.ChiTietHoaDon> c) {
+				// TODO Auto-generated method stub
+				if (!(data.size() <= 0)) {
+					handleWhenTableChange();
+				}
+			}
+
+		});
+	}
+
+	public void setKhachHangAndFieldKhachHang() {
+		hoaDon.setKhachHang(khachHang);
+		Date date= new Date();
+		long time = date.getTime();
+		hoaDon.setThoiGianLap(new Timestamp(time));
+
+		txtMaHoaDon.setText(hoaDon.getId());
+		txtTenKhachHang.setText(hoaDon.getKhachHang().getHoTenDem()+" "+hoaDon.getKhachHang().getTen());
+		lblDiemTichLuy.setText("Điểm tích lũy: "+new Common().formatMoney(hoaDon.getKhachHang().getDienTichLuy()));
+		dateNgayLap.setValue(LocalDate.now());
+		txtSoDienThoai.setEditable(false);
+		txtTenKhachHang.setEditable(false);
+		btnXoaKH.setDisable(false);
+		btnXoaKH.setStyle("-fx-background-color:  #F5508B; -fx-background-radius: 10px");
+		lblXoaKH.setStyle("-fx-fill: #FFFFFF;");
 	}
 
 	@FXML
@@ -236,24 +308,23 @@ public class TaoHoaDonControl implements Initializable {
 			}else {
 				hoaDon = new HoaDon();
 				hoaDon.setId(hd_dao.generateId());
-				hoaDon.setKhachHang(khachHang);
 				hoaDon.setNhanVienBanThuoc(nhanVienBanThuoc);
 
-				Date date= new Date();
-				long time = date.getTime();
-				hoaDon.setThoiGianLap(new Timestamp(time));
-
-				txtMaHoaDon.setText(hoaDon.getId());
-				txtTenKhachHang.setText(hoaDon.getKhachHang().getHoTenDem()+" "+hoaDon.getKhachHang().getTen());
-				lblDiemTichLuy.setText("Điểm tích lũy: "+new Common().formatMoney(hoaDon.getKhachHang().getDienTichLuy()));
-				dateNgayLap.setValue(LocalDate.now());
-				txtSoDienThoai.setEditable(false);
-				txtTenKhachHang.setEditable(false);
-				btnXoaKH.setDisable(false);
-				btnXoaKH.setStyle("-fx-background-color:  #F5508B; -fx-background-radius: 10px");
-				lblXoaKH.setStyle("-fx-fill: #FFFFFF;");
+				setKhachHangAndFieldKhachHang();
 			}
 
+		}else {
+			khachHang = kh_dao.getKhachHangBySoDienThoai(txtSoDienThoai.getText());
+			if (khachHang == null) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Information Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Số điện thoại bạn nhập không tồn tại, vui lòng nhập lại!");
+
+				alert.showAndWait();
+			}else {
+				setKhachHangAndFieldKhachHang();
+			}
 		}
 	}
 
@@ -356,6 +427,16 @@ public class TaoHoaDonControl implements Initializable {
 		}
 	}
 
+	public void clearNhapThuocField() {
+		chiTietHoaDon = null;
+		txtTenThuoc.setText("");
+		txtDonViTinh.setText("");
+		txtDonGia.setText("");
+		txtTongTien.setText("");
+		txtMaThuoc.setText("");
+		txtSoLuong.setText("1");
+	}
+
 
 	@FXML
 	public void actionWhenAddChiTietHoaDon() {
@@ -400,13 +481,7 @@ public class TaoHoaDonControl implements Initializable {
 									new Common().formatMoney(chiTietHoaDon.tinhTongTienChuaThue()),
 									data.size(),
 									chiTietHoaDon.getSoLuong()));
-							chiTietHoaDon = null;
-							txtTenThuoc.setText("");
-							txtDonViTinh.setText("");
-							txtDonGia.setText("");
-							txtTongTien.setText("");
-							txtMaThuoc.setText("");
-							txtSoLuong.setText("1");
+							clearNhapThuocField();
 							txtMaHoaDon.setText(hoaDon.getId());
 							dateNgayLap.setValue(LocalDate.now());
 						}
@@ -433,13 +508,7 @@ public class TaoHoaDonControl implements Initializable {
 								}else {
 									suaSoLuongKhiAddChiTietHoaDonTrung(chiTietHoaDon);
 									suaSoLuongTrenTableViewKhiKhoaTrung(chiTietHoaDon);
-									chiTietHoaDon = null;
-									txtTenThuoc.setText("");
-									txtDonViTinh.setText("");
-									txtDonGia.setText("");
-									txtTongTien.setText("");
-									txtMaThuoc.setText("");
-									txtSoLuong.setText("1");
+									clearNhapThuocField();
 								}
 							} else {
 								chiTietHoaDon.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
@@ -454,13 +523,7 @@ public class TaoHoaDonControl implements Initializable {
 										new Common().formatMoney(chiTietHoaDon.tinhTongTienChuaThue()),
 										data.size(),
 										chiTietHoaDon.getSoLuong()));
-								chiTietHoaDon = null;
-								txtTenThuoc.setText("");
-								txtDonViTinh.setText("");
-								txtDonGia.setText("");
-								txtTongTien.setText("");
-								txtMaThuoc.setText("");
-								txtSoLuong.setText("1");
+								clearNhapThuocField();
 								txtMaHoaDon.setText(hoaDon.getId());
 								dateNgayLap.setValue(LocalDate.now());
 							}
@@ -477,8 +540,42 @@ public class TaoHoaDonControl implements Initializable {
 			}
 		}
 
-
-		//		System.out.println(hoaDon);
 	}
 
+	public void clearAllField() {
+		clearNhapThuocField();
+		txtTenKhachHang.setText("");
+		dateNgayLap.setValue(null);
+		txtMaHoaDon.setText("");
+		txtSoDienThoai.setText("");
+		txtTongTienAll.setText("");
+		txtThanhTien.setText("");
+		txtThue.setText("");
+	}
+
+	public void btnHuy() {
+		if (hoaDon != null) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Confirmation Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Bạn có chắc muốn hủy hóa đơn này?");
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK){
+				// ... user chose OK
+				hoaDon = null;
+				clearAllField();
+				data.clear();
+			} else {
+				// ... user chose CANCEL or closed the dialog
+			}
+		}else {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Confirmation Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Bạn chưa có hóa đơn để hủy!");
+			
+			alert.show();
+		}
+	}
 }
