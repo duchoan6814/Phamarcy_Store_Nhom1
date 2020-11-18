@@ -81,7 +81,7 @@ public class HoaDon {
 	public String toString() {
 		return "HoaDon [id=" + id + ", thoiGianLap=" + thoiGianLap + ", dsChiTietHoaDon=" + dsChiTietHoaDon
 				+ ", nhanVienBanThuoc=" + nhanVienBanThuoc + ", khachHang=" + khachHang + ", diemSuDung=" + diemSuDung
-				+ ", tienPhaiTra=" + tienPhaiTra + "]";
+				+ ", tienPhaiTra=" + getTienPhaiTra() + "]";
 	}
 	@Override
 	public int hashCode() {

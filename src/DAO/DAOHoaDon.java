@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 
+import entity.HoaDon;
+
 public class DAOHoaDon extends DAO {
 	public String generateId() {
 		String sql = "SELECT top 1 HoaDonId from HoaDon ORDER BY HoaDonId DESC";
@@ -52,4 +54,8 @@ public class DAOHoaDon extends DAO {
 		}
 		return null;
 	}
+	
+//	public boolean TaoHoaDon(HoaDon hoaDon) {
+//		String sql = "";
+//	}
 }
