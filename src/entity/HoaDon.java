@@ -81,7 +81,7 @@ public class HoaDon {
 	public String toString() {
 		return "HoaDon [id=" + id + ", thoiGianLap=" + thoiGianLap + ", dsChiTietHoaDon=" + dsChiTietHoaDon
 				+ ", nhanVienBanThuoc=" + nhanVienBanThuoc + ", khachHang=" + khachHang + ", diemSuDung=" + diemSuDung
-				+ ", tienPhaiTra=" + tienPhaiTra + "]";
+				+ ", tienPhaiTra=" + getTienPhaiTra() + "]";
 	}
 	@Override
 	public int hashCode() {
@@ -176,7 +176,7 @@ public class HoaDon {
 	}
 	
 	public double tinhDiemTichLuy() {
-		return 0.05 * this.tinhTienHoaDonBaoGomThue();
+		return 0.02 * this.tinhTienHoaDonBaoGomThue();
 	}
 
 	public double tinhTienPhaiTra() {

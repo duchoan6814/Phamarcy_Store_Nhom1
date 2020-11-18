@@ -140,9 +140,24 @@ public class TaoHoaDonControl implements Initializable {
 					thanhToanStage.initModality(Modality.APPLICATION_MODAL);
 					thanhToanStage.initStyle(StageStyle.UNDECORATED);
 					thanhToanStage.show();
-
-					//					Stage thanhToanStage = FXMLLoader.load(getClass().getResource("DialogThanhToan.fxml"));
-					//					thanhToanStage.show();
+					
+					thanhToanStage.setOnHiding( event -> {
+						if (thanhToanControl.isTrangThaiThanhToan()) {
+							hoaDon = null;
+							clearAllField();
+							data.clear();
+							
+							txtTenKhachHang.setText("");
+							txtSoDienThoai.setText("");
+							lblDiemTichLuy.setText("Điểm tích lũy: 0đ");
+							txtSoDienThoai.setEditable(true);
+							txtTenKhachHang.setEditable(true);
+							btnXoaKH.setDisable(true);
+							dateNgayLap.setValue(null);
+							btnXoaKH.setStyle("-fx-background-color: #DFDFDF; -fx-background-radius: 10px");
+							lblXoaKH.setStyle("-fx-fill: #B1B1B1;");
+						}
+					});
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -236,9 +251,15 @@ public class TaoHoaDonControl implements Initializable {
 							if (hoaDon.xoaChiTietHoaDon(data)) {
 								tblChiTietHoaDon.getItems().remove(getIndex());
 								if (hoaDon.getDsChiTietHoaDon().size() <= 0) {
-									hoaDon = null;
-									dateNgayLap.setValue(null);
-									txtMaHoaDon.setText("");
+									if (hoaDon.getKhachHang() == null) {
+										hoaDon = null;
+										dateNgayLap.setValue(null);
+										txtMaHoaDon.setText("");
+									}else {
+										txtTongTienAll.setText("");
+										txtThue.setText("");
+										txtThanhTien.setText("");
+									}
 								}
 							}
 						});
@@ -472,6 +493,9 @@ public class TaoHoaDonControl implements Initializable {
 							hoaDon.setId(hd_dao.generateId());
 							hoaDon.setNhanVienBanThuoc(nhanVienBanThuoc);
 							hoaDon.getDsChiTietHoaDon().add(chiTietHoaDon);
+							Date date= new Date();
+							long time = date.getTime();
+							hoaDon.setThoiGianLap(new Timestamp(time));
 							data.add(new common.ChiTietHoaDon(chiTietHoaDon.getThuoc().getId(), 
 									chiTietHoaDon.getThuoc().getTenThuoc(),
 									chiTietHoaDon.getThuoc().getDonViTinh(),
@@ -553,6 +577,7 @@ public class TaoHoaDonControl implements Initializable {
 		txtThue.setText("");
 	}
 
+	@FXML
 	public void btnHuy() {
 		if (hoaDon != null) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -566,6 +591,16 @@ public class TaoHoaDonControl implements Initializable {
 				hoaDon = null;
 				clearAllField();
 				data.clear();
+				
+				txtTenKhachHang.setText("");
+				txtSoDienThoai.setText("");
+				lblDiemTichLuy.setText("Điểm tích lũy: 0đ");
+				txtSoDienThoai.setEditable(true);
+				txtTenKhachHang.setEditable(true);
+				btnXoaKH.setDisable(true);
+				dateNgayLap.setValue(null);
+				btnXoaKH.setStyle("-fx-background-color: #DFDFDF; -fx-background-radius: 10px");
+				lblXoaKH.setStyle("-fx-fill: #B1B1B1;");
 			} else {
 				// ... user chose CANCEL or closed the dialog
 			}
