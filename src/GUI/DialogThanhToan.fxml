@@ -72,7 +72,7 @@
                      <Text fx:id="lblTienThua" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="0đ" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   </children>
                </GridPane>
-               <Button onAction="#btnThoat" fx:id="btnThoat" layoutX="372.0" layoutY="473.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="121.0" style="-fx-background-color: #F5508B; -fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #fff;" text="Thoát" />
+               <Button fx:id="btnThoat" layoutX="372.0" layoutY="473.0" mnemonicParsing="false" onAction="#btnThoat" prefHeight="43.0" prefWidth="121.0" style="-fx-background-color: #F5508B; -fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #fff;" text="Thoát" />
                <Line endX="548.0" layoutX="105.0" layoutY="339.0" startX="-100.0" />
             </children></AnchorPane>
         </Scene>
