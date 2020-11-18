@@ -15,13 +15,13 @@ public class DAOThuoc extends DAO {
 	DAONhaCungCap daoNhaCungCap = new DAONhaCungCap();
 	
 	public int getSoLuongTon(String id) {
-		String sql = "select sum(SoLuong) as SoLuongTon from LoThuoc where ThuocId = ?";
+		String sql = "select sum(SoLuongConLai) as SoLuongConLai from LoThuoc where ThuocId = ?";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, id);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				return rs.getInt("SoLuongTon");
+				return rs.getInt("SoLuongConLai");
 			}
 			return -1;
 		} catch (SQLException e) {
