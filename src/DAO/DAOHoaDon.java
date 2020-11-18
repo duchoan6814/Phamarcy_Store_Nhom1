@@ -7,8 +7,12 @@ import java.time.LocalDate;
 import java.util.Date;
 
 import entity.HoaDon;
+import entity.KhachHang;
 
 public class DAOHoaDon extends DAO {
+	DAOChiTietHoaDon daoChiTietHoaDon = new DAOChiTietHoaDon();
+	DAOKhachHang daoKhachHang = new DAOKhachHang();
+	
 	public String generateId() {
 		String sql = "SELECT top 1 HoaDonId from HoaDon ORDER BY HoaDonId DESC";
 		try {
@@ -55,7 +59,46 @@ public class DAOHoaDon extends DAO {
 		return null;
 	}
 	
-//	public boolean TaoHoaDon(HoaDon hoaDon) {
-//		String sql = "";
-//	}
+	public boolean TaoHoaDon(HoaDon hoaDon) {
+		String sql = "INSERT INTO HoaDon (HoaDonId, KhachHangId, NhanVienBanThuocId, ThoiGianLap, DiemSuDung, TienPhaiTra) VALUES (?, ?, ?, ?, ?, ?)";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, hoaDon.getId());
+			try {
+				ps.setString(2, hoaDon.getKhachHang().getId());
+			} catch (Exception e) {
+				// TODO: handle exception
+				ps.setString(2, null);
+			}
+			
+			ps.setString(3, hoaDon.getNhanVienBanThuoc().getId());
+			ps.setTimestamp(4, hoaDon.getThoiGianLap());
+			ps.setDouble(5, hoaDon.getDiemSuDung());
+			ps.setDouble(6, hoaDon.getTienPhaiTra());
+			
+			int rs = ps.executeUpdate();
+			
+			hoaDon.getDsChiTietHoaDon().forEach(i -> {
+				if (!daoChiTietHoaDon.themChiTietHoaDon(hoaDon.getId(), i)) {
+					System.out.println("them chi tiet hoa don khong thanh cong");
+				}
+			});
+			
+			if (hoaDon.getKhachHang() != null) {
+				if (!daoKhachHang.congDiemTichLuy(hoaDon)) {
+					System.out.println("cong Diem that bai");
+				}
+				if (!daoKhachHang.truDiemTichLuy(hoaDon)) {
+					System.out.println("tru diem that bai");
+				}
+				
+			}
+			
+			return rs > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

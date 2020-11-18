@@ -8,10 +8,41 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import entity.HoaDon;
 import entity.KhachHang;
 import entity.LoaiKhachHang;
 
 public class DAOKhachHang extends DAO {
+	
+	public boolean congDiemTichLuy(HoaDon hoaDon) {
+		String sql = "UPDATE KhachHang SET DiemTichLuy = DiemTichLuy + ? WHERE KhachHangId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setDouble(1, hoaDon.tinhDiemTichLuy());
+			ps.setString(2, hoaDon.getKhachHang().getId());
+			
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean truDiemTichLuy(HoaDon hoaDon) {
+		String sql = "UPDATE KhachHang SET DiemTichLuy = DiemTichLuy - ? WHERE KhachHangId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setDouble(1, hoaDon.getDiemSuDung());
+			ps.setString(2, hoaDon.getKhachHang().getId());
+			
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
 	
 	public KhachHang getKhachHangBySoDienThoai(String sdt) {
 		KhachHang khachHang = new KhachHang();

@@ -1,8 +1,11 @@
 package GUI;
 
 import java.net.URL;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
+import DAO.DAOHoaDon;
 import common.Common;
 import entity.HoaDon;
 import javafx.beans.value.ChangeListener;
@@ -29,8 +32,9 @@ public class ThanhToanControl implements Initializable {
 	}
 
 	private Common common = new Common();
-
 	private HoaDon hoaDon;
+	
+	private DAOHoaDon daoHoaDon = new DAOHoaDon();
 
 	public Text lblKhachHang;
 	public Text lblTenKhachHang;
@@ -192,7 +196,25 @@ public class ThanhToanControl implements Initializable {
 			alert.showAndWait();
 		}else {
 			System.out.println(hoaDon);
-			this.trangThaiThanhToan = true;
+			if (daoHoaDon.TaoHoaDon(hoaDon)) {
+				this.trangThaiThanhToan = true;
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Information Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Thanh toán thành công!");
+
+				alert.showAndWait();
+				Stage thanhToanStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+				thanhToanStage.close();
+			}else {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Information Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Thanh toán không thành công!");
+
+				alert.showAndWait();
+			}
+			
 		}
 	}
 

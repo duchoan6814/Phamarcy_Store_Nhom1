@@ -176,7 +176,7 @@ public class HoaDon {
 	}
 	
 	public double tinhDiemTichLuy() {
-		return 0.05 * this.tinhTienHoaDonBaoGomThue();
+		return 0.02 * this.tinhTienHoaDonBaoGomThue();
 	}
 
 	public double tinhTienPhaiTra() {
