@@ -10,7 +10,15 @@ public class LoThuoc {
 	private Thuoc thuoc;
 	private Date ngaySanXuat;
 	private int soLuong;
+	private int soLuongConLai;
+	
 
+	public int getSoLuongConLai() {
+		return soLuongConLai;
+	}
+	public void setSoLuongConLai(int soLuongConLai) {
+		this.soLuongConLai = soLuongConLai;
+	}
 	public Thuoc getThuoc() {
 		return thuoc;
 	}
@@ -29,19 +37,23 @@ public class LoThuoc {
 	public void setSoLuong(int soLuong) {
 		this.soLuong = soLuong;
 	}
-	public LoThuoc(Thuoc thuoc, Date ngaySanXuat, int soLuong) {
+	
+	public LoThuoc(Thuoc thuoc, Date ngaySanXuat, int soLuong, int soLuongConLai) {
 		super();
 		this.thuoc = thuoc;
 		this.ngaySanXuat = ngaySanXuat;
 		this.soLuong = soLuong;
+		this.soLuongConLai = soLuongConLai;
 	}
 	public LoThuoc() {
 		super();
 	}
 
+	
 	@Override
 	public String toString() {
-		return "LoThuoc [thuoc=" + thuoc + ", ngaySanXuat=" + ngaySanXuat + ", soLuong=" + soLuong + "]";
+		return "LoThuoc [thuoc=" + thuoc + ", ngaySanXuat=" + ngaySanXuat + ", soLuong=" + soLuong + ", soLuongConLai="
+				+ soLuongConLai + "]";
 	}
 	public java.util.Date addDays(java.util.Date date, int days) {
 		Calendar cal = Calendar.getInstance();

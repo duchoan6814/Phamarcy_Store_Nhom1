@@ -28,7 +28,7 @@ public class DAOPhieuNhap extends DAO {
 //		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		phieuNhapHang.setThoiGianLap(new Timestamp(date.getTime()));
 		getListMaThuoc.forEach(i -> {
-			phieuNhapHang.getDsLoThuoc().add(new LoThuoc(new Thuoc(i), Date.valueOf(LocalDate.now()), 50));
+			phieuNhapHang.getDsLoThuoc().add(new LoThuoc(new Thuoc(i), Date.valueOf(LocalDate.now()), 50, 0));
 		});
 		
 		String sql = "insert into PhieuNhapHang (PhieuNhapHangId, QuanLyId, ThoiGianLap) VALUES (?, ?, DEFAULT)";

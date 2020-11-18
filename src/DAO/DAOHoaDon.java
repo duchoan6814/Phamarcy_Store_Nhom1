@@ -6,12 +6,14 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 
+import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.KhachHang;
 
 public class DAOHoaDon extends DAO {
 	DAOChiTietHoaDon daoChiTietHoaDon = new DAOChiTietHoaDon();
 	DAOKhachHang daoKhachHang = new DAOKhachHang();
+	DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
 	
 	public String generateId() {
 		String sql = "SELECT top 1 HoaDonId from HoaDon ORDER BY HoaDonId DESC";
@@ -79,9 +81,13 @@ public class DAOHoaDon extends DAO {
 			int rs = ps.executeUpdate();
 			
 			hoaDon.getDsChiTietHoaDon().forEach(i -> {
-				if (!daoChiTietHoaDon.themChiTietHoaDon(hoaDon.getId(), i)) {
+				ChiTietHoaDon chiTietHoaDon = i;
+				if (!daoChiTietHoaDon.themChiTietHoaDon(hoaDon.getId(), chiTietHoaDon)) {
 					System.out.println("them chi tiet hoa don khong thanh cong");
 				}
+				
+				daoLoThuoc.giamSoLuongConLai(chiTietHoaDon.getSoLuong(), chiTietHoaDon.getThuoc().getId());
+				
 			});
 			
 			if (hoaDon.getKhachHang() != null) {
