@@ -83,7 +83,7 @@
 								</Text>
 							</children>
 						</HBox>
-						<HBox styleClass="buttonSelectMain">
+						<HBox fx:id="btnKhoHang" styleClass="buttonSelectMain">
 							<children>
 								<ImageView fitHeight="32.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
 									<image>
@@ -100,7 +100,7 @@
 								</Text>
 							</children>
 						</HBox>
-						<HBox styleClass="buttonSelectMain">
+						<HBox fx:id="btnThongKe" styleClass="buttonSelectMain">
 							<children>
 								<ImageView fitHeight="32.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
 									<image>
@@ -117,7 +117,7 @@
 								</Text>
 							</children>
 						</HBox>
-						<HBox styleClass="buttonSelectMain">
+						<HBox fx:id="btnNhanVien" styleClass="buttonSelectMain">
 							<children>
 								<ImageView fitHeight="32.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
 									<image>
