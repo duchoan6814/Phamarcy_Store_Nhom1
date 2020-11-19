@@ -16,8 +16,6 @@ module PhamarcyStore_Nhom1 {
 	
 	exports GUI;
 	exports common;
-	exports validateField;
-	
+
 	opens common to javafx.base;
-	opens validateField to javafx.fxml;
 }

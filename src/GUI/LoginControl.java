@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import DAO.DAONhanVien;
 import DAO.DAOTaiKhoan;
+import common.Common;
 import entity.NhanVienBanThuoc;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 
@@ -22,6 +24,8 @@ public class LoginControl{
 
 	DAOTaiKhoan tk = new DAOTaiKhoan();
 	DAONhanVien nv_dao = new DAONhanVien();
+	
+	Common common = new Common();
 
 	public TextField userName;
 	public PasswordField password;
@@ -29,10 +33,15 @@ public class LoginControl{
 
 	@FXML
 	public void login(ActionEvent event) {
-		boolean isLoginSuccess = tk.login(userName.getText(), password.getText());
-		if (isLoginSuccess) {
-			showSenceMain();
-			closeStageWhenLoginSuccess(event);
+		if (!tk.checkTaiKhoan(userName.getText())) {
+			common.showNotification(AlertType.ERROR, "Lỗi đăng nhập", "Đăng nhập không thành công tài khoản chưa tồn tại!");
+		}else {
+			if (!tk.checkMatKhau(userName.getText(), password.getText())) {
+				common.showNotification(AlertType.ERROR, "Lỗi đăng nhập", "Đăng nhập không thành công mật khẩu chưa chính xác!");
+			}else {
+				showSenceMain();
+				closeStageWhenLoginSuccess(event);
+			}
 		}
 
 	}
