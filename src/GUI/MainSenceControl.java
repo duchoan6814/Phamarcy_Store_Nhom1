@@ -15,6 +15,7 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -32,6 +33,7 @@ public class MainSenceControl implements Initializable {
 	public Text lblSoHoaDon;
 	public StackPane stkOptions;
 	public Circle cirAvatar;
+	public HBox btnBanHang;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -55,7 +57,8 @@ public class MainSenceControl implements Initializable {
 		}catch (Exception e) {
 			// TODO: handle exception
 		}
-
+		
+		btnBanHang.getStyleClass().add("activeButton");
 
 	}
 
