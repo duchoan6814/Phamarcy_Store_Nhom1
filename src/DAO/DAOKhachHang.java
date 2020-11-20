@@ -1,11 +1,14 @@
 package DAO;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ListResourceBundle;
 import java.util.Set;
 
 import entity.HoaDon;
@@ -13,6 +16,74 @@ import entity.KhachHang;
 import entity.LoaiKhachHang;
 
 public class DAOKhachHang extends DAO {
+	
+	
+	public List<KhachHang> filterKhachhang(String khachHangId, String ho, String ten, String ngaySinh, String gioiTinh, String soDienThoai, String loaiKhachHang, String diaChi ){
+		String _gioiTinh;
+		if (gioiTinh == "Nam") {
+			_gioiTinh = "1";
+		}else if(gioiTinh == "Nữ") {
+			_gioiTinh = "0";
+		}else {
+			_gioiTinh = "0,1";
+		}
+		
+		String _loaiKhachHang = "";
+		if (!(loaiKhachHang == "Tất cả")) {
+			_loaiKhachHang = loaiKhachHang;
+		}
+		String sql = "SELECT * from KhachHang where KhachHangId like ? and HoTenDem like ? and Ten like ? and NgaySinh like ? and GioiTinh in ("+_gioiTinh+") and SoDienThoai like ? and LoaiKhachHang like ? and DiaChi like ?";
+		List<KhachHang> list = new ArrayList<>();
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, "%"+khachHangId+"%");
+			ps.setNString(2, "%"+ho+"%");
+			ps.setNString(3, "%"+ten+"%");
+			ps.setString(4, "%"+ngaySinh+"%");
+			ps.setString(5, "%"+soDienThoai+"%");
+			ps.setNString(7, "%"+diaChi+"%");
+			ps.setString(6, "%"+_loaiKhachHang+"%");
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				KhachHang khachHang = new KhachHang();
+				khachHang.setId(rs.getString("KhachHangId"));
+				khachHang.setHoTenDem(rs.getString("HoTenDem"));
+				khachHang.setTen(rs.getString("Ten"));
+				khachHang.setGioiTinh(rs.getBoolean("GioiTinh"));
+				khachHang.setNgaySinh(rs.getDate("NgaySinh"));
+				khachHang.setSoDienThoai(rs.getString("SoDienThoai"));
+				khachHang.setDiaChi(rs.getString("DiaChi"));
+				khachHang.setDienTichLuy(rs.getDouble("DiemTichLuy"));
+				khachHang.setLoaiKhachHang(LoaiKhachHang.get(rs.getString("LoaiKhachHang")));
+				list.add(khachHang);
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return list;
+		}
+	}
+	
+	public List<String> getListLoaiKhachHang(){
+		String sql = "select LoaiKhachHang from KhachHang";
+		List<String> list = new ArrayList<>();
+		list.add("Tất cả");
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				list.add(rs.getString("LoaiKhachHang"));
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return list;
+		}
+	}
 	
 	public boolean congDiemTichLuy(HoaDon hoaDon) {
 		String sql = "UPDATE KhachHang SET DiemTichLuy = DiemTichLuy + ? WHERE KhachHangId = ?";

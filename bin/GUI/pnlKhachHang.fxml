@@ -18,20 +18,20 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="623.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView layoutX="13.0" layoutY="139.0" prefHeight="470.0" prefWidth="1055.0">
+      <TableView fx:id="tblKhachHang" layoutX="13.0" layoutY="139.0" prefHeight="470.0" prefWidth="1055.0">
         <columns>
-          <TableColumn prefWidth="44.0" text="STT" />
-          <TableColumn prefWidth="69.0" text="Mã KH" />
-            <TableColumn prefWidth="137.0" text="Họ KH" />
-            <TableColumn prefWidth="76.0" text="Tên KH" />
-            <TableColumn prefWidth="103.0" text="Ngày sinh" />
-            <TableColumn prefWidth="72.0" text="Giới tính" />
-            <TableColumn prefWidth="124.0" text="Điện thoại" />
-            <TableColumn prefWidth="89.0" text="Điểm" />
-            <TableColumn prefWidth="93.0" text="Loại" />
-            <TableColumn prefWidth="125.0" text="Địa chỉ" />
-            <TableColumn prefWidth="57.0" text="Edit" />
-            <TableColumn prefWidth="65.0" text="Delete" />
+          <TableColumn fx:id="colSTT" prefWidth="44.0" text="STT" />
+          <TableColumn fx:id="colMaKhachHang" prefWidth="69.0" text="Mã KH" />
+            <TableColumn fx:id="colHoKhachHang" prefWidth="137.0" text="Họ KH" />
+            <TableColumn fx:id="colTenKhachHang" prefWidth="76.0" text="Tên KH" />
+            <TableColumn fx:id="colNgaySinh" prefWidth="103.0" text="Ngày sinh" />
+            <TableColumn fx:id="colGioiTinh" prefWidth="72.0" text="Giới tính" />
+            <TableColumn fx:id="colDienThoai" prefWidth="124.0" text="Điện thoại" />
+            <TableColumn fx:id="colDiem" prefWidth="89.0" text="Điểm" />
+            <TableColumn fx:id="colLoai" prefWidth="93.0" text="Loại" />
+            <TableColumn fx:id="colDiaChi" prefWidth="125.0" text="Địa chỉ" />
+            <TableColumn fx:id="colEdit" prefWidth="57.0" text="Edit" />
+            <TableColumn fx:id="colDelete" prefWidth="65.0" text="Delete" />
         </columns>
       </TableView>
       <GridPane layoutX="14.0" layoutY="14.0" prefHeight="116.0" prefWidth="847.0">
@@ -49,13 +49,13 @@
         </rowConstraints>
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mã khách hàng" />
-            <TextField GridPane.rowIndex="1">
+            <TextField fx:id="txtMaKhachHang" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </TextField>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Số điện thoại" GridPane.rowIndex="2" />
-            <TextField GridPane.rowIndex="3">
+            <TextField fx:id="txtSoDienThoai" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
@@ -65,28 +65,30 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày Sinh" GridPane.columnIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Giới tính" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Địa chỉ" GridPane.columnIndex="3" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="txtHoKhachHang" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </TextField>
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="txtTenKhachHang" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </TextField>
-            <DatePicker GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <ComboBox prefHeight="26.0" prefWidth="199.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="3" GridPane.rowIndex="1">
+            <DatePicker fx:id="dateNgaySinh" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <ComboBox fx:id="cmbGioiTinh" prefHeight="26.0" prefWidth="199.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextField fx:id="txtDiaChi" GridPane.columnIndex="3" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </TextField>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Loại khách hàng" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <ComboBox fx:id="cmbLoaiKhachHang" layoutX="434.0" layoutY="99.0" prefHeight="26.0" prefWidth="199.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <VBox layoutX="868.0" layoutY="12.0" prefHeight="116.0" prefWidth="198.0">
          <children>
-            <HBox prefHeight="17.0" prefWidth="198.0" style="-fx-padding: 7px 20px; -fx-background-color: #4221E7; -fx-background-radius: 5px;">
+            <HBox onMouseClicked="#actionButtonFilter" prefHeight="17.0" prefWidth="198.0" style="-fx-padding: 7px 20px; -fx-background-color: #4221E7; -fx-background-radius: 5px;">
                <children>
                   <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                      <image>

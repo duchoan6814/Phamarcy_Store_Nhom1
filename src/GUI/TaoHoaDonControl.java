@@ -245,6 +245,7 @@ public class TaoHoaDonControl implements Initializable {
 					final Button btn = new Button("delete");
 
 					{
+						btn.setStyle("-fx-background-color: red");
 						btn.setOnAction(event -> {
 							TableColumn col = tblChiTietHoaDon.getColumns().get(1);
 							String data = (String) col.getCellObservableValue(tblChiTietHoaDon.getItems().get(getIndex())).getValue();
