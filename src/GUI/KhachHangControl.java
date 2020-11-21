@@ -3,6 +3,7 @@ package GUI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import DAO.DAOKhachHang;
@@ -12,7 +13,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
@@ -62,7 +65,7 @@ public class KhachHangControl implements Initializable {
 
 		createButtonDeleteColumn();
 		createButtonEditColumn();
-		
+
 	}
 
 	@FXML
@@ -149,7 +152,46 @@ public class KhachHangControl implements Initializable {
 					{
 						btn.setStyle("-fx-background-color: red");
 						btn.setOnAction(event -> {
-							tblKhachHang.getItems().remove(getIndex());
+							TableColumn col = tblKhachHang.getColumns().get(1);
+							String data = (String) col.getCellObservableValue(tblKhachHang.getItems().get(getIndex())).getValue();
+
+							Alert alert = new Alert(AlertType.CONFIRMATION);
+							alert.setTitle("Confirmation Dialog");
+							alert.setHeaderText(null);
+							alert.setContentText("Bạn có chắc chắn muốn xóa khách hàng?");
+
+							Optional<ButtonType> result = alert.showAndWait();
+							if (result.get() == ButtonType.OK){
+								// ... user chose OK
+								if (!daoKhachHang.xoaKhachHangById(data)) {
+									Alert alert1 = new Alert(AlertType.CONFIRMATION);
+									alert1.setTitle("Confirmation Dialog");
+									alert1.setHeaderText(null);
+									alert1.setContentText("Có một số hóa đơn chứa thông tin của khách hàng này, bạn có chắc muốn xóa?");
+
+									Optional<ButtonType> result1 = alert1.showAndWait();
+									if (result1.get() == ButtonType.OK){
+										// ... user chose OK
+										if (!daoKhachHang.updateHoaDonWhenXoaKhachHang(data)) {
+											common.showNotification(AlertType.ERROR, "Lỗi Xóa", "Xóa không thành công, vui lòng kiểm tra lạilại");
+										}else {
+											if (daoKhachHang.xoaKhachHangById(data)) {
+												common.showNotification(AlertType.INFORMATION, "Thành công", "Xóa khách hàng thành côngcông");
+											}else {
+											}
+										}
+										
+									} else {
+										// ... user chose CANCEL or closed the dialog
+									}
+								}else {
+									common.showNotification(AlertType.INFORMATION, "Đã xóa", "Xóa khách hàng thành công.");
+
+									tblKhachHang.getItems().remove(getIndex());
+								}
+							} else {
+								// ... user chose CANCEL or closed the dialog
+							}
 
 						});
 					}

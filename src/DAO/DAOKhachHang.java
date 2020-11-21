@@ -17,6 +17,31 @@ import entity.LoaiKhachHang;
 
 public class DAOKhachHang extends DAO {
 	
+	public boolean xoaKhachHangById(String id) {
+		String sql = "Delete From KhachHang where KhachHangId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean updateHoaDonWhenXoaKhachHang(String khachHangId) {
+		String sql = "update HoaDon set KhachHangId = NULL where KhachHangId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, khachHangId);
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
 	
 	public List<KhachHang> filterKhachhang(String khachHangId, String ho, String ten, String ngaySinh, String gioiTinh, String soDienThoai, String loaiKhachHang, String diaChi ){
 		String _gioiTinh;
