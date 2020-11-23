@@ -1,5 +1,6 @@
 package GUI;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import entity.KhachHang;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -24,6 +26,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 public class KhachHangControl implements Initializable {
@@ -68,6 +73,22 @@ public class KhachHangControl implements Initializable {
 
 	}
 
+	@FXML void actionButtonThemKhachHang() {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("DialogThemAndSua.fxml"));
+		ThemKhachHangControl themKhachHangControl = new ThemKhachHangControl();
+		loader.setController(themKhachHangControl);
+		try {
+			Stage themKhachHangStage = loader.load();
+			themKhachHangStage.initModality(Modality.APPLICATION_MODAL);
+			themKhachHangStage.initStyle(StageStyle.UNDECORATED);
+			themKhachHangStage.show();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@FXML
 	public void actionButtonFilter() {
 		dataKhachHang.clear();
@@ -85,8 +106,15 @@ public class KhachHangControl implements Initializable {
 			common.showNotification(AlertType.INFORMATION, "Không kết quảquả", "Không tìm thấy kết quả phù hợp!");
 		}else {
 			listKhachHang.forEach(i -> {
+				String ngaySinh;
+				try {
+					ngaySinh = i.getNgaySinh().toString();
+				} catch (Exception e) {
+					// TODO: handle exception
+					ngaySinh = "";
+				}
 				dataKhachHang.add(new common.KhachHang(i.getId(), i.getHoTenDem(), i.getTen(),
-						i.getNgaySinh().toString(), i.isGioiTinh() ? "Nam" : "Nữ", i.getSoDienThoai(),
+						ngaySinh, i.isGioiTinh() ? "Nam" : "Nữ", i.getSoDienThoai(),
 								i.getLoaiKhachHang().getLoaiKhachHang(), i.getDiaChi(), common.formatMoney(i.getDienTichLuy()), dataKhachHang.size()));
 			});
 		}
@@ -109,8 +137,26 @@ public class KhachHangControl implements Initializable {
 					{
 						btn.setStyle("-fx-background-color: orange");
 						btn.setOnAction(event -> {
-							//							tblKhachHang.getItems().remove(getIndex());
-							System.out.println("edit button");
+							TableColumn col = tblKhachHang.getColumns().get(1);
+							String data = (String) col.getCellObservableValue(tblKhachHang.getItems().get(getIndex())).getValue();
+							
+							FXMLLoader loader = new FXMLLoader(getClass().getResource("DialogThemAndSua.fxml"));
+							SuaKhachHangControl suaKhachHangControl = new SuaKhachHangControl(data);
+							loader.setController(suaKhachHangControl);
+							
+							try {
+								Stage editStage = loader.load();
+								editStage.show();
+								
+								editStage.setOnHiding( events -> {
+									if (suaKhachHangControl.isSuaKhachHangThanhCong()) {
+										actionButtonFilter();
+									}
+								});
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						});
 					}
 
@@ -173,14 +219,16 @@ public class KhachHangControl implements Initializable {
 									if (result1.get() == ButtonType.OK){
 										// ... user chose OK
 										if (!daoKhachHang.updateHoaDonWhenXoaKhachHang(data)) {
-											common.showNotification(AlertType.ERROR, "Lỗi Xóa", "Xóa không thành công, vui lòng kiểm tra lạilại");
+											common.showNotification(AlertType.ERROR, "Lỗi Xóa", "Xóa không thành công, vui lòng kiểm tra lại");
 										}else {
 											if (daoKhachHang.xoaKhachHangById(data)) {
-												common.showNotification(AlertType.INFORMATION, "Thành công", "Xóa khách hàng thành côngcông");
+												common.showNotification(AlertType.INFORMATION, "Thành công", "Xóa khách hàng thành công");
+												tblKhachHang.getItems().remove(getIndex());
 											}else {
+												common.showNotification(AlertType.ERROR, "Lỗi Xóa", "Xóa không thành công, vui lòng kiểm tra lại");
 											}
 										}
-										
+
 									} else {
 										// ... user chose CANCEL or closed the dialog
 									}
