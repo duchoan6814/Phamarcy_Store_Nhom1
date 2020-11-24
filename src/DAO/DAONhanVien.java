@@ -30,7 +30,7 @@ public class DAONhanVien extends DAO {
 				nhanVienBanThuoc.setAvatar(result.getBytes("Avatar"));
 				TaiKhoan taiKhoan = new TaiKhoan();
 				taiKhoan.setTenDangNhap(result.getString("TenDangNhap"));
-				taiKhoan.setPhanQuyen(PhanQuyen.get(result.getString("PhanQuyen")));
+				taiKhoan.setPhanQuyen(PhanQuyen.get(result.getString("PhanQuyen").trim()));
 				nhanVienBanThuoc.setTaiKhoan(taiKhoan);
 				return nhanVienBanThuoc;
 			}

@@ -13,6 +13,13 @@ public class KhachHang {
 	public void setDiaChi(String diaChi) {
 		this.diaChi = diaChi;
 	}
+	
+	
+	public String getDiaChi() {
+		return diaChi;
+	}
+
+
 	public String getId() {
 		return id;
 	}

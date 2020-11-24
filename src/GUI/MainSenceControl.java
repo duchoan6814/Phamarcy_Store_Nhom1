@@ -9,12 +9,15 @@ import java.util.ResourceBundle;
 import DAO.DAONhanVien;
 import entity.HoaDon;
 import entity.NhanVienBanThuoc;
+import entity.PhanQuyen;
+import entity.QuanLy;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -24,6 +27,8 @@ import javafx.scene.text.Text;
 
 public class MainSenceControl implements Initializable {
 	private NhanVienBanThuoc nhanVienBanThuoc;
+	private QuanLy quanLy;
+	
 	private DAONhanVien daoNhanVien = new DAONhanVien();
 
 	public Text lblTenNhanVien1;
@@ -32,19 +37,36 @@ public class MainSenceControl implements Initializable {
 	public Text lblSoHoaDon;
 	public StackPane stkOptions;
 	public Circle cirAvatar;
+	public HBox btnBanHang;
+	public HBox btnKhoHang;
+	public HBox btnThongKe;
+	public HBox btnNhanVien;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("pnlBanHang.fxml"));
-		BanHangControl banHangControl = new BanHangControl(nhanVienBanThuoc);
-		loader.setController(banHangControl);
-		try {
-			stkOptions.getChildren().add(loader.load());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		showPaneBanHang();
+		setSomeFieldNhanVien();
+		//set active button
+		btnBanHang.getStyleClass().add("activeButton");
+		
+		phanQuyen();
+
+	}
+
+
+	private void phanQuyen() {
+		// TODO Auto-generated method stub
+		if (nhanVienBanThuoc.getTaiKhoan().getPhanQuyen() == PhanQuyen.NHANVIEN) {
+			btnKhoHang.setVisible(false);
+			btnThongKe.setVisible(false);
+			btnNhanVien.setVisible(false);
 		}
+	}
+
+
+	private void setSomeFieldNhanVien() {
+		// TODO Auto-generated method stub
 		lblTenNhanVien1.setText(nhanVienBanThuoc.getHoTenDem()+" "+nhanVienBanThuoc.getTen());
 		lblTenNhanVien2.setText(nhanVienBanThuoc.getHoTenDem()+" "+nhanVienBanThuoc.getTen());
 		lblId.setText("ID: "+nhanVienBanThuoc.getId());
@@ -55,8 +77,20 @@ public class MainSenceControl implements Initializable {
 		}catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
 
 
+	private void showPaneBanHang() {
+		// TODO Auto-generated method stub
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("pnlBanHang.fxml"));
+		BanHangControl banHangControl = new BanHangControl(nhanVienBanThuoc);
+		loader.setController(banHangControl);
+		try {
+			stkOptions.getChildren().add(loader.load());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 
