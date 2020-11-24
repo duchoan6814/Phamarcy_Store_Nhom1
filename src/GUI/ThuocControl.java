@@ -1,0 +1,116 @@
+package GUI;
+
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import DAO.DAOLoThuoc;
+import DAO.DAOLoaiThuoc;
+import DAO.DAOThuoc;
+import common.Common;
+import common.ThuocTable;
+import entity.Thuoc;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+public class ThuocControl implements Initializable {
+	Common common = new Common();
+
+	DAOThuoc daoThuoc = new DAOThuoc();
+	DAOLoaiThuoc daoLoaiThuoc = new DAOLoaiThuoc();
+	DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
+	private ObservableList<ThuocTable> dataListThuoc;
+	
+	public ComboBox<String> cmbDonViTinh;
+	public ComboBox<String> cmbLoaiThuoc;
+	public ComboBox<String> cmbNuocSanXuat;
+	public TableView<ThuocTable> tblThuoc;
+	public TableColumn<ThuocTable, Integer> colSTT;
+	public TableColumn<ThuocTable, String> colMaThuoc;
+	public TableColumn<ThuocTable, String> colTenThuoc;
+	public TableColumn<ThuocTable, String> colDVT;
+	public TableColumn<ThuocTable, String> colGia;
+	public TableColumn<ThuocTable, Integer> colTonKho;
+	public TableColumn<ThuocTable, String> colHSD;
+	public TableColumn<ThuocTable, String> colLoai;
+	public TableColumn<ThuocTable, String> colNuoSX;
+	public TableColumn<ThuocTable, String> colCongTy;
+	public TableColumn<ThuocTable, String> colChon;
+	public TextField txtMaThuoc;
+	public TextField txtTenThuoc;
+	public TextField txtNhaCungCap;
+	
+	
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		initNuocSanXuat();
+		initDonViTinh();
+		initLoaiThuoc();
+		initTableView();
+	}
+
+	private void initTableView() {
+		// TODO Auto-generated method stub
+		dataListThuoc = FXCollections.observableArrayList();
+		colSTT.setCellValueFactory(new PropertyValueFactory<>("stt"));
+		colMaThuoc.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
+		colTenThuoc.setCellValueFactory(new PropertyValueFactory<>("tenThuoc"));
+		colDVT.setCellValueFactory(new PropertyValueFactory<>("donViTinh"));
+		colGia.setCellValueFactory(new PropertyValueFactory<>("gia"));
+		colTonKho.setCellValueFactory(new PropertyValueFactory<>("tonKho"));
+		colHSD.setCellValueFactory(new PropertyValueFactory<>("hanSuDung"));
+		colLoai.setCellValueFactory(new PropertyValueFactory<>("loai"));
+		colNuoSX.setCellValueFactory(new PropertyValueFactory<>("nuocSX"));
+		colCongTy.setCellValueFactory(new PropertyValueFactory<>("congTy"));
+		tblThuoc.setItems(dataListThuoc);
+	}
+
+	private void initLoaiThuoc() {
+		// TODO Auto-generated method stub
+		ObservableList<String> loaiThuocList = FXCollections.observableArrayList(daoLoaiThuoc.getListLoaiThuoc());
+		loaiThuocList.add("Tất cả");
+		cmbLoaiThuoc.setItems(loaiThuocList);
+		cmbLoaiThuoc.setValue("Tất cả");
+	}
+
+	private void initDonViTinh() {
+		// TODO Auto-generated method stub
+		ObservableList<String> donViTinhList = FXCollections.observableArrayList(daoThuoc.getListDonViTinh());
+		donViTinhList.add("Tất cả");
+		cmbDonViTinh.setItems(donViTinhList);
+		cmbDonViTinh.setValue("Tất cả");
+	}
+
+	private void initNuocSanXuat() {
+		// TODO Auto-generated method stub
+		ObservableList<String> nuocSanXuatList = FXCollections.observableArrayList(daoThuoc.getListNuocSanXuat());
+		nuocSanXuatList.add("Tất cả");
+		cmbNuocSanXuat.setItems(nuocSanXuatList);
+		cmbNuocSanXuat.setValue("Tất cả");
+	}
+	
+	@FXML
+	public void actionButtonTim() {
+		dataListThuoc.clear();
+		List<Thuoc> listThuoc = daoThuoc.filterThuoc(txtMaThuoc.getText(), txtTenThuoc.getText(),
+				cmbNuocSanXuat.getValue(), txtNhaCungCap.getText(), cmbLoaiThuoc.getValue(), cmbDonViTinh.getValue());
+		if (listThuoc.size() <= 0) {
+			common.showNotification(AlertType.INFORMATION, "Không tìm thấy!", "Không tìm thấy thuốc phù hợp!");
+		}else {
+			listThuoc.forEach(i -> {
+				dataListThuoc.add(new ThuocTable(dataListThuoc.size(), i.getId(), i.getTenThuoc(), i.getDonViTinh(), common.formatMoney(i.getGia()),
+						daoThuoc.getSoLuongTon(i.getId()), i.getHanSuDung()+" Tháng", i.getLoaiThuoc().getTenLoai(), i.getNuocSanXuat(), i.getNhaCungCap().getTenNhaCungCap()));
+			});
+		}
+	}
+
+}

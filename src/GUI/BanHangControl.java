@@ -16,6 +16,7 @@ public class BanHangControl implements Initializable {
 	public TabPane tbsBanHang;
 	public Tab tabTaoHoaDon;
 	public Tab tabKhachHang;
+	public Tab tabThuoc;
 
 	
 	
@@ -46,6 +47,7 @@ public class BanHangControl implements Initializable {
 	public NhanVienBanThuoc nhanVienBanThuoc;
 	private KhachHangControl khachHangControl;
 	private TaoHoaDonControl taoHoaDonControl;
+	private ThuocControl thuocControl;
 	
 	
 
@@ -75,6 +77,7 @@ public class BanHangControl implements Initializable {
 		// TODO Auto-generated method stub
 		setContentTabTaoHaoDon();
 		setContentTabKhachHang();
+		setContentTabThuoc();
 	}
 
 	private void setContentTabKhachHang() {
@@ -98,6 +101,18 @@ public class BanHangControl implements Initializable {
 		loader.setController(taoHoaDonControl);
 		try {
 			tabTaoHoaDon.setContent(loader.load());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void setContentTabThuoc() {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("PnlThuoc.fxml"));
+		thuocControl = new ThuocControl();
+		loader.setController(thuocControl);
+		try {
+			tabThuoc.setContent(loader.load());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
