@@ -299,13 +299,14 @@ public class TaoHoaDonControl implements Initializable {
 		});
 	}
 
-	public void setKhachHangAndFieldKhachHang() {
+	public void setKhachHangAndFieldKhachHang(KhachHang khachHang) {
 		hoaDon.setKhachHang(khachHang);
 		Date date= new Date();
 		long time = date.getTime();
 		hoaDon.setThoiGianLap(new Timestamp(time));
 
 		txtMaHoaDon.setText(hoaDon.getId());
+		txtSoDienThoai.setText(khachHang.getSoDienThoai());
 		txtTenKhachHang.setText(hoaDon.getKhachHang().getHoTenDem()+" "+hoaDon.getKhachHang().getTen());
 		lblDiemTichLuy.setText("Điểm tích lũy: "+new Common().formatMoney(hoaDon.getKhachHang().getDienTichLuy()));
 		dateNgayLap.setValue(LocalDate.now());
@@ -332,7 +333,7 @@ public class TaoHoaDonControl implements Initializable {
 				hoaDon.setId(hd_dao.generateId());
 				hoaDon.setNhanVienBanThuoc(nhanVienBanThuoc);
 
-				setKhachHangAndFieldKhachHang();
+				setKhachHangAndFieldKhachHang(khachHang);
 			}
 
 		}else {
@@ -345,7 +346,7 @@ public class TaoHoaDonControl implements Initializable {
 
 				alert.showAndWait();
 			}else {
-				setKhachHangAndFieldKhachHang();
+				setKhachHangAndFieldKhachHang(khachHang);
 			}
 		}
 	}
@@ -612,6 +613,18 @@ public class TaoHoaDonControl implements Initializable {
 			alert.setContentText("Bạn chưa có hóa đơn để hủy!");
 			
 			alert.show();
+		}
+	}
+
+	public void addKhachHangFromTabKhachHang(String string) {
+		// TODO Auto-generated method stub
+		if (hoaDon == null) {
+			hoaDon = new HoaDon();
+			hoaDon.setId(hd_dao.generateId());
+			hoaDon.setNhanVienBanThuoc(nhanVienBanThuoc);
+			setKhachHangAndFieldKhachHang(kh_dao.getKhachHangBySoDienThoai(string));
+		}else {
+			setKhachHangAndFieldKhachHang(kh_dao.getKhachHangBySoDienThoai(string));
 		}
 	}
 }

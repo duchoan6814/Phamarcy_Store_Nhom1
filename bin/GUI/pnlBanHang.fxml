@@ -3,14 +3,14 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="657.0" prefWidth="1080.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane fx:id="tbsBanHang" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="657.0" prefWidth="1080.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
 	<tabs>
 		<Tab fx:id="tabTaoHoaDon" text="Tạo Hóa Đơn">
 		</Tab>
-		<Tab text="Thuốc" />
+		<Tab fx:id="tabThuoc" text="Thuốc" />
 		<Tab fx:id="tabKhachHang" text="Khách Hàng">
 		</Tab>
-		<Tab text="Hóa Đơn" />
-		<Tab text="Thống Kê" />
+		<Tab fx:id="tabHoaDon" text="Hóa Đơn" />
+		<Tab fx:id="tabThongKe" text="Thống Kê" />
 	</tabs>
 </TabPane>

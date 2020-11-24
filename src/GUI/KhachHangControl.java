@@ -34,6 +34,7 @@ import javafx.util.Callback;
 public class KhachHangControl implements Initializable {
 	private Common common = new Common();
 
+	private BanHangControl banHangControl;
 	private DAOKhachHang daoKhachHang = new DAOKhachHang();
 	private ObservableList<common.KhachHang> dataKhachHang;
 
@@ -59,6 +60,14 @@ public class KhachHangControl implements Initializable {
 	public TextField txtDiaChi;
 	public DatePicker dateNgaySinh;
 
+
+	public BanHangControl getBanHangControl() {
+		return banHangControl;
+	}
+
+	public void setBanHangControl(BanHangControl banHangControl) {
+		this.banHangControl = banHangControl;
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -120,6 +129,19 @@ public class KhachHangControl implements Initializable {
 		}
 	}
 
+	@FXML
+	public void actionButtonChonKhachHang() {
+		if (tblKhachHang.getSelectionModel().getSelectedItem() == null) {
+			common.showNotification(AlertType.ERROR, "Lỗi chưa chọn khách hàng!", "Bạn phải chọn 1 khách hàng để thêm vào hóa đơn!");
+		}else {
+			banHangControl.getTbsBanHang().getSelectionModel().select(banHangControl.getTabTaoHoaDon());
+			common.KhachHang khachHangTable = tblKhachHang.getSelectionModel().getSelectedItem();
+			banHangControl.getTaoHoaDonControl().addKhachHangFromTabKhachHang(khachHangTable.getDienThoai());
+			tblKhachHang.getSelectionModel().clearSelection();
+		}
+
+	}
+
 	private void createButtonEditColumn() {
 		// TODO Auto-generated method stub
 		Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>> cellFactory
@@ -139,15 +161,15 @@ public class KhachHangControl implements Initializable {
 						btn.setOnAction(event -> {
 							TableColumn col = tblKhachHang.getColumns().get(1);
 							String data = (String) col.getCellObservableValue(tblKhachHang.getItems().get(getIndex())).getValue();
-							
+
 							FXMLLoader loader = new FXMLLoader(getClass().getResource("DialogThemAndSua.fxml"));
 							SuaKhachHangControl suaKhachHangControl = new SuaKhachHangControl(data);
 							loader.setController(suaKhachHangControl);
-							
+
 							try {
 								Stage editStage = loader.load();
 								editStage.show();
-								
+
 								editStage.setOnHiding( events -> {
 									if (suaKhachHangControl.isSuaKhachHangThanhCong()) {
 										actionButtonFilter();

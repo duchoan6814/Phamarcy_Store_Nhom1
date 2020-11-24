@@ -162,7 +162,14 @@ public class DAOKhachHang extends DAO {
 		if (!(loaiKhachHang == "Tất cả")) {
 			_loaiKhachHang = loaiKhachHang;
 		}
-		String sql = "SELECT * from KhachHang where KhachHangId like ? and HoTenDem like ? and Ten like ? and NgaySinh like ? or NgaySinh is NULL and GioiTinh in ("+_gioiTinh+") and SoDienThoai like ? and LoaiKhachHang like ? and DiaChi like ?";
+		
+		System.out.println(_loaiKhachHang);
+		
+		String _ngaySinh = "(NgaySinh like '%%' or NgaySinh is null)";
+		if (!ngaySinh.isEmpty()) {
+			_ngaySinh = "NgaySinh like '"+ngaySinh+"'";
+		}
+		String sql = "SELECT * from KhachHang where KhachHangId like ? and HoTenDem like ? and Ten like ? and "+_ngaySinh+" and GioiTinh in ("+_gioiTinh+") and SoDienThoai like ? and LoaiKhachHang like ? and DiaChi like ?";
 		List<KhachHang> list = new ArrayList<>();
 
 		try {
@@ -170,10 +177,9 @@ public class DAOKhachHang extends DAO {
 			ps.setString(1, "%"+khachHangId+"%");
 			ps.setNString(2, "%"+ho+"%");
 			ps.setNString(3, "%"+ten+"%");
-			ps.setString(4, "%"+ngaySinh+"%");
-			ps.setString(5, "%"+soDienThoai+"%");
-			ps.setNString(7, "%"+diaChi+"%");
-			ps.setString(6, "%"+_loaiKhachHang+"%");
+			ps.setString(4, "%"+soDienThoai+"%");
+			ps.setNString(6, "%"+diaChi+"%");
+			ps.setString(5, "%"+_loaiKhachHang+"%");
 
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
