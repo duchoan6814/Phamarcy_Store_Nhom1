@@ -83,4 +83,37 @@ public class DAONhanVien extends DAO {
 		}
 		return -1;
 	}
+
+	public NhanVienBanThuoc getNhanVienById(String nhanVienID) {
+		// TODO Auto-generated method stub
+		String sql = "select * from NhaVienBanThuoc as nv join TaiKhoan as tk on nv.TenDangNhap = tk.TenDangNhap where NhanVienBanThuocId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, nhanVienID);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				NhanVienBanThuoc nhanVienBanThuoc = new NhanVienBanThuoc();
+				nhanVienBanThuoc.setId(rs.getString("NhanVienBanThuocId"));
+				nhanVienBanThuoc.setHoTenDem(rs.getString("HoTenDem"));
+				nhanVienBanThuoc.setTen(rs.getString("Ten"));
+				nhanVienBanThuoc.setNgaySinh(rs.getDate("NgaySinh"));
+				nhanVienBanThuoc.setSoDienThoai(rs.getString("SoDienThoai"));
+				nhanVienBanThuoc.setSoCMND(rs.getString("SoCMND"));
+				nhanVienBanThuoc.setGioiTinh(rs.getBoolean("GioiTinh"));
+				nhanVienBanThuoc.setDiaChi(rs.getString("DiaChi"));
+				nhanVienBanThuoc.setAvatar(rs.getBytes("Avatar"));
+				TaiKhoan taiKhoan = new TaiKhoan();
+				taiKhoan.setTenDangNhap(rs.getString("TenDangNhap"));
+				taiKhoan.setPhanQuyen(PhanQuyen.get(rs.getString("PhanQuyen").trim()));
+				nhanVienBanThuoc.setTaiKhoan(taiKhoan);
+				return nhanVienBanThuoc;
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

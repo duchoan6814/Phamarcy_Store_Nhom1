@@ -615,6 +615,18 @@ public class TaoHoaDonControl implements Initializable {
 			alert.show();
 		}
 	}
+	
+	public void actionSelectInTabThuoc(Thuoc thuoc) {
+		chiTietHoaDon = new ChiTietHoaDon();
+		chiTietHoaDon.setThuoc(thuoc);
+		chiTietHoaDon.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+		
+		txtMaThuoc.setText(thuoc.getId());
+		txtTenThuoc.setText(thuoc.getTenThuoc());
+		txtDonViTinh.setText(thuoc.getDonViTinh());
+		txtDonGia.setText(new Common().formatMoney(chiTietHoaDon.getGiaBan()));
+		txtTongTien.setText(new Common().formatMoney(chiTietHoaDon.tinhTongTienChuaThue()));
+	}
 
 	public void addKhachHangFromTabKhachHang(String string) {
 		// TODO Auto-generated method stub
