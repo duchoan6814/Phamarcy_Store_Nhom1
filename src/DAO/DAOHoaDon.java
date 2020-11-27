@@ -19,6 +19,32 @@ public class DAOHoaDon extends DAO {
 	DAOKhachHang daoKhachHang = new DAOKhachHang();
 	DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
 	DAONhanVien daoNhanVien = new DAONhanVien();
+	
+	public HoaDon getHoaDonById(String id) {
+		String sql = "select * from HoaDon where HoaDonId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				HoaDon hoaDon = new HoaDon();
+				hoaDon.setId(rs.getString("HoaDonId"));
+				hoaDon.setDiemSuDung(rs.getDouble("DiemSuDung"));
+				hoaDon.setThoiGianLap(rs.getTimestamp("ThoiGianLap"));
+				hoaDon.setDsChiTietHoaDon((ArrayList<ChiTietHoaDon>) daoChiTietHoaDon.getListChiTietHoaDonById(hoaDon.getId()));
+				hoaDon.setNhanVienBanThuoc(daoNhanVien.getNhanVienById(rs.getString("NhanVienBanThuocId")));
+				hoaDon.setKhachHang(daoKhachHang.getKhachHangById(rs.getString("KhachHangId")));
+				return hoaDon;
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public List<HoaDon> filterHoaDon(LocalDate dateFrom, LocalDate dateTo, String maHoaDon, String tenNhanVien, String tenKhachHang){
 

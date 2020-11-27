@@ -94,7 +94,8 @@ public class HoaDonControl implements Initializable {
 						btn.setOnAction(event -> {
 							TableColumn col = tbsHoaDon.getColumns().get(1);
 							String data = (String) col.getCellObservableValue(tbsHoaDon.getItems().get(getIndex())).getValue();
-							System.out.println("hello");
+							System.out.println(data);
+							showDialogHoaDon(data);
 						});
 					}
 
@@ -152,4 +153,21 @@ public class HoaDonControl implements Initializable {
 			});
 		}
 	}
+	
+	private void showDialogHoaDon(String hoaDonID) {
+		// TODO Auto-generated method stub'
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("DialogHoaDon.fxml"));
+		DialogHoaDonControl dialogHoaDonControl = new DialogHoaDonControl();
+		dialogHoaDonControl.setMaHoaDon(hoaDonID);
+		loader.setController(dialogHoaDonControl);
+		Stage hoaDonStage;
+		try {
+			hoaDonStage = loader.load();
+			hoaDonStage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 }
