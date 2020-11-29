@@ -3,10 +3,31 @@ package DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import entity.LoaiThuoc;
 
 public class DAOLoaiThuoc extends DAO {
+	
+	public List<String> getListLoaiThuoc() {
+		String sql = "SELECT TenLoaiThuoc FROM LoaiThuoc";
+		List<String> list = new ArrayList<>();
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				list.add(rs.getString("TenLoaiThuoc"));
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return list;
+		}
+		
+	}
+	
 	public LoaiThuoc getLoaiThuocById(String id) {
 		String sql = "Select * from LoaiThuoc where LoaiThuocId = ?";
 		try {

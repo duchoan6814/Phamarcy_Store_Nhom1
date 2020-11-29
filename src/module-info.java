@@ -13,6 +13,7 @@ module PhamarcyStore_Nhom1 {
 	requires org.controlsfx.controls;
 	requires javafx.controls;
 	requires javafx.base;
+	requires javafx.graphics;
 	
 	exports GUI;
 	exports common;

@@ -4,8 +4,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import common.Common;
+import common.HoaDonTable;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.KhachHang;
@@ -14,7 +18,70 @@ public class DAOHoaDon extends DAO {
 	DAOChiTietHoaDon daoChiTietHoaDon = new DAOChiTietHoaDon();
 	DAOKhachHang daoKhachHang = new DAOKhachHang();
 	DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
+	DAONhanVien daoNhanVien = new DAONhanVien();
 	
+	public HoaDon getHoaDonById(String id) {
+		String sql = "select * from HoaDon where HoaDonId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				HoaDon hoaDon = new HoaDon();
+				hoaDon.setId(rs.getString("HoaDonId"));
+				hoaDon.setDiemSuDung(rs.getDouble("DiemSuDung"));
+				hoaDon.setThoiGianLap(rs.getTimestamp("ThoiGianLap"));
+				hoaDon.setDsChiTietHoaDon((ArrayList<ChiTietHoaDon>) daoChiTietHoaDon.getListChiTietHoaDonById(hoaDon.getId()));
+				hoaDon.setNhanVienBanThuoc(daoNhanVien.getNhanVienById(rs.getString("NhanVienBanThuocId")));
+				hoaDon.setKhachHang(daoKhachHang.getKhachHangById(rs.getString("KhachHangId")));
+				return hoaDon;
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public List<HoaDon> filterHoaDon(LocalDate dateFrom, LocalDate dateTo, String maHoaDon, String tenNhanVien, String tenKhachHang){
+
+		List<HoaDon> list = new ArrayList<>();
+		String _ngayLap = "";
+		if (dateFrom.compareTo(dateTo) == 0) {
+			java.sql.Date _dateFrom = java.sql.Date.valueOf(dateFrom.toString());
+			_ngayLap = "hd.ThoiGianLap like '"+_dateFrom.toString()+"'";
+		}else {
+			java.sql.Date _dateFrom = java.sql.Date.valueOf(dateFrom.toString());
+			java.sql.Date _dateTo = java.sql.Date.valueOf(dateTo.toString());
+			_ngayLap = "hd.ThoiGianLap BETWEEN '"+_dateFrom.toString()+"' and '"+_dateTo.toString()+"'";
+		}
+		String sql = "SELECT hd.*, nv.HoTenDem as HoTenDemNV, nv.Ten as TenNV, kh.HoTenDem as HoTenDemKH, kh.Ten as TenKH from HoaDon as hd LEFT JOIN NhaVienBanThuoc as nv on hd.NhanVienBanThuocId = nv.NhanVienBanThuocId LEFT JOIN KhachHang as kh on hd.KhachHangId = kh.KhachHangId WHERE CONCAT_WS(' ', kh.HoTenDem, kh.Ten) like N'%"+tenKhachHang+"%' and CONCAT_WS(' ', nv.HoTenDem, nv.Ten) like N'%"+tenNhanVien+"%' and hd.HoaDonId like '%"+maHoaDon+"%' and "+_ngayLap+"";
+
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);		
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				HoaDon hoaDon = new HoaDon();
+				hoaDon.setId(rs.getString("HoaDonId"));
+				hoaDon.setDiemSuDung(rs.getDouble("DiemSuDung"));
+				hoaDon.setThoiGianLap(rs.getTimestamp("ThoiGianLap"));
+				hoaDon.setDsChiTietHoaDon((ArrayList<ChiTietHoaDon>) daoChiTietHoaDon.getListChiTietHoaDonById(hoaDon.getId()));
+				hoaDon.setNhanVienBanThuoc(daoNhanVien.getNhanVienById(rs.getString("NhanVienBanThuocId")));
+				hoaDon.setKhachHang(daoKhachHang.getKhachHangById(rs.getString("KhachHangId")));
+				list.add(hoaDon);
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return list;
+		}
+
+	}
+
 	public String generateId() {
 		String sql = "SELECT top 1 HoaDonId from HoaDon ORDER BY HoaDonId DESC";
 		try {
@@ -26,11 +93,11 @@ public class DAOHoaDon extends DAO {
 				String txt = id.substring(0, 2);
 				String date = id.substring(2, 10);
 				String sqID = id.substring(10, doDaiText);
-				
+
 				String year = date.substring(0, 4);
 				String month = date.substring(4, 6);
 				String day = date.substring(6, 8);
-				
+
 				LocalDate datenow = LocalDate.now();
 				if (datenow.compareTo(LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day))) != 0) {
 					return "HD"+datenow.toString().replace("-", "")+"00001";
@@ -49,7 +116,7 @@ public class DAOHoaDon extends DAO {
 					}
 					return txt+date+ns;
 				}
-				
+
 			}else {
 				LocalDate date = LocalDate.now();
 				return "HD"+date.toString().replace("-", "")+"00001";
@@ -60,7 +127,7 @@ public class DAOHoaDon extends DAO {
 		}
 		return null;
 	}
-	
+
 	public boolean TaoHoaDon(HoaDon hoaDon) {
 		String sql = "INSERT INTO HoaDon (HoaDonId, KhachHangId, NhanVienBanThuocId, ThoiGianLap, DiemSuDung, TienPhaiTra) VALUES (?, ?, ?, ?, ?, ?)";
 		try {
@@ -72,24 +139,24 @@ public class DAOHoaDon extends DAO {
 				// TODO: handle exception
 				ps.setString(2, null);
 			}
-			
+
 			ps.setString(3, hoaDon.getNhanVienBanThuoc().getId());
 			ps.setTimestamp(4, hoaDon.getThoiGianLap());
 			ps.setDouble(5, hoaDon.getDiemSuDung());
 			ps.setDouble(6, hoaDon.getTienPhaiTra());
-			
+
 			int rs = ps.executeUpdate();
-			
+
 			hoaDon.getDsChiTietHoaDon().forEach(i -> {
 				ChiTietHoaDon chiTietHoaDon = i;
 				if (!daoChiTietHoaDon.themChiTietHoaDon(hoaDon.getId(), chiTietHoaDon)) {
 					System.out.println("them chi tiet hoa don khong thanh cong");
 				}
-				
+
 				daoLoThuoc.giamSoLuongConLai(chiTietHoaDon.getSoLuong(), chiTietHoaDon.getThuoc().getId());
-				
+
 			});
-			
+
 			if (hoaDon.getKhachHang() != null) {
 				if (!daoKhachHang.congDiemTichLuy(hoaDon)) {
 					System.out.println("cong Diem that bai");
@@ -97,9 +164,9 @@ public class DAOHoaDon extends DAO {
 				if (!daoKhachHang.truDiemTichLuy(hoaDon)) {
 					System.out.println("tru diem that bai");
 				}
-				
+
 			}
-			
+
 			return rs > 0;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -107,4 +174,5 @@ public class DAOHoaDon extends DAO {
 			return false;
 		}
 	}
+
 }

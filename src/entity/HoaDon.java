@@ -77,11 +77,11 @@ public class HoaDon {
 	}
 
 	
+
 	@Override
 	public String toString() {
-		return "HoaDon [id=" + id + ", thoiGianLap=" + thoiGianLap + ", dsChiTietHoaDon=" + dsChiTietHoaDon
-				+ ", nhanVienBanThuoc=" + nhanVienBanThuoc + ", khachHang=" + khachHang + ", diemSuDung=" + diemSuDung
-				+ ", tienPhaiTra=" + getTienPhaiTra() + "]";
+		return "HoaDon [id=" + id + ", thoiGianLap=" + thoiGianLap + ", diemSuDung=" + diemSuDung + ", tienPhaiTra="
+				+ tienPhaiTra + "]";
 	}
 	@Override
 	public int hashCode() {
