@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="623.0" prefWidth="1080.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <LineChart fx:id="chartThongKe" layoutX="8.0" layoutY="284.0" prefHeight="325.0" prefWidth="1065.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </LineChart>
+      <Pane layoutX="14.0" layoutY="24.0" prefHeight="249.0" prefWidth="519.0" style="-fx-background-color: dbf6e9;">
+         <children>
+            <Text layoutX="22.0" layoutY="5.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Ngày" />
+            <Circle fill="#1f93ff00" layoutX="117.0" layoutY="125.0" radius="66.0" stroke="#bc6ff1" strokeType="INSIDE" strokeWidth="12.0" />
+            <Text layoutX="81.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 15; -fx-font-weight: bold; -fx-fill: #bc6ff1;" text="Hóa Đơn" textAlignment="CENTER" />
+            <Text layoutX="299.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 15; -fx-font-weight: bold; -fx-fill: #ffa36c;" text="Doanh Thu" textAlignment="CENTER" />
+            <Text fx:id="lblSoHoaDonNgay" layoutX="67.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #bc6ff1; -fx-font-size: 30; -fx-font-weight: bold;" text="12" textAlignment="CENTER" wrappingWidth="100.04736328125" />
+            <Text fx:id="lblDoanhThuNgay" layoutX="183.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #ffa36c; -fx-font-size: 20; -fx-font-weight: bold;" text="100.000.000đ" textAlignment="CENTER" wrappingWidth="323.755859375" />
+         </children>
+      </Pane>
+      <Pane layoutX="547.0" layoutY="24.0" prefHeight="249.0" prefWidth="519.0" style="-fx-background-color: ffdada;">
+         <children>
+            <Text layoutX="17.0" layoutY="6.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Tổng" />
+            <Circle fill="#1f93ff00" layoutX="111.0" layoutY="121.0" radius="66.0" stroke="#bc6ff1" strokeType="INSIDE" strokeWidth="12.0" />
+            <Text layoutX="75.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 15; -fx-font-weight: bold; -fx-fill: #bc6ff1;" text="Hóa Đơn" textAlignment="CENTER" />
+            <Text layoutX="293.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 15; -fx-font-weight: bold; -fx-fill: #ffa36c;" text="Doanh Thu" textAlignment="CENTER" />
+            <Text fx:id="lblSoHoaDonTong" layoutX="61.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #bc6ff1; -fx-font-size: 30; -fx-font-weight: bold;" text="12" textAlignment="CENTER" wrappingWidth="100.04736328125" />
+            <Text fx:id="lblDoanhThuTong" layoutX="191.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #ffa36c; -fx-font-size: 20; -fx-font-weight: bold;" text="100.000.000đ" textAlignment="CENTER" wrappingWidth="295.755859375" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

@@ -50,8 +50,17 @@ public class BanHangControl implements Initializable {
 	private KhachHangControl khachHangControl;
 	private TaoHoaDonControl taoHoaDonControl;
 	private ThuocControl thuocControl;
+	private ThongKeControl thongKeControl;
 	
 	
+
+	public ThongKeControl getThongKeControl() {
+		return thongKeControl;
+	}
+
+	public void setThongKeControl(ThongKeControl thongKeControl) {
+		this.thongKeControl = thongKeControl;
+	}
 
 	public KhachHangControl getKhachHangControl() {
 		return khachHangControl;
@@ -81,6 +90,7 @@ public class BanHangControl implements Initializable {
 		setContentTabKhachHang();
 		setContentTabThuoc();
 		setContentTabHoaDon();
+		setContentThongKe();
 	}
 
 	private void setContentTabKhachHang() {
@@ -101,6 +111,7 @@ public class BanHangControl implements Initializable {
 		// TODO Auto-generated method stub
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("pnlTaoHoaDon.fxml"));
 		taoHoaDonControl = new TaoHoaDonControl(nhanVienBanThuoc);
+		taoHoaDonControl.setBanHangControl(this);
 		loader.setController(taoHoaDonControl);
 		try {
 			tabTaoHoaDon.setContent(loader.load());
@@ -128,6 +139,18 @@ public class BanHangControl implements Initializable {
 		loader.setController(hoaDonControl);
 		try {
 			tabHoaDon.setContent(loader.load());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	private void setContentThongKe() {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("PnlThongKe.fxml"));
+		thongKeControl = new ThongKeControl();
+		thongKeControl.setNhanVienBanThuoc(nhanVienBanThuoc);
+		loader.setController(thongKeControl);
+		try {
+			tabThongKe.setContent(loader.load());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,14 +1,96 @@
 package DAO;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import entity.NhanVienBanThuoc;
 import entity.PhanQuyen;
 import entity.TaiKhoan;
 
 public class DAONhanVien extends DAO {
+	
+	public double getDoanhSoTrongNgay(String maNhanVien) {
+		String sql = "select sum(TienPhaiTra) as TongDoanhSo from HoaDon WHERE NhanVienBanThuocId = ? and ThoiGianLap BETWEEN ? and ?";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			Date date = Date.valueOf(LocalDate.now());
+			Date date1 = Date.valueOf(LocalDate.now().plusDays(1));
+			ps.setString(1, maNhanVien);
+			ps.setDate(2, date);
+			ps.setDate(3, date1);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				return rs.getDouble("TongDoanhSo");
+			}
+			return -1;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+	
+	public double getDoanhSoByNgay(String maNhanVien, String ngayCanGet) {
+		String sql = "select sum(TienPhaiTra) as TongDoanhSo from HoaDon WHERE NhanVienBanThuocId = ? and ThoiGianLap BETWEEN ? and ?";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			SimpleDateFormat dt1 = new SimpleDateFormat("yyyyy-MM-dd");
+			
+			java.util.Date date = dt1.parse(ngayCanGet);
+			
+			LocalDate dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			
+			Date datesql1 = Date.valueOf(dateLocal);
+			Date datesql2 = Date.valueOf(dateLocal.plusDays(1));
+			
+			ps.setString(1, maNhanVien);
+			ps.setDate(2, datesql1);
+			ps.setDate(3, datesql2);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				return rs.getDouble("TongDoanhSo");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public double getDoanhSoTong(String maNhanVien) {
+		String sql = "select sum(TienPhaiTra) as TongDoanhSo from HoaDon WHERE NhanVienBanThuocId = ?";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, maNhanVien);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("TongDoanhSo");
+			}
+			return -1;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return -1;
+		}
+	}
 	
 	public NhanVienBanThuoc getNhanVienBanThuocByUserName(String userName) {
 		String sql = "SELECT tk.PhanQuyen, nv.* FROM TaiKhoan tk join NhaVienBanThuoc nv on tk.TenDangNhap = nv.TenDangNhap WHERE nv.TenDangNhap = ?";
@@ -58,6 +140,29 @@ public class DAONhanVien extends DAO {
 			return false;
 		}
 		return false;
+	}
+	
+	public int getSoHoaDonTrongNgay(String maNhanVien) {
+		String sql = "select count(*) as SoHoaDon from HoaDon where NhanVienBanThuocId = ? and ThoiGianLap BETWEEN ? and ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, maNhanVien);
+			Date date = Date.valueOf(LocalDate.now());
+			Date date1 = Date.valueOf(LocalDate.now().plusDays(1));
+			ps.setDate(2, date);
+			ps.setDate(3, date1);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				return rs.getInt("SoHoaDon");
+			}
+			return -1;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return -1;
+		}
 	}
 
 

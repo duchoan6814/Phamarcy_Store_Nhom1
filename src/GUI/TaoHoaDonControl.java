@@ -55,6 +55,8 @@ import javafx.util.Callback;
 import javafx.util.converter.NumberStringConverter;
 
 public class TaoHoaDonControl implements Initializable {
+	
+	private BanHangControl banHangControl;
 
 	private DAOKhachHang kh_dao = new DAOKhachHang();
 	private DAOHoaDon hd_dao = new DAOHoaDon();
@@ -67,7 +69,15 @@ public class TaoHoaDonControl implements Initializable {
 
 	private ObservableList<common.ChiTietHoaDon> data;
 
+	
 
+	public BanHangControl getBanHangControl() {
+		return banHangControl;
+	}
+
+	public void setBanHangControl(BanHangControl banHangControl) {
+		this.banHangControl = banHangControl;
+	}
 
 	public TextField txtMaNhanVien;
 	public TextField txtTenNhanVien;
@@ -156,6 +166,7 @@ public class TaoHoaDonControl implements Initializable {
 							dateNgayLap.setValue(null);
 							btnXoaKH.setStyle("-fx-background-color: #DFDFDF; -fx-background-radius: 10px");
 							lblXoaKH.setStyle("-fx-fill: #B1B1B1;");
+							banHangControl.getThongKeControl().initialize(null, null);
 						}
 					});
 				} catch (IOException e) {
