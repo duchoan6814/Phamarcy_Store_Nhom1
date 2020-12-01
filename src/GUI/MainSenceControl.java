@@ -11,8 +11,10 @@ import entity.HoaDon;
 import entity.NhanVienBanThuoc;
 import entity.PhanQuyen;
 import entity.QuanLy;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Shadow;
@@ -46,6 +48,7 @@ public class MainSenceControl implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		showPaneBanHang();
+		initOptionPanel();
 		setSomeFieldNhanVien();
 		//set active button
 		btnBanHang.getStyleClass().add("activeButton");
@@ -86,11 +89,51 @@ public class MainSenceControl implements Initializable {
 		BanHangControl banHangControl = new BanHangControl(nhanVienBanThuoc);
 		loader.setController(banHangControl);
 		try {
-			stkOptions.getChildren().add(loader.load());
+			stkOptions.getChildren().add(0, loader.load());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void initOptionPanel() {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("PanelKhoHang.fxml"));
+		KhoHangControl khoHangControl = new KhoHangControl();
+		khoHangControl.setNhanVienBanThuoc(nhanVienBanThuoc);
+		loader.setController(khoHangControl);
+		try {
+			stkOptions.getChildren().add(1, loader.load());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Node khoHang = stkOptions.getChildren().get(1);
+		Node banHang = stkOptions.getChildren().get(0);
+		khoHang.setVisible(false);
+		banHang.setVisible(true);
+	}
+	
+	@FXML
+	public void actionButtonKhoHang() {
+		Node khoHang = stkOptions.getChildren().get(1);
+		Node banHang = stkOptions.getChildren().get(0);
+		khoHang.setVisible(true);
+		banHang.setVisible(false);
+		btnKhoHang.getStyleClass().add("activeButton");
+		btnBanHang.getStyleClass().clear();
+		btnBanHang.getStyleClass().addAll("button", "buttonSelectMain");
+	}
+	
+	@FXML
+	public void actionButtonBanHang() {
+		Node banHang = stkOptions.getChildren().get(0);
+		Node khoHang = stkOptions.getChildren().get(1);
+		khoHang.setVisible(false);
+		banHang.setVisible(true);
+		btnBanHang.getStyleClass().add("activeButton");
+		btnKhoHang.getStyleClass().clear();
+		btnKhoHang.getStyleClass().addAll("button", "buttonSelectMain");
 	}
 
 

@@ -17,7 +17,7 @@ public class TestApp {
 		NhanVienBanThuoc nv = new NhanVienBanThuoc();
 		nv.setHoTenDem("Truong Duc");
 		nv.setTen("Hoan");
-		pn.setQuanLy(ql);
+//		pn.setQuanLy(ql);
 
 		System.out.println(pn);
 	}
