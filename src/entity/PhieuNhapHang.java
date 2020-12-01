@@ -6,14 +6,15 @@ import java.util.ArrayList;
 public class PhieuNhapHang {
 	private String id;
 	private Timestamp thoiGianLap;
-	private QuanLy quanLy;
+	private NhanVienBanThuoc nhanVienBanThuoc;
 	private ArrayList<LoThuoc> dsLoThuoc;
 	
-	public QuanLy getQuanLy() {
-		return quanLy;
+	
+	public NhanVienBanThuoc getNhanVienBanThuoc() {
+		return nhanVienBanThuoc;
 	}
-	public void setQuanLy(QuanLy quanLy) {
-		this.quanLy = quanLy;
+	public void setNhanVienBanThuoc(NhanVienBanThuoc nhanVienBanThuoc) {
+		this.nhanVienBanThuoc = nhanVienBanThuoc;
 	}
 	public String getId() {
 		return id;
@@ -33,15 +34,17 @@ public class PhieuNhapHang {
 	public void setDsLoThuoc(ArrayList<LoThuoc> dsLoThuoc) {
 		this.dsLoThuoc = dsLoThuoc;
 	}
+
 	
-	public PhieuNhapHang(String id, Timestamp thoiGianLap, QuanLy quanLy, ArrayList<LoThuoc> dsLoThuoc) {
+	
+	public PhieuNhapHang(String id, Timestamp thoiGianLap, NhanVienBanThuoc nhanVienBanThuoc,
+			ArrayList<LoThuoc> dsLoThuoc) {
 		super();
 		this.id = id;
 		this.thoiGianLap = thoiGianLap;
-		this.quanLy = quanLy;
+		this.nhanVienBanThuoc = nhanVienBanThuoc;
 		this.dsLoThuoc = dsLoThuoc;
 	}
-	
 	public PhieuNhapHang(String id) {
 		super();
 		this.id = id;
@@ -51,6 +54,8 @@ public class PhieuNhapHang {
 		super();
 		this.dsLoThuoc = new ArrayList<LoThuoc>();
 	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -74,15 +79,10 @@ public class PhieuNhapHang {
 			return false;
 		return true;
 	}
-
-	
 	@Override
 	public String toString() {
-		return "PhieuNhapHang [id=" + id + ", thoiGianLap=" + thoiGianLap + ", quanLy=" + quanLy + ", dsLoThuoc="
-				+ dsLoThuoc + "]";
+		return "PhieuNhapHang [id=" + id + ", thoiGianLap=" + thoiGianLap + ", nhanVienBanThuoc=" + nhanVienBanThuoc;
 	}
-
-
 	public boolean themLoThuoc(LoThuoc loThuoc) {
 		if(this.dsLoThuoc.contains(loThuoc))		
 			return false;

@@ -99,6 +99,7 @@ public class MainSenceControl implements Initializable {
 	private void initOptionPanel() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("PanelKhoHang.fxml"));
 		KhoHangControl khoHangControl = new KhoHangControl();
+		khoHangControl.setNhanVienBanThuoc(nhanVienBanThuoc);
 		loader.setController(khoHangControl);
 		try {
 			stkOptions.getChildren().add(1, loader.load());

@@ -28,10 +28,10 @@
                   <Font name="Times New Roman Bold" size="27.0" />
                </font>
             </Button>
-            <Text fx:id="lblThanhTien" layoutX="33.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Thành Tiền: 100.000.000đ" wrappingWidth="601.01513671875" />
+            <Text fx:id="lblThanhTien" layoutX="33.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Thành Tiền: 0đ" wrappingWidth="601.01513671875" />
          </children>
       </Pane>
-      <TableView layoutY="193.0" prefHeight="342.0" prefWidth="1080.0">
+      <TableView fx:id="tblLoThuoc" layoutY="193.0" prefHeight="342.0" prefWidth="1080.0">
          <columns>
             <TableColumn fx:id="colSTT" prefWidth="48.0" text="STT" />
             <TableColumn fx:id="colMaThuoc" prefWidth="106.0" text="Mã Thuốc" />
@@ -70,7 +70,7 @@
                   <Insets right="5.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="txtTenThuoc" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="txtTenThuoc" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
@@ -85,12 +85,12 @@
                   <Insets right="5.0" />
                </GridPane.margin>
             </DatePicker>
-            <TextField fx:id="txtDonGia" GridPane.columnIndex="4" GridPane.rowIndex="1">
+            <TextField fx:id="txtDonGia" disable="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="txtTongTien" GridPane.columnIndex="5" GridPane.rowIndex="1">
+            <TextField fx:id="txtTongTien" disable="true" GridPane.columnIndex="5" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
@@ -108,13 +108,13 @@
         </rowConstraints>
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mã Số Phiếu Nhập" />
-            <TextField fx:id="txtMaPhieuNhap" GridPane.rowIndex="1">
+            <TextField fx:id="txtMaPhieuNhap" disable="true" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
             </TextField>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày Lập" GridPane.columnIndex="1" />
-            <DatePicker fx:id="dateNgayLap" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <DatePicker fx:id="dateNgayLap" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <Button fx:id="btnThem" layoutX="903.0" layoutY="14.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="163.0" style="-fx-background-color: #33CC33; -fx-text-fill: #fff; -fx-font-size: 20; -fx-font-weight: bold;" text="Thêm" />
