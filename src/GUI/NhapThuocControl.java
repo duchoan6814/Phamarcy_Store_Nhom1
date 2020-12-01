@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.controlsfx.control.textfield.TextFields;
@@ -30,13 +31,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 
 public class NhapThuocControl implements Initializable {
 
@@ -84,6 +89,70 @@ public class NhapThuocControl implements Initializable {
 		initTxtSoLuong();
 		initDateNgaySanXuat();
 		initActionButtonThem();
+		initActionButtonHuy();
+		initActionButtonLuu();
+	}
+	
+	private void initActionButtonLuu() {
+		// TODO Auto-generated method stub
+		btnLuu.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				if (phieuNhapHang == null) {
+					common.showNotification(AlertType.INFORMATION, "Information", "Bạn phải tạo phiếu nhập trước khi thêm!");
+				}else {
+					if (!daoPhieuNhap.themPhieuNhapHang(phieuNhapHang)) {
+						common.showNotification(AlertType.ERROR, "Error", "Có lỗi sảy ra trong quá trình thêm hóa đơn vui lòng thử lại!");
+					}else {
+						common.showNotification(AlertType.INFORMATION, "Success", "Lưu Phiếu nhập thành công");
+						clearAllField();
+					}
+				}
+			}
+		});
+	}
+//=============================================================================
+	private void initActionButtonHuy() {
+		// TODO Auto-generated method stub
+		btnHuy.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				if (phieuNhapHang == null) {
+					common.showNotification(AlertType.ERROR, "Error", "Bạn chưa tạo phiếu nhập hàng nào!");
+				}else {
+					Alert alert = new Alert(AlertType.CONFIRMATION);
+					alert.setTitle("Confirmation Dialog");
+					alert.setHeaderText(null);
+					alert.setContentText("Bạn có chắc muốn hủy phiếu nhậpnhập này?");
+
+					Optional<ButtonType> result = alert.showAndWait();
+					if (result.get() == ButtonType.OK){
+						// ... user chose OK
+						clearAllField();
+						
+					} else {
+						// ... user chose CANCEL or closed the dialog
+					}
+				}
+			}
+
+		});
+	}
+	
+	private void clearAllField() {
+		// TODO Auto-generated method stub
+		phieuNhapHang = null;
+		
+		removeLoThuocAndClearTxtFied();
+		txtMaPhieuNhap.setText("");
+		dateNgayLap.setValue(null);
+		dateNgaySanXuat.setValue(null);
+		txtMaPhieuNhap.setText("");
+		dataTable.clear();
 	}
 
 	//================================================================================
@@ -334,7 +403,12 @@ public class NhapThuocControl implements Initializable {
 			@Override
 			public void onChanged(Change<? extends LoThuocTable> c) {
 				// TODO Auto-generated method stub
-				lblThanhTien.setText("Thành Tiền: "+common.formatMoney(phieuNhapHang.tinhTongTienNhapHang()));
+				try {
+					lblThanhTien.setText("Thành Tiền: "+common.formatMoney(phieuNhapHang.tinhTongTienNhapHang()));
+				}catch (Exception e) {
+					// TODO: handle exception
+					lblThanhTien.setText("Thành Tiền: 0đ");
+				}
 			}
 
 		});
@@ -342,7 +416,54 @@ public class NhapThuocControl implements Initializable {
 
 	private void initButtonXoa() {
 		// TODO Auto-generated method stub
+		Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>> cellFactory
+		= //
+		new Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>>()
+		{
+			@Override
+			public TableCell call(final TableColumn<common.ChiTietHoaDon, String> param)
+			{
+				final TableCell<common.ChiTietHoaDon, String> cell = new TableCell<common.ChiTietHoaDon, String>()
+				{
 
+					final Button btn = new Button("delete");
+
+					{
+						btn.setStyle("-fx-background-color: red");
+						btn.setOnAction(event -> {
+							TableColumn col = tblLoThuoc.getColumns().get(1);
+							String data = (String) col.getCellObservableValue(tblLoThuoc.getItems().get(getIndex())).getValue();
+							if (phieuNhapHang.xoaLoThuoc(data)) {
+								tblLoThuoc.getItems().remove(getIndex());
+								if (phieuNhapHang.getDsLoThuoc().size() <= 0) {
+									phieuNhapHang = null;
+									
+									txtMaPhieuNhap.setText("");
+									dateNgayLap.setValue(null);
+								}
+							}
+						});
+					}
+
+					@Override
+					public void updateItem(String item, boolean empty)
+					{
+						super.updateItem(item, empty);
+						if (empty) {
+							setGraphic(null);
+							setText(null);
+						}
+						else {
+							setGraphic(btn);
+							setText(null);
+						}
+					}
+				};
+				return cell;
+			}
+		};
+
+		colXoa.setCellFactory(cellFactory);
 	}
 
 	private void initButtonSua() {

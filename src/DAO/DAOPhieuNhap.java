@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Set;
 
+
 import entity.LoThuoc;
 import entity.PhieuNhapHang;
 import entity.QuanLy;
@@ -61,7 +62,7 @@ public class DAOPhieuNhap extends DAO {
 //	}
 
 	public String generateIDPhieuNhap() {
-		String sql = "SELECT top 1 PhieuNhapHangId from PhieuNhapHang ORDER BY PhieuNhapHangId";
+		String sql = "SELECT top 1 PhieuNhapHangId from PhieuNhapHang ORDER BY PhieuNhapHangId DESC";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -78,7 +79,7 @@ public class DAOPhieuNhap extends DAO {
 
 				LocalDate datenow = LocalDate.now();
 				if (datenow.compareTo(LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day))) != 0) {
-					return "HD"+datenow.toString().replace("-", "")+"00001";
+					return "NH"+datenow.toString().replace("-", "")+"00001";
 				}else {
 					int n = Integer.parseInt(sqID);
 					n++;
@@ -125,6 +126,29 @@ public class DAOPhieuNhap extends DAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	public boolean themPhieuNhapHang(PhieuNhapHang phieuNhapHang) {
+		String sql = "INSERT into PhieuNhapHang(PhieuNhapHangId, QuanLyId, ThoiGianLap) VALUES (?, ?, ?)";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, phieuNhapHang.getId());
+			ps.setString(2, phieuNhapHang.getNhanVienBanThuoc().getId());
+			ps.setTimestamp(3, phieuNhapHang.getThoiGianLap());
+			
+			boolean rs = ps.executeUpdate() > 0;
+			
+			if (rs) {
+				phieuNhapHang.getDsLoThuoc().forEach(i -> {
+					daoLoThuoc.themLoThuoc(phieuNhapHang.getId(), i);
+				});
+			}
+			return rs;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
 		}
 	}
 

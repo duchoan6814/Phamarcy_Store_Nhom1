@@ -14,6 +14,25 @@ import entity.LoThuoc;
 public class DAOLoThuoc extends DAO {
 	DAOThuoc daoThuoc = new DAOThuoc();
 	
+	public boolean themLoThuoc(String phieuNhapHangId, LoThuoc loThuoc) {
+		String sql = "INSERT into LoThuoc(PhieuNhapHangId, SoLuong, SoLuongConLai, ThuocId, NgaySanXuat) VALUES (?, ?, ?, ?, ?)";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, phieuNhapHangId);
+			ps.setInt(2, loThuoc.getSoLuong());
+			ps.setInt(3, loThuoc.getSoLuong());
+			ps.setString(4, loThuoc.getThuoc().getId());
+			ps.setDate(5, loThuoc.getNgaySanXuat());
+			
+			return ps.executeUpdate() > 0;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public void giamSoLuongConLai(int soLuong, String thuocId) {
 		AtomicInteger _soLuong = new AtomicInteger(soLuong);
 		Map<String, LoThuoc> list = getListLoThuocSoLuongTonKhachKhongById(thuocId);
