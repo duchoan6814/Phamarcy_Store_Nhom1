@@ -3,10 +3,56 @@ package DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import entity.NhaCungCap;
+import entity.NhanVienBanThuoc;
 
 public class DAONhaCungCap extends DAO {
+	
+	public List<String> getListTenNhaCungCap(){
+		String sql = "SELECT TenNhaCungCap FROM NhaCungCap";
+		List<String> list = new ArrayList<>();
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				list.add(rs.getString("TenNhaCungCap"));
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return list;
+		}
+	}
+	
+	public NhaCungCap getNhaCungCapByName(String name) {
+		String sql = "SELECT * from NhaCungCap where TenNhaCungCap like ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setNString(1, name);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				NhaCungCap cap = new NhaCungCap();
+				cap.setDiaChi(rs.getString("DiaChi"));
+				cap.setFax(rs.getString("Fax"));
+				cap.setId(rs.getString("NhaCungCapId"));
+				cap.setSoDienThoai(rs.getString("SoDienThoai"));
+				cap.setTenNhaCungCap(rs.getString("TenNhaCungCap"));
+				cap.setTrangChu(rs.getString("TrangChu"));
+				return cap;
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public NhaCungCap getNhaCungCapByID(String id) {
 		String sql = "select * from NhaCungCap where NhaCungCapId = ?";
 		

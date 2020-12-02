@@ -16,6 +16,34 @@ public class DAOThuoc extends DAO {
 
 	DAOLoaiThuoc daoLoaiThuoc = new DAOLoaiThuoc();
 	DAONhaCungCap daoNhaCungCap = new DAONhaCungCap();
+	
+	public boolean themThuocMoi(Thuoc thuoc) {
+		String sql = "insert into Thuoc(DangBaoChe, DonViTinh, Gia, HanSuDung, LoaiThuocId, MoTa, NhaCungCapId, NuocSanXuat, QuyCachDongGoi, TenThuoc, Thue, ThuocId, TonKho)"
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setNString(1, thuoc.getDangBaoChe());
+			ps.setNString(2, thuoc.getDonViTinh());
+			ps.setDouble(3, thuoc.getGia());
+			ps.setInt(4, thuoc.getHanSuDung());
+			ps.setString(5, thuoc.getLoaiThuoc().getId());
+			ps.setNString(6, thuoc.getMoTa());
+			ps.setString(7, thuoc.getNhaCungCap().getId());
+			ps.setNString(8, thuoc.getNuocSanXuat());
+			ps.setNString(9, thuoc.getQuyCachDongGoi());
+			ps.setNString(10, thuoc.getTenThuoc());
+			ps.setDouble(11, 0.05);
+			ps.setString(12, thuoc.getId());
+			ps.setInt(13, 0);
+			
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	public List<Thuoc> filterThuoc(String maThuoc, String tenThuoc, String nuocSanXuat, String tenNhaCungCap, String loaiThuoc, String donViTinh){
 		System.out.println(nuocSanXuat);

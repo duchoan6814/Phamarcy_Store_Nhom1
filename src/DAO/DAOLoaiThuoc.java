@@ -10,6 +10,29 @@ import entity.LoaiThuoc;
 
 public class DAOLoaiThuoc extends DAO {
 	
+	public LoaiThuoc getLoaiThuocByTen(String name) {
+		String sql = "SELECT * from LoaiThuoc WHERE TenLoaiThuoc like ?";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setNString(1, name);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				LoaiThuoc loaiThuoc = new LoaiThuoc();
+				loaiThuoc.setId(rs.getString("LoaiThuocId"));
+				loaiThuoc.setMoTa(rs.getString("MoTa"));
+				loaiThuoc.setTenLoai(rs.getString("TenLoaiThuoc"));
+				return loaiThuoc;
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public List<String> getListLoaiThuoc() {
 		String sql = "SELECT TenLoaiThuoc FROM LoaiThuoc";
 		List<String> list = new ArrayList<>();

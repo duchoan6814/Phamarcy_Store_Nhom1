@@ -9,7 +9,7 @@
       <TabPane fx:id="tabKhoHang" layoutX="1.0" layoutY="1.0" prefHeight="657.0" prefWidth="1080.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="tabNhapThuoc" text="Nhập Thuốc" />
-          <Tab text="Untitled Tab 2">
+          <Tab fx:id="tabThuoc" text="Quản Lý Thuốc">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>
