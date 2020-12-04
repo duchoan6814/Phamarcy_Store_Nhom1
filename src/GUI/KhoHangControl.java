@@ -19,13 +19,28 @@ public class KhoHangControl implements Initializable {
 	public TabPane tabKhoHang;
 	public Tab tabNhapThuoc;
 	public Tab tabThuoc;
-	
+	public Tab tabPhieuNhap;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		setContentNhapThuoc();
 		setContentThuoc();
+		setContenPhieuNhapThuoc();
+	}
+
+	private void setContenPhieuNhapThuoc() {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("Quanlyphieunhap.fxml"));
+		NhapThuocControl nhapThuocControl = new NhapThuocControl();
+		QuanlyphieunhapControl control = new QuanlyphieunhapControl();
+		loader.setController(control);
+		try {
+			tabPhieuNhap.setContent(loader.load());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void setContentNhapThuoc() {
