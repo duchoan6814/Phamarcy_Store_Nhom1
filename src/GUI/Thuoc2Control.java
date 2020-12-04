@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.gluonhq.impl.charm.a.b.b.a.c;
+
 import DAO.DAOLoThuoc;
 import DAO.DAOLoaiThuoc;
 import DAO.DAOThuoc;
@@ -63,7 +65,8 @@ private BanHangControl banHangControl;
 	public TableColumn<ThuocTable, String> colLoai;
 	public TableColumn<ThuocTable, String> colNuoSX;
 	public TableColumn<ThuocTable, String> colCongTy;
-	public TableColumn colChon;
+	public TableColumn colDelete;
+	public TableColumn colEdit;
 	public TextField txtMaThuoc;
 	public TextField txtTenThuoc;
 	public TextField txtNhaCungCap;
@@ -77,6 +80,7 @@ private BanHangControl banHangControl;
 		initLoaiThuoc();
 		initTableView();
 		createButtonChon();
+		createButtonDelete();
 		initButtonThem();
 	}
 
@@ -115,17 +119,20 @@ private BanHangControl banHangControl;
 				final TableCell<common.ChiTietHoaDon, String> cell = new TableCell<common.ChiTietHoaDon, String>()
 				{
 
-					final Button btn = new Button("chọn");
+					final Button btn = new Button("edit");
 
 					{
-						btn.setStyle("-fx-background-color: green");
+						btn.setStyle("-fx-background-color: orange");
 						btn.setOnAction(event -> {
 							TableColumn col = tblThuoc.getColumns().get(1);
 							String data = (String) col.getCellObservableValue(tblThuoc.getItems().get(getIndex())).getValue();
 							
 							Thuoc thuoc = daoThuoc.getThuocById(data);
-							banHangControl.getTbsBanHang().getSelectionModel().select(banHangControl.getTabTaoHoaDon());
-							banHangControl.getTaoHoaDonControl().actionSelectInTabThuoc(thuoc);
+							if (thuoc == null) {
+								common.showNotification(AlertType.ERROR, "ERROR", "Lỗi get dữ liệu!");
+							}else {
+								showDialogSua(data);
+							}
 						});
 					}
 
@@ -147,7 +154,64 @@ private BanHangControl banHangControl;
 			}
 		};
 
-		colChon.setCellFactory(cellFactory);
+		colEdit.setCellFactory(cellFactory);
+	}
+	
+	private void showDialogSua(String data) {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("DialogThemThuoc.fxml"));
+		SuaThuocControl control = new SuaThuocControl();
+		control.setThuoc(data);
+		control.setThuoc2Control(this);
+		loader.setController(control);
+		try {
+			Stage stage = loader.load();
+			stage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void createButtonDelete() {
+		// TODO Auto-generated method stub
+		Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>> cellFactory
+		= //
+		new Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>>()
+		{
+			@Override
+			public TableCell call(final TableColumn<common.ChiTietHoaDon, String> param)
+			{
+				final TableCell<common.ChiTietHoaDon, String> cell = new TableCell<common.ChiTietHoaDon, String>()
+				{
+					
+					final Button btn = new Button("del");
+					
+					{
+						btn.setStyle("-fx-background-color: red");
+						btn.setOnAction(event -> {
+							tblThuoc.getItems().remove(getIndex());
+						});
+					}
+					
+					@Override
+					public void updateItem(String item, boolean empty)
+					{
+						super.updateItem(item, empty);
+						if (empty) {
+							setGraphic(null);
+							setText(null);
+						}
+						else {
+							setGraphic(btn);
+							setText(null);
+						}
+					}
+				};
+				return cell;
+			}
+		};
+		
+		colDelete.setCellFactory(cellFactory);
 	}
 
 	private void initTableView() {

@@ -17,6 +17,33 @@ public class DAOThuoc extends DAO {
 	DAOLoaiThuoc daoLoaiThuoc = new DAOLoaiThuoc();
 	DAONhaCungCap daoNhaCungCap = new DAONhaCungCap();
 	
+	public boolean updateThuoc(Thuoc thuoc) {
+		String sql = "UPDATE Thuoc SET NhaCungCapId = ?, LoaiThuocId = ?, TenThuoc = ?,"
+				+ " MoTa = ?, HanSuDung = ?, DonViTinh = ?, DangBaoChe = ?, Gia = ?, QuyCachDongGoi = ?, NuocSanXuat = ?"
+				+ " Where ThuocId = ?";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, thuoc.getNhaCungCap().getId());
+			ps.setString(2, thuoc.getLoaiThuoc().getId());
+			ps.setNString(3, thuoc.getTenThuoc());
+			ps.setNString(4, thuoc.getMoTa());
+			ps.setInt(5, thuoc.getHanSuDung());
+			ps.setNString(6, thuoc.getDonViTinh());
+			ps.setNString(7, thuoc.getDangBaoChe());
+			ps.setDouble(8, thuoc.getGia());
+			ps.setNString(9, thuoc.getQuyCachDongGoi());
+			ps.setNString(10, thuoc.getNuocSanXuat());
+			ps.setString(11, thuoc.getId());
+			
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public boolean themThuocMoi(Thuoc thuoc) {
 		String sql = "insert into Thuoc(DangBaoChe, DonViTinh, Gia, HanSuDung, LoaiThuocId, MoTa, NhaCungCapId, NuocSanXuat, QuyCachDongGoi, TenThuoc, Thue, ThuocId, TonKho)"
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
