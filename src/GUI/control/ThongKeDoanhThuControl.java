@@ -1,11 +1,14 @@
 package GUI.control;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import DAO.DAOHoaDon;
+import DAO.DAONhanVien;
 import common.Common;
 import common.NhanVienTable;
+import entity.NhanVienBanThuoc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -18,6 +21,7 @@ import javafx.scene.text.Text;
 
 public class ThongKeDoanhThuControl implements Initializable {
 	private DAOHoaDon daoHoaDon = new DAOHoaDon();
+	private DAONhanVien daoNhanVien = new DAONhanVien();
 	private Common common = new Common();
 	
 	public ComboBox<String> cmbThongKeTheo;
@@ -43,7 +47,11 @@ public class ThongKeDoanhThuControl implements Initializable {
 	}
 	private void initDataForTable() {
 		// TODO Auto-generated method stub
-		
+		List<NhanVienBanThuoc> banThuocs = daoNhanVien.getlistNhanVien();
+		banThuocs.forEach(i -> {
+			dataTable.add(new NhanVienTable(dataTable.size(), daoNhanVien.getSoHoaDonTrongNgay(i.getId()), i.getHoTenDem()+" "+i.getTen(),
+					common.formatMoney(daoNhanVien.getDoanhSoTrongNgay(i.getId())), i.getId()));
+		});
 	}
 	private void initable() {
 		// TODO Auto-generated method stub

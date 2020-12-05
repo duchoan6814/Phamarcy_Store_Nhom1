@@ -8,6 +8,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 
 import entity.NhanVienBanThuoc;
 import entity.PhanQuyen;
@@ -220,5 +222,38 @@ public class DAONhanVien extends DAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+
+	public List<NhanVienBanThuoc> getlistNhanVien() {
+		// TODO Auto-generated method stub
+		List<NhanVienBanThuoc> list = new ArrayList<NhanVienBanThuoc>();
+		String sql = "select * from NhaVienBanThuoc as nv join TaiKhoan as tk on nv.TenDangNhap = tk.TenDangNhap";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				NhanVienBanThuoc nhanVienBanThuoc = new NhanVienBanThuoc();
+				nhanVienBanThuoc.setId(rs.getString("NhanVienBanThuocId"));
+				nhanVienBanThuoc.setHoTenDem(rs.getString("HoTenDem"));
+				nhanVienBanThuoc.setTen(rs.getString("Ten"));
+				nhanVienBanThuoc.setNgaySinh(rs.getDate("NgaySinh"));
+				nhanVienBanThuoc.setSoDienThoai(rs.getString("SoDienThoai"));
+				nhanVienBanThuoc.setSoCMND(rs.getString("SoCMND"));
+				nhanVienBanThuoc.setGioiTinh(rs.getBoolean("GioiTinh"));
+				nhanVienBanThuoc.setDiaChi(rs.getString("DiaChi"));
+				nhanVienBanThuoc.setAvatar(rs.getBytes("Avatar"));
+				TaiKhoan taiKhoan = new TaiKhoan();
+				taiKhoan.setTenDangNhap(rs.getString("TenDangNhap"));
+				taiKhoan.setPhanQuyen(PhanQuyen.get(rs.getString("PhanQuyen").trim()));
+				nhanVienBanThuoc.setTaiKhoan(taiKhoan);
+				list.add(nhanVienBanThuoc);
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return list;
+		}
 	}
 }
