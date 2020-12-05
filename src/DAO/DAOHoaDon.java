@@ -23,6 +23,60 @@ public class DAOHoaDon extends DAO {
 	DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
 	DAONhanVien daoNhanVien = new DAONhanVien();
 	
+	public double getTongDoanhThuByThang(String thang) {
+		String sql = "SELECT sum(TienPhaiTra) as TongDoanhThu from HoaDon where MONTH(ThoiGianLap) in (MONTH(?))";
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyyy-MM-dd");
+		Date date;
+		try {
+			date = dt1.parse(thang);
+			LocalDate dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			java.sql.Date dateGet = java.sql.Date.valueOf(dateLocal);
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setDate(1, dateGet);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getDouble("TongDoanhThu");
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public int getSoHoaDonTheoThangHienTai() {
+		String sql = "SELECT COUNT(*) as SoHoaDon FROM HoaDon WHERE MONTH(ThoiGianLap) in (MONTH(CURRENT_TIMESTAMP))";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("SoHoaDon");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public double getTongDoanhThuTheoThangHienTai() {
+		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu FROM HoaDon WHERE MONTH(ThoiGianLap) in (MONTH(CURRENT_TIMESTAMP))";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getDouble("TongDoanhThu");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
 	public double getTongDoanhThuTheoNgay(String ngayCanGet) {
 		String sql = "SELECT sum(TienPhaiTra) as TongDoanhThu from HoaDon where ThoiGianLap BETWEEN ? and ?";
 		try {
