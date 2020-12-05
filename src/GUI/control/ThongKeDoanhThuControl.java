@@ -1,6 +1,7 @@
 package GUI.control;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -13,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -34,6 +36,8 @@ public class ThongKeDoanhThuControl implements Initializable {
 	public TableColumn<NhanVienTable, String> colMaNhanVien;
 	public TableColumn<NhanVienTable, String> colTongDoanhThu;
 	public TableColumn colXem;
+	public LineChart<?, ?> lineThongKe;
+	
 	private ObservableList<NhanVienTable> dataTable;
 	
 	
@@ -44,6 +48,22 @@ public class ThongKeDoanhThuControl implements Initializable {
 		intSomeField();
 		initable();
 		initDataForTable();
+		initChart();
+	}
+	private void initChart() {
+		// TODO Auto-generated method stub
+		lineThongKe.getData().clear();
+		XYChart.Series series = new XYChart.Series();
+		LocalDate toDay = LocalDate.now();
+		LocalDate date = LocalDate.of(toDay.getYear(), toDay.getMonthValue(), 1);
+		
+		while(date.getMonthValue() == toDay.getMonthValue()) {
+			double doanhSo = daoHoaDon.getTongDoanhThuTheoNgay(date.toString());
+			series.getData().add(new XYChart.Data<>(date.getDayOfMonth()+"-"+date.getMonthValue(), doanhSo));
+			date = date.plusDays(1);
+		}
+		
+		lineThongKe.getData().add(series);
 	}
 	private void initDataForTable() {
 		// TODO Auto-generated method stub

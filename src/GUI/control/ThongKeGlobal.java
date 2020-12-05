@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
@@ -25,10 +27,26 @@ public class ThongKeGlobal implements Initializable {
 
 	private void initLayoutTongKe() {
 		// TODO Auto-generated method stub
-		setContentThongKeDoanhThu();
+		initContentThongKeDoanhThu();
 	}
 
-	private void setContentThongKeDoanhThu() {
+	private void initContentThongKeDoanhThu() {
+		// TODO Auto-generated method stub
+		getFilePnlThongKeDoanhThu();
+		
+		tabDoanhThu.setOnSelectionChanged(new EventHandler<Event>() {
+			
+			@Override
+			public void handle(Event arg0) {
+				// TODO Auto-generated method stub
+				if (tabDoanhThu.isSelected()) {
+					getFilePnlThongKeDoanhThu();
+				}
+			}
+		});
+	}
+
+	private void getFilePnlThongKeDoanhThu() {
 		// TODO Auto-generated method stub
 		try {
 			FileInputStream inputStream = new FileInputStream(new File("src/GUI/ThongKeDoanhThu.fxml"));

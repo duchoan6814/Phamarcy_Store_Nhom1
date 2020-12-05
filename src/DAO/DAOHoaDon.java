@@ -3,7 +3,10 @@ package DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +22,35 @@ public class DAOHoaDon extends DAO {
 	DAOKhachHang daoKhachHang = new DAOKhachHang();
 	DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
 	DAONhanVien daoNhanVien = new DAONhanVien();
+	
+	public double getTongDoanhThuTheoNgay(String ngayCanGet) {
+		String sql = "SELECT sum(TienPhaiTra) as TongDoanhThu from HoaDon where ThoiGianLap BETWEEN ? and ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			SimpleDateFormat dt1 = new SimpleDateFormat("yyyyy-MM-dd");
+			Date date = dt1.parse(ngayCanGet);
+			LocalDate dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			
+			java.sql.Date dateGet = java.sql.Date.valueOf(dateLocal);
+			java.sql.Date dateAfter = java.sql.Date.valueOf(dateLocal.plusDays(1));
+			
+			ps.setDate(1, dateGet);
+			ps.setDate(2, dateAfter);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getDouble("TongDoanhThu");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
 	
 	public double getTongDoanhThuTrongNgay() {
 		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu from HoaDon where ThoiGianLap BETWEEN ? and ?";
