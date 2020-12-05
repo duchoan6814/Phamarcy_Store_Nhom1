@@ -20,6 +20,46 @@ public class DAOHoaDon extends DAO {
 	DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
 	DAONhanVien daoNhanVien = new DAONhanVien();
 	
+	public double getTongDoanhThuTrongNgay() {
+		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu from HoaDon where ThoiGianLap BETWEEN ? and ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			java.sql.Date date = java.sql.Date.valueOf(LocalDate.now());
+			java.sql.Date afterDate = java.sql.Date.valueOf(LocalDate.now().plusDays(1));
+			ps.setDate(1, date);
+			ps.setDate(2, afterDate);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("TongDoanhThu");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public int getSoHoaDonTrongNgay() {
+		String sql = "SELECT COUNT(*) as SoHoaDon from HoaDon where ThoiGianLap BETWEEN ? and ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			java.sql.Date date = java.sql.Date.valueOf(LocalDate.now());
+			java.sql.Date afterDate = java.sql.Date.valueOf(LocalDate.now().plusDays(1));
+			ps.setDate(1, date);
+			ps.setDate(2, afterDate);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("SoHoaDon");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+		
+		
+	}
+	
 	public HoaDon getHoaDonById(String id) {
 		String sql = "select * from HoaDon where HoaDonId = ?";
 		try {

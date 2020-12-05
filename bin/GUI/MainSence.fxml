@@ -100,7 +100,7 @@
 								</Text>
 							</children>
 						</HBox>
-						<HBox fx:id="btnThongKe" styleClass="buttonSelectMain">
+						<HBox onMouseClicked="#actionButtonThongKe" fx:id="btnThongKe" styleClass="buttonSelectMain">
 							<children>
 								<ImageView fitHeight="32.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
 									<image>

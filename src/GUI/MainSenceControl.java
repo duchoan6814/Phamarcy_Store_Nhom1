@@ -7,10 +7,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import DAO.DAONhanVien;
+import GUI.control.ThongKeGlobal;
 import entity.HoaDon;
 import entity.NhanVienBanThuoc;
 import entity.PhanQuyen;
 import entity.QuanLy;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -52,11 +54,9 @@ public class MainSenceControl implements Initializable {
 		setSomeFieldNhanVien();
 		//set active button
 		btnBanHang.getStyleClass().add("activeButton");
-		
 		phanQuyen();
 
 	}
-
 
 	private void phanQuyen() {
 		// TODO Auto-generated method stub
@@ -108,32 +108,69 @@ public class MainSenceControl implements Initializable {
 			e.printStackTrace();
 		}
 		
+		FXMLLoader loaderThongKe = new FXMLLoader(getClass().getResource("pnlThongKeGlobal.fxml"));
+		ThongKeGlobal thongKeGlobal = new ThongKeGlobal();
+		loaderThongKe.setController(thongKeGlobal);
+		try {
+			stkOptions.getChildren().add(2, loaderThongKe.load());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		Node thongKe = stkOptions.getChildren().get(2);
 		Node khoHang = stkOptions.getChildren().get(1);
 		Node banHang = stkOptions.getChildren().get(0);
 		khoHang.setVisible(false);
 		banHang.setVisible(true);
+		thongKe.setVisible(false);
+		
 	}
 	
 	@FXML
 	public void actionButtonKhoHang() {
 		Node khoHang = stkOptions.getChildren().get(1);
 		Node banHang = stkOptions.getChildren().get(0);
+		Node thongKe = stkOptions.getChildren().get(2);
 		khoHang.setVisible(true);
 		banHang.setVisible(false);
+		thongKe.setVisible(false);
 		btnKhoHang.getStyleClass().add("activeButton");
 		btnBanHang.getStyleClass().clear();
 		btnBanHang.getStyleClass().addAll("button", "buttonSelectMain");
+		btnThongKe.getStyleClass().clear();
+		btnThongKe.getStyleClass().addAll("button", "buttonSelectMain");
 	}
 	
 	@FXML
 	public void actionButtonBanHang() {
 		Node banHang = stkOptions.getChildren().get(0);
 		Node khoHang = stkOptions.getChildren().get(1);
+		Node thongKe = stkOptions.getChildren().get(2);
 		khoHang.setVisible(false);
 		banHang.setVisible(true);
+		thongKe.setVisible(false);
 		btnBanHang.getStyleClass().add("activeButton");
 		btnKhoHang.getStyleClass().clear();
 		btnKhoHang.getStyleClass().addAll("button", "buttonSelectMain");
+		btnThongKe.getStyleClass().clear();
+		btnThongKe.getStyleClass().addAll("button", "buttonSelectMain");
+	}
+	
+	@FXML
+	public void actionButtonThongKe() {
+		Node banHang = stkOptions.getChildren().get(0);
+		Node khoHang = stkOptions.getChildren().get(1);
+		Node thongKe = stkOptions.getChildren().get(2);
+		khoHang.setVisible(false);
+		banHang.setVisible(false);
+		thongKe.setVisible(true);
+		btnThongKe.getStyleClass().add("activeButton");
+		btnKhoHang.getStyleClass().clear();
+		btnKhoHang.getStyleClass().addAll("button", "buttonSelectMain");
+		btnBanHang.getStyleClass().clear();
+		btnBanHang.getStyleClass().addAll("button", "buttonSelectMain");
 	}
 
 
