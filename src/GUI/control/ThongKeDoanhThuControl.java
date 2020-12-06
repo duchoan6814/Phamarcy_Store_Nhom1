@@ -58,10 +58,10 @@ public class ThongKeDoanhThuControl implements Initializable {
 		// TODO Auto-generated method stub
 		lineThongKe.getData().clear();
 		LocalDate toDay = LocalDate.now();
-		LocalDate date = LocalDate.of(toDay.getYear(), toDay.getMonthValue(), 1);
+		LocalDate date = toDay.minusMonths(1);
 		Series series = new XYChart.Series();
 		ObservableList<String> listXLabel = FXCollections.observableArrayList();
-		while(date.getMonthValue() == toDay.getMonthValue()) {
+		while(!date.toString().equals(toDay.plusDays(1).toString())) {
 			double doanhSo = daoHoaDon.getTongDoanhThuTheoNgay(date.toString());
 			series.getData().add(new XYChart.Data<>(date.getDayOfMonth()+"-"+date.getMonthValue(), doanhSo));
 			listXLabel.add(date.getDayOfMonth()+"-"+date.getMonthValue());

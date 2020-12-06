@@ -24,7 +24,7 @@ public class DAOHoaDon extends DAO {
 	DAONhanVien daoNhanVien = new DAONhanVien();
 	
 	public double getTongDoanhThuByThang(String thang) {
-		String sql = "SELECT sum(TienPhaiTra) as TongDoanhThu from HoaDon where MONTH(ThoiGianLap) in (MONTH(?))";
+		String sql = "SELECT sum(TienPhaiTra) as TongDoanhThu from HoaDon where MONTH(ThoiGianLap) in (MONTH(?)) and Year(ThoiGianLap) in (Year(?))";
 		SimpleDateFormat dt1 = new SimpleDateFormat("yyyyy-MM-dd");
 		Date date;
 		try {
@@ -33,6 +33,7 @@ public class DAOHoaDon extends DAO {
 			java.sql.Date dateGet = java.sql.Date.valueOf(dateLocal);
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setDate(1, dateGet);
+			ps.setDate(2, dateGet);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				return rs.getDouble("TongDoanhThu");
