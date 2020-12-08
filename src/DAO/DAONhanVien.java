@@ -107,6 +107,60 @@ public class DAONhanVien extends DAO {
 		}
 	}
 	
+	public double getDoanhSoByThang(String maNhanVien, String thang) {
+		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu FROM HoaDon WHERE MONTH(ThoiGianLap) in (MONTH(?)) AND NhanVienBanThuocId = ?";
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyyy-MM-dd");
+		java.util.Date date;
+		try {
+			date = dt1.parse(thang);
+			LocalDate dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			java.sql.Date dateGet = java.sql.Date.valueOf(dateLocal);
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setDate(1, dateGet);
+			ps.setString(2, maNhanVien);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getDouble("TongDoanhThu");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public double getDoanhSoByNam(String maNhanVien, String nam) {
+		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu FROM HoaDon WHERE Year(ThoiGianLap) in (Year(?)) AND NhanVienBanThuocId = ?";
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyyy-MM-dd");
+		java.util.Date date;
+		try {
+			date = dt1.parse(nam);
+			LocalDate dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			java.sql.Date dateGet = java.sql.Date.valueOf(dateLocal);
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setDate(1, dateGet);
+			ps.setString(2, maNhanVien);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getDouble("TongDoanhThu");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
 	
 	public double getDoanhSoByNgay(String maNhanVien, String ngayCanGet) {
 		String sql = "select sum(TienPhaiTra) as TongDoanhSo from HoaDon WHERE NhanVienBanThuocId = ? and ThoiGianLap BETWEEN ? and ?";
