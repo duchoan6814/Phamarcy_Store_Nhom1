@@ -29,7 +29,7 @@ public class ThongKeDoanhThuControl implements Initializable {
 	private DAOHoaDon daoHoaDon = new DAOHoaDon();
 	private DAONhanVien daoNhanVien = new DAONhanVien();
 	private Common common = new Common();
-	
+
 	public ComboBox<String> cmbThongKeTheo;
 	public Text lblSoHoaDon;
 	public Text lblTongDoanhThu; 
@@ -42,9 +42,9 @@ public class ThongKeDoanhThuControl implements Initializable {
 	public TableColumn colXem;
 	public LineChart<?, ?> lineThongKe;
 	public CategoryAxis xLabel;
-	
+
 	private ObservableList<NhanVienTable> dataTable;
-	
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
@@ -71,7 +71,7 @@ public class ThongKeDoanhThuControl implements Initializable {
 		xLabel.setTickLabelRotation(50);
 		lineThongKe.getData().add(series);
 	}
-	
+
 	private void initDataForTable() {
 		// TODO Auto-generated method stub
 		dataTable.clear();
@@ -81,7 +81,7 @@ public class ThongKeDoanhThuControl implements Initializable {
 					common.formatMoney(daoNhanVien.getDoanhSoTrongNgay(i.getId())), i.getId()));
 		});
 	}
-	
+
 	private void initable() {
 		// TODO Auto-generated method stub
 		dataTable = FXCollections.observableArrayList();
@@ -90,16 +90,16 @@ public class ThongKeDoanhThuControl implements Initializable {
 		colSoHoaDon.setCellValueFactory(new PropertyValueFactory<>("soHoaDon"));
 		colSTT.setCellValueFactory(new PropertyValueFactory<>("STT"));
 		colTongDoanhThu.setCellValueFactory(new PropertyValueFactory<>("doanhThu"));
-		
+
 		tblNhanVien.setItems(dataTable);
 	}
-	
+
 	private void intSomeField() {
 		// TODO Auto-generated method stub
 		lblSoHoaDon.setText(Integer.toString(daoHoaDon.getSoHoaDonTrongNgay()));
 		lblTongDoanhThu.setText(common.formatMoney(daoHoaDon.getTongDoanhThuTrongNgay()));
 	}
-	
+
 	private void initCmbThongKeTheo() {
 		// TODO Auto-generated method stub
 		ObservableList<String> listThongKeTheo = FXCollections.observableArrayList();
@@ -108,9 +108,9 @@ public class ThongKeDoanhThuControl implements Initializable {
 		listThongKeTheo.add("Năm");
 		cmbThongKeTheo.setItems(listThongKeTheo);
 		cmbThongKeTheo.setValue(listThongKeTheo.get(0));
-		
+
 		cmbThongKeTheo.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -118,7 +118,7 @@ public class ThongKeDoanhThuControl implements Initializable {
 			}
 		});
 	}
-	
+
 	private void whenComboxChange() {
 		// TODO Auto-generated method stub
 		if (cmbThongKeTheo.getValue().equals("Ngày")) {
@@ -127,8 +127,30 @@ public class ThongKeDoanhThuControl implements Initializable {
 			initChart();
 		}else if (cmbThongKeTheo.getValue().equals("Tháng")) {
 			initDataThang();
-		}
+		}else if (cmbThongKeTheo.getValue().equals("Năm")) {
+			initDataNam();
+		} 
 	}
+	private void initDataNam() {
+		// TODO Auto-generated method stub
+		initDataForSomeFileByNam();
+		initDataForTableByNam();
+		initDataForCharByNam();
+	}
+
+	private void initDataForCharByNam() {
+		// TODO Auto-generated method stub
+		
+	}
+	private void initDataForTableByNam() {
+		// TODO Auto-generated method stub
+		
+	}
+	private void initDataForSomeFileByNam() {
+		// TODO Auto-generated method stub
+		
+	}
+	//	===============================
 	private void initDataThang() {
 		// TODO Auto-generated method stub
 		initDataForSomeFieldByThang();
