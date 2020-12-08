@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +10,12 @@ import entity.NhanVienBanThuoc;
 import entity.PhanQuyen;
 import entity.TaiKhoan;
 
-public class DAOTaiKhoan extends DAO {
+public class DAOTaiKhoan {
+	private Connection conn;
+	public DAOTaiKhoan() {
+		// TODO Auto-generated constructor stub
+		conn = DAO.getInstance().getConn();
+	}
 	
 	public boolean checkTaiKhoan(String userName) {
 		String sql = "select * from TaiKhoan WHERE TenDangNhap = ?";
@@ -62,8 +68,8 @@ public class DAOTaiKhoan extends DAO {
 		}
 	}
 
-	public static void main(String[] args) {
-		DAOTaiKhoan dtk = new DAOTaiKhoan();
-		System.out.println(dtk.login("duchoan6814", "sapassword"));
-	}
+//	public static void main(String[] args) {
+//		DAOTaiKhoan dtk = new DAOTaiKhoan();
+//		System.out.println(dtk.login("duchoan6814", "sapassword"));
+//	}
 }

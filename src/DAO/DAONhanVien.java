@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,12 +9,86 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 
 import entity.NhanVienBanThuoc;
 import entity.PhanQuyen;
 import entity.TaiKhoan;
 
-public class DAONhanVien extends DAO {
+public class DAONhanVien {
+	Connection conn;
+	
+	public DAONhanVien() {
+		// TODO Auto-generated constructor stub
+		conn = DAO.getInstance().getConn();
+	}
+	
+	public double getTongDoanhThuNamHienTai(String maNhanVien) {
+		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu from HoaDon where YEAR(ThoiGianLap) in (YEAR(CURRENT_TIMESTAMP)) and NhanVienBanThuocId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, maNhanVien);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getDouble("TongDoanhThu");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public int getTongHoaDonNamHienTai(String maNhanVien) {
+		String sql = "SELECT COUNT(*) as SoHoaDon from HoaDon where YEAR(ThoiGianLap) in (YEAR(CURRENT_TIMESTAMP)) and NhanVienBanThuocId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, maNhanVien);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("SoHoaDon");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public double getTongDoanhThuTheoThangHienTai(String maNhanVien) {
+		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu FROM HoaDon WHERE MONTH(ThoiGianLap) in (MONTH(CURRENT_TIMESTAMP)) AND NhanVienBanThuocId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, maNhanVien);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getDouble("TongDoanhThu");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public int getSoHoaDonTrongThangHienTai(String maNhanVien) {
+		String sql = "SELECT COUNT(*) as SoHoaDon FROM HoaDon WHERE MONTH(ThoiGianLap) in (MONTH(CURRENT_TIMESTAMP)) AND NhanVienBanThuocId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, maNhanVien);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("SoHoaDon");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
 	
 	public double getDoanhSoTrongNgay(String maNhanVien) {
 		String sql = "select sum(TienPhaiTra) as TongDoanhSo from HoaDon WHERE NhanVienBanThuocId = ? and ThoiGianLap BETWEEN ? and ?";
@@ -37,6 +112,60 @@ public class DAONhanVien extends DAO {
 			e.printStackTrace();
 			return -1;
 		}
+	}
+	
+	public double getDoanhSoByThang(String maNhanVien, String thang) {
+		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu FROM HoaDon WHERE MONTH(ThoiGianLap) in (MONTH(?)) AND NhanVienBanThuocId = ?";
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyyy-MM-dd");
+		java.util.Date date;
+		try {
+			date = dt1.parse(thang);
+			LocalDate dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			java.sql.Date dateGet = java.sql.Date.valueOf(dateLocal);
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setDate(1, dateGet);
+			ps.setString(2, maNhanVien);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getDouble("TongDoanhThu");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public double getDoanhSoByNam(String maNhanVien, String nam) {
+		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu FROM HoaDon WHERE Year(ThoiGianLap) in (Year(?)) AND NhanVienBanThuocId = ?";
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyyy-MM-dd");
+		java.util.Date date;
+		try {
+			date = dt1.parse(nam);
+			LocalDate dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			java.sql.Date dateGet = java.sql.Date.valueOf(dateLocal);
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setDate(1, dateGet);
+			ps.setString(2, maNhanVien);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getDouble("TongDoanhThu");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
 	}
 	
 	
@@ -220,5 +349,38 @@ public class DAONhanVien extends DAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+
+	public List<NhanVienBanThuoc> getlistNhanVien() {
+		// TODO Auto-generated method stub
+		List<NhanVienBanThuoc> list = new ArrayList<NhanVienBanThuoc>();
+		String sql = "select * from NhaVienBanThuoc as nv join TaiKhoan as tk on nv.TenDangNhap = tk.TenDangNhap";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				NhanVienBanThuoc nhanVienBanThuoc = new NhanVienBanThuoc();
+				nhanVienBanThuoc.setId(rs.getString("NhanVienBanThuocId"));
+				nhanVienBanThuoc.setHoTenDem(rs.getString("HoTenDem"));
+				nhanVienBanThuoc.setTen(rs.getString("Ten"));
+				nhanVienBanThuoc.setNgaySinh(rs.getDate("NgaySinh"));
+				nhanVienBanThuoc.setSoDienThoai(rs.getString("SoDienThoai"));
+				nhanVienBanThuoc.setSoCMND(rs.getString("SoCMND"));
+				nhanVienBanThuoc.setGioiTinh(rs.getBoolean("GioiTinh"));
+				nhanVienBanThuoc.setDiaChi(rs.getString("DiaChi"));
+				nhanVienBanThuoc.setAvatar(rs.getBytes("Avatar"));
+				TaiKhoan taiKhoan = new TaiKhoan();
+				taiKhoan.setTenDangNhap(rs.getString("TenDangNhap"));
+				taiKhoan.setPhanQuyen(PhanQuyen.get(rs.getString("PhanQuyen").trim()));
+				nhanVienBanThuoc.setTaiKhoan(taiKhoan);
+				list.add(nhanVienBanThuoc);
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return list;
+		}
 	}
 }

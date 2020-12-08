@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -35,6 +36,7 @@
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -64,9 +66,20 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </TextField>
-            <ComboBox fx:id="cmbNuocSanXuat" prefHeight="26.0" prefWidth="283.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <ComboBox fx:id="cmbLoaiThuoc" prefHeight="26.0" prefWidth="283.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <ComboBox fx:id="cmbDonViTinh" prefHeight="26.0" prefWidth="281.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <ComboBox fx:id="cmbNuocSanXuat" prefHeight="26.0" prefWidth="283.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin></ComboBox>
+            <ComboBox fx:id="cmbLoaiThuoc" prefHeight="26.0" prefWidth="283.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin></ComboBox>
+            <ComboBox fx:id="cmbDonViTinh" prefHeight="26.0" prefWidth="281.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin></ComboBox>
+            <RadioButton fx:id="rbtSoLuong" mnemonicParsing="false" text="Gần hết số lượng" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thuốc Gần Hết Số Lượng" GridPane.columnIndex="3" />
          </children>
       </GridPane>
       <Button fx:id="btnTim" layoutX="895.0" layoutY="14.0" mnemonicParsing="false" onAction="#actionButtonTim" prefHeight="68.0" prefWidth="170.0" style="-fx-background-color: green; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" text="Tìm" />
