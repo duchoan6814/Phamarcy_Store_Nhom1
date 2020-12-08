@@ -57,6 +57,7 @@ public class ThongKeDoanhThuControl implements Initializable {
 	private void initChart() {
 		// TODO Auto-generated method stub
 		lineThongKe.getData().clear();
+		xLabel.getCategories().clear();
 		LocalDate toDay = LocalDate.now();
 		LocalDate date = toDay.minusMonths(1);
 		Series series = new XYChart.Series();
@@ -140,15 +141,34 @@ public class ThongKeDoanhThuControl implements Initializable {
 
 	private void initDataForCharByNam() {
 		// TODO Auto-generated method stub
-		
+		lineThongKe.getData().clear();
+		xLabel.getCategories().clear();
+		LocalDate toDay = LocalDate.now();
+		LocalDate date = toDay.minusYears(5);
+		Series series = new XYChart.Series();
+		ObservableList<String> listXLabel = FXCollections.observableArrayList();
+		while(date.getYear() != toDay.plusYears(1).getYear()) {
+			double doanhSo = daoHoaDon.getDoanhThuTheoNam(date.toString());
+			series.getData().add(new XYChart.Data<>(date.getYear()+"", doanhSo));
+			listXLabel.add(date.getYear()+"");
+			date = date.plusYears(1);
+		}
+		xLabel.setCategories(listXLabel);
+		lineThongKe.getData().add(series);
 	}
 	private void initDataForTableByNam() {
 		// TODO Auto-generated method stub
-		
+		dataTable.clear();
+		List<NhanVienBanThuoc> banThuocs = daoNhanVien.getlistNhanVien();
+		banThuocs.forEach(i -> {
+			dataTable.add(new NhanVienTable(dataTable.size(), daoNhanVien.getTongHoaDonNamHienTai(i.getId()), i.getHoTenDem()+" "+i.getTen(),
+					common.formatMoney(daoNhanVien.getTongDoanhThuNamHienTai(i.getId())), i.getId()));
+		});
 	}
 	private void initDataForSomeFileByNam() {
 		// TODO Auto-generated method stub
-		
+		lblSoHoaDon.setText(daoHoaDon.getTongHoaDonNamHienTai()+"");
+		lblTongDoanhThu.setText(common.formatMoney(daoHoaDon.getTongDoanhThuNamHienTai()));
 	}
 	//	===============================
 	private void initDataThang() {
@@ -160,6 +180,7 @@ public class ThongKeDoanhThuControl implements Initializable {
 	private void initDataChartTheoThang() {
 		// TODO Auto-generated method stub
 		lineThongKe.getData().clear();
+		xLabel.getCategories().clear();
 		LocalDate toDay = LocalDate.now();
 		LocalDate date = LocalDate.of(toDay.getYear(), 1, 1);
 		Series series = new XYChart.Series();

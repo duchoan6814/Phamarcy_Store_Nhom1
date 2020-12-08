@@ -17,6 +17,40 @@ import entity.TaiKhoan;
 
 public class DAONhanVien extends DAO {
 	
+	public double getTongDoanhThuNamHienTai(String maNhanVien) {
+		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu from HoaDon where YEAR(ThoiGianLap) in (YEAR(CURRENT_TIMESTAMP)) and NhanVienBanThuocId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, maNhanVien);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getDouble("TongDoanhThu");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public int getTongHoaDonNamHienTai(String maNhanVien) {
+		String sql = "SELECT COUNT(*) as SoHoaDon from HoaDon where YEAR(ThoiGianLap) in (YEAR(CURRENT_TIMESTAMP)) and NhanVienBanThuocId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, maNhanVien);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("SoHoaDon");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
 	public double getTongDoanhThuTheoThangHienTai(String maNhanVien) {
 		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu FROM HoaDon WHERE MONTH(ThoiGianLap) in (MONTH(CURRENT_TIMESTAMP)) AND NhanVienBanThuocId = ?";
 		try {

@@ -23,6 +23,60 @@ public class DAOHoaDon extends DAO {
 	DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
 	DAONhanVien daoNhanVien = new DAONhanVien();
 	
+	public double getDoanhThuTheoNam(String nam) {
+		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu from HoaDon where YEAR(ThoiGianLap) in (YEAR(?))";
+		SimpleDateFormat dt1 = new SimpleDateFormat("yyyyy-MM-dd");
+		Date date;
+		try {
+			date = dt1.parse(nam);
+			LocalDate dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			java.sql.Date dateGet = java.sql.Date.valueOf(dateLocal);
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setDate(1, dateGet);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getDouble("TongDoanhThu");
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public double getTongDoanhThuNamHienTai() {
+		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu from HoaDon where YEAR(ThoiGianLap) in (YEAR(CURRENT_TIMESTAMP))";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getDouble("TongDoanhThu");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public int getTongHoaDonNamHienTai() {
+		String sql = "SELECT COUNT(*) as SoHoaDon from HoaDon where YEAR(ThoiGianLap) in (YEAR(CURRENT_TIMESTAMP))";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("SoHoaDon");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
 	public double getTongDoanhThuByThang(String thang) {
 		String sql = "SELECT sum(TienPhaiTra) as TongDoanhThu from HoaDon where MONTH(ThoiGianLap) in (MONTH(?)) and Year(ThoiGianLap) in (Year(?))";
 		SimpleDateFormat dt1 = new SimpleDateFormat("yyyyy-MM-dd");
