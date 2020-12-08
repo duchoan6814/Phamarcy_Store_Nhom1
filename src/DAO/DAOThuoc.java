@@ -72,7 +72,7 @@ public class DAOThuoc extends DAO {
 		}
 	}
 
-	public List<Thuoc> filterThuoc(String maThuoc, String tenThuoc, String nuocSanXuat, String tenNhaCungCap, String loaiThuoc, String donViTinh){
+	public List<Thuoc> filterThuoc(String maThuoc, String tenThuoc, String nuocSanXuat, String tenNhaCungCap, String loaiThuoc, String donViTinh, boolean soLuong){
 		System.out.println(nuocSanXuat);
 		String _tenNuocSanXuat = "(t.NuocSanXuat like N'%%' or t.NuocSanXuat is NULL)";
 		if (!"Tất cả".equals(nuocSanXuat)) {
@@ -87,14 +87,31 @@ public class DAOThuoc extends DAO {
 		if (!"Tất cả".equals(loaiThuoc)) {
 			_loaiThuoc = "N'%"+loaiThuoc+"%'";
 		}
+		
+		String _querySoLuong = "";
+		if (soLuong) {
+			_querySoLuong = "HAVING SUM(SoLuongConLai) < 10";
+		}
 
 		System.out.println(_tenNuocSanXuat);
 		System.out.println(_donViTinh);
 		System.out.println(_loaiThuoc);
-		String sql = "SELECT t.* FROM Thuoc as t INNER JOIN NhaCungCap ncc on t.NhaCungCapId = ncc.NhaCungCapId INNER JOIN "
-				+"LoaiThuoc as lt on lt.LoaiThuocId = t.LoaiThuocId where t.ThuocId like ? and t.TenThuoc like ? "
-				+"and "+_tenNuocSanXuat +" and ncc.TenNhaCungCap like ? and "
-				+"lt.TenLoaiThuoc like "+_loaiThuoc+" and t.DonViTinh like "+_donViTinh+"";
+		
+		String sql = "SELECT t.ThuocId, t.DangBaoChe, t.DonViTinh, t.DonViTinh, t.Gia, t.HanSuDung, t.LoaiThuocId, CAST(t.MoTa AS NVARCHAR(255)) as MoTa, t.NhaCungCapId, t.NuocSanXuat, t.QuyCachDongGoi, t.TenThuoc, t.Thue, t.TonKho " + 
+				"FROM Thuoc as t INNER JOIN NhaCungCap ncc on t.NhaCungCapId = ncc.NhaCungCapId " + 
+				"INNER JOIN LoaiThuoc as lt on lt.LoaiThuocId = t.LoaiThuocId " + 
+				"LEFT JOIN LoThuoc as lpt on lpt.ThuocId = t.ThuocId " + 
+				"where t.ThuocId like ? and t.TenThuoc like ? " + 
+				"and "+_tenNuocSanXuat+" "+ 
+				"and ncc.TenNhaCungCap like ? and lt.TenLoaiThuoc like "+_loaiThuoc+" " + 
+				"and t.DonViTinh like "+_donViTinh +" "+ 
+				"GROUP BY t.ThuocId, t.DangBaoChe, t.DonViTinh, t.DonViTinh, t.Gia, t.HanSuDung, t.LoaiThuocId, CAST(t.MoTa AS NVARCHAR(255)), t.NhaCungCapId, t.NuocSanXuat, t.QuyCachDongGoi, t.TenThuoc, t.Thue, t.TonKho " + 
+				_querySoLuong;
+		
+//		String sql = "SELECT t.* FROM Thuoc as t INNER JOIN NhaCungCap ncc on t.NhaCungCapId = ncc.NhaCungCapId INNER JOIN "
+//				+"LoaiThuoc as lt on lt.LoaiThuocId = t.LoaiThuocId where t.ThuocId like ? and t.TenThuoc like ? "
+//				+"and "+_tenNuocSanXuat +" and ncc.TenNhaCungCap like ? and "
+//				+"lt.TenLoaiThuoc like "+_loaiThuoc+" and t.DonViTinh like "+_donViTinh+"";
 		List<Thuoc> list = new ArrayList<>();
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
