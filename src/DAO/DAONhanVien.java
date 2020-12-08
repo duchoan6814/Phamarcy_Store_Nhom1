@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +16,13 @@ import entity.NhanVienBanThuoc;
 import entity.PhanQuyen;
 import entity.TaiKhoan;
 
-public class DAONhanVien extends DAO {
+public class DAONhanVien {
+	Connection conn;
+	
+	public DAONhanVien() {
+		// TODO Auto-generated constructor stub
+		conn = DAO.getInstance().getConn();
+	}
 	
 	public double getTongDoanhThuNamHienTai(String maNhanVien) {
 		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu from HoaDon where YEAR(ThoiGianLap) in (YEAR(CURRENT_TIMESTAMP)) and NhanVienBanThuocId = ?";

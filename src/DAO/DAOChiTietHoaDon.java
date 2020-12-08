@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +10,14 @@ import java.util.List;
 import entity.ChiTietHoaDon;
 import entity.NhanVienBanThuoc;
 
-public class DAOChiTietHoaDon extends DAO {
+public class DAOChiTietHoaDon{
+	private Connection conn;
+	
+	public DAOChiTietHoaDon() {
+		// TODO Auto-generated constructor stub
+		conn = DAO.getInstance().getConn();
+	}
+	
 	DAOThuoc daoThuoc = new DAOThuoc();
 	
 	public List<ChiTietHoaDon> getListChiTietHoaDonById(String id) {

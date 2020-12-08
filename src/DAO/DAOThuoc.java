@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,10 +13,16 @@ import entity.LoaiThuoc;
 import entity.NhaCungCap;
 import entity.Thuoc;
 
-public class DAOThuoc extends DAO {
+public class DAOThuoc {
+	private Connection conn;
 
 	DAOLoaiThuoc daoLoaiThuoc = new DAOLoaiThuoc();
 	DAONhaCungCap daoNhaCungCap = new DAONhaCungCap();
+	
+	public DAOThuoc() {
+		// TODO Auto-generated constructor stub
+		conn = DAO.getInstance().getConn();
+	}
 	
 	public boolean updateThuoc(Thuoc thuoc) {
 		String sql = "UPDATE Thuoc SET NhaCungCapId = ?, LoaiThuocId = ?, TenThuoc = ?,"

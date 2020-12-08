@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,9 +16,15 @@ import entity.PhieuNhapHang;
 import entity.QuanLy;
 import entity.Thuoc;
 
-public class DAOPhieuNhap extends DAO {
+public class DAOPhieuNhap {
+	private Connection conn;
 	DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
 	DAONhanVien daoNhanVien = new DAONhanVien();
+	
+	public DAOPhieuNhap() {
+		// TODO Auto-generated constructor stub
+		conn = DAO.getInstance().getConn();
+	}
 
 //	public void autoNhap() {
 //		Set<String> getListMaThuoc = new DAOThuoc().getAllMaThuoc();

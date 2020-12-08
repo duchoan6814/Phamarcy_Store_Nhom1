@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,11 +18,18 @@ import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.KhachHang;
 
-public class DAOHoaDon extends DAO {
+public class DAOHoaDon {
+	private Connection conn;
+	
 	DAOChiTietHoaDon daoChiTietHoaDon = new DAOChiTietHoaDon();
 	DAOKhachHang daoKhachHang = new DAOKhachHang();
 	DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
 	DAONhanVien daoNhanVien = new DAONhanVien();
+	
+	public DAOHoaDon() {
+		// TODO Auto-generated constructor stub
+		conn = DAO.getInstance().getConn();
+	}
 	
 	public double getDoanhThuTheoNam(String nam) {
 		String sql = "SELECT SUM(TienPhaiTra) as TongDoanhThu from HoaDon where YEAR(ThoiGianLap) in (YEAR(?))";

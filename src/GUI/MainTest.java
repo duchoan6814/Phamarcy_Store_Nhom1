@@ -1,5 +1,10 @@
 package GUI;
 
+import java.io.File;
+import java.io.FileInputStream;
+
+import DAO.DAO;
+import GUI.control.ConnectSqlServerControl;
 import javafx.application.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,18 +15,16 @@ public class MainTest extends Application {
 
 	public static void main(String passes[]) {
 		// TODO Auto-generated method stub
+		DAO dao = new DAO("localhost", "sa", "Tokelovip123");
 		launch(passes);
 	}
 
 	@Override
-	public void start(Stage arg0) throws Exception {
-		// TODO Auto-generated method stub
-		Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
-		Scene scene = new Scene(root);
-//		arg0.initStyle(StageStyle.TRANSPARENT);
-		arg0.setTitle("TestAPP");
-		arg0.setScene(scene);
-		arg0.show();
+	public void start(Stage arg0) throws Exception {		
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ConnectSqlServer.fxml"));
+		loader.setController(new ConnectSqlServerControl());
+		Stage stage = loader.load();
+		stage.show();
 	}
 
 }
