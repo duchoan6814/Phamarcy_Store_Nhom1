@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import DAO.DAONhanVien;
+import GUI.control.NhanVienControl;
 import GUI.control.ThongKeGlobal;
 import entity.HoaDon;
 import entity.NhanVienBanThuoc;
@@ -118,13 +119,25 @@ public class MainSenceControl implements Initializable {
 			e.printStackTrace();
 		}
 		
+		FXMLLoader loaderNhanVien = new FXMLLoader(getClass().getResource("QuanLyNV.fxml"));
+		NhanVienControl control = new NhanVienControl();
+		loaderNhanVien.setController(control);
+		try {
+			stkOptions.getChildren().add(3, loaderNhanVien.load());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		Node thongKe = stkOptions.getChildren().get(2);
 		Node khoHang = stkOptions.getChildren().get(1);
 		Node banHang = stkOptions.getChildren().get(0);
+		Node nhanVien = stkOptions.getChildren().get(3);
 		khoHang.setVisible(false);
 		banHang.setVisible(true);
 		thongKe.setVisible(false);
+		nhanVien.setVisible(false);
 		
 	}
 	
@@ -133,14 +146,18 @@ public class MainSenceControl implements Initializable {
 		Node khoHang = stkOptions.getChildren().get(1);
 		Node banHang = stkOptions.getChildren().get(0);
 		Node thongKe = stkOptions.getChildren().get(2);
+		Node nhanVien = stkOptions.getChildren().get(3);
 		khoHang.setVisible(true);
 		banHang.setVisible(false);
 		thongKe.setVisible(false);
+		nhanVien.setVisible(false);
 		btnKhoHang.getStyleClass().add("activeButton");
 		btnBanHang.getStyleClass().clear();
 		btnBanHang.getStyleClass().addAll("button", "buttonSelectMain");
 		btnThongKe.getStyleClass().clear();
 		btnThongKe.getStyleClass().addAll("button", "buttonSelectMain");
+		btnNhanVien.getStyleClass().clear();
+		btnNhanVien.getStyleClass().addAll("button", "buttonSelectMain");
 	}
 	
 	@FXML
@@ -148,14 +165,18 @@ public class MainSenceControl implements Initializable {
 		Node banHang = stkOptions.getChildren().get(0);
 		Node khoHang = stkOptions.getChildren().get(1);
 		Node thongKe = stkOptions.getChildren().get(2);
+		Node nhanVien = stkOptions.getChildren().get(3);
 		khoHang.setVisible(false);
 		banHang.setVisible(true);
 		thongKe.setVisible(false);
+		nhanVien.setVisible(false);
 		btnBanHang.getStyleClass().add("activeButton");
 		btnKhoHang.getStyleClass().clear();
 		btnKhoHang.getStyleClass().addAll("button", "buttonSelectMain");
 		btnThongKe.getStyleClass().clear();
 		btnThongKe.getStyleClass().addAll("button", "buttonSelectMain");
+		btnNhanVien.getStyleClass().clear();
+		btnNhanVien.getStyleClass().addAll("button", "buttonSelectMain");
 	}
 	
 	@FXML
@@ -163,14 +184,37 @@ public class MainSenceControl implements Initializable {
 		Node banHang = stkOptions.getChildren().get(0);
 		Node khoHang = stkOptions.getChildren().get(1);
 		Node thongKe = stkOptions.getChildren().get(2);
+		Node nhanVien = stkOptions.getChildren().get(3);
 		khoHang.setVisible(false);
 		banHang.setVisible(false);
+		nhanVien.setVisible(false);
 		thongKe.setVisible(true);
 		btnThongKe.getStyleClass().add("activeButton");
 		btnKhoHang.getStyleClass().clear();
 		btnKhoHang.getStyleClass().addAll("button", "buttonSelectMain");
 		btnBanHang.getStyleClass().clear();
 		btnBanHang.getStyleClass().addAll("button", "buttonSelectMain");
+		btnNhanVien.getStyleClass().clear();
+		btnNhanVien.getStyleClass().addAll("button", "buttonSelectMain");
+	}
+	
+	@FXML
+	public void actionButtonNhanVien() {
+		Node banHang = stkOptions.getChildren().get(0);
+		Node khoHang = stkOptions.getChildren().get(1);
+		Node thongKe = stkOptions.getChildren().get(2);
+		Node nhanVien = stkOptions.getChildren().get(3);
+		khoHang.setVisible(false);
+		banHang.setVisible(false);
+		nhanVien.setVisible(true);
+		thongKe.setVisible(false);
+		btnNhanVien.getStyleClass().add("activeButton");
+		btnKhoHang.getStyleClass().clear();
+		btnKhoHang.getStyleClass().addAll("button", "buttonSelectMain");
+		btnBanHang.getStyleClass().clear();
+		btnBanHang.getStyleClass().addAll("button", "buttonSelectMain");
+		btnThongKe.getStyleClass().clear();
+		btnThongKe.getStyleClass().addAll("button", "buttonSelectMain");
 	}
 
 
