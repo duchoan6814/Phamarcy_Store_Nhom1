@@ -39,12 +39,12 @@ public class DAONhanVien {
 
 		String _phanQuyen;
 		if (phanQuyen.equals("Tất Cả")) {
-			_phanQuyen = "'%%'";
+			_phanQuyen = "like '%%'";
 		}else {
-			_phanQuyen = "'"+phanQuyen+"'";
+			_phanQuyen = "= '"+phanQuyen+"'";
 		}
 		
-		String sql = "SELECT * FROM NhaVienBanThuoc nv JOIN TaiKhoan tk on tk.TenDangNhap = nv.TenDangNhap where NhanVienBanThuocId like ? and CONCAT_WS(' ', HoTenDem, Ten) like ? AND GioiTinh in ("+_gioiTinh+") AND SoDienThoai like ? AND SoCMND LIKE ? AND PhanQuyen like "+_phanQuyen+"";
+		String sql = "SELECT * FROM NhaVienBanThuoc nv JOIN TaiKhoan tk on tk.TenDangNhap = nv.TenDangNhap where NhanVienBanThuocId like ? and CONCAT_WS(' ', HoTenDem, Ten) like ? AND GioiTinh in ("+_gioiTinh+") AND SoDienThoai like ? AND SoCMND LIKE ? AND PhanQuyen "+_phanQuyen+"";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, "%"+maNhanVien+"%");
