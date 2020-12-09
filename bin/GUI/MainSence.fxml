@@ -66,7 +66,7 @@
 				<Circle fx:id="cirAvatar" fill="DODGERBLUE" layoutX="100.0" layoutY="73.0" radius="48.0" stroke="WHITE" strokeType="INSIDE" />
 				<VBox layoutX="-1.0" layoutY="231.0" prefHeight="208.0" prefWidth="201.0">
 					<children>
-						<HBox onMouseClicked="#actionButtonBanHang" fx:id="btnBanHang" style="-fx-padding: 10px 40px;" styleClass="buttonSelectMain">
+						<HBox fx:id="btnBanHang" onMouseClicked="#actionButtonBanHang" style="-fx-padding: 10px 40px;" styleClass="buttonSelectMain">
 							<children>
 								<ImageView fitHeight="32.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
 									<image>
@@ -83,7 +83,7 @@
 								</Text>
 							</children>
 						</HBox>
-						<HBox onMouseClicked="#actionButtonKhoHang" fx:id="btnKhoHang" styleClass="buttonSelectMain">
+						<HBox fx:id="btnKhoHang" onMouseClicked="#actionButtonKhoHang" styleClass="buttonSelectMain">
 							<children>
 								<ImageView fitHeight="32.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
 									<image>
@@ -100,7 +100,7 @@
 								</Text>
 							</children>
 						</HBox>
-						<HBox onMouseClicked="#actionButtonThongKe" fx:id="btnThongKe" styleClass="buttonSelectMain">
+						<HBox fx:id="btnThongKe" onMouseClicked="#actionButtonThongKe" styleClass="buttonSelectMain">
 							<children>
 								<ImageView fitHeight="32.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
 									<image>
@@ -117,7 +117,7 @@
 								</Text>
 							</children>
 						</HBox>
-						<HBox onMouseClicked="#actionButtonNhanVien" fx:id="btnNhanVien" styleClass="buttonSelectMain">
+						<HBox fx:id="btnNhanVien" onMouseClicked="#actionButtonNhanVien" styleClass="buttonSelectMain">
 							<children>
 								<ImageView fitHeight="32.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
 									<image>
@@ -136,7 +136,7 @@
 						</HBox>
 					</children>
 				</VBox>
-				<Text fx:id="lblId" fill="WHITE" layoutX="14.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="171.27197265625">
+				<Text fx:id="lblId" fill="WHITE" layoutX="14.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="171.27197265625">
 					<font>
 						<Font name="Roboto" size="13.0" />
 					</font>

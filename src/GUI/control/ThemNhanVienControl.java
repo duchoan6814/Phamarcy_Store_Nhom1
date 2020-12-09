@@ -44,6 +44,7 @@ public class ThemNhanVienControl implements Initializable {
 	public Text lblTen;
 	public Text lblSoDienThoai;
 	public Text lblSoCMND;
+	public Text lblAvatar;
 	public TextField txtTenDangNhap;
 	public TextField txtMaNhanVien;
 	public TextField txtHoVaTenDem;
@@ -82,7 +83,7 @@ public class ThemNhanVienControl implements Initializable {
 				// TODO Auto-generated method stub
 				if (checkHoVaTenDem(txtHoVaTenDem.getText()) && checkMatKhau(txtMatKhau.getText()) && checkNhapLaiMatKhau(txtNhapLaiMatKhau.getText())
 						&& checkSoCMND(txtSoCMND.getText()) && checkSoDienThoai(txtSoDienThoai.getText())
-						&& checkTen(txtTen.getText()) && checkTenDangNhap(txtTenDangNhap.getText())) {
+						&& checkTen(txtTen.getText()) && checkTenDangNhap(txtTenDangNhap.getText()) && checkAvatar()) {
 					NhanVienBanThuoc nhanVienBanThuoc = new NhanVienBanThuoc();
 					nhanVienBanThuoc.setDiaChi(txtDiaChi.getText());
 					nhanVienBanThuoc.setGioiTinh(cmbGioiTinh.getValue().equals("Nam") ? true : false);
@@ -106,12 +107,29 @@ public class ThemNhanVienControl implements Initializable {
 						common.showNotification(AlertType.ERROR, "ERROR", "Lỗi kết nối vui lòng kiểm tra lại!");
 					}else {
 						common.showNotification(AlertType.INFORMATION, "INFORMATION", "Thêm thành công!");
+						themThanhcong();
 					}
 				}else {
 					common.showNotification(AlertType.ERROR, "ERROR", "Thêm không thành công vui lòng kiểm tra lại cái điều kiện!");
 				}
 			}
 		});
+	}
+	
+	private void themThanhcong() {
+		// TODO Auto-generated method stub
+		txtTenDangNhap.setText("");
+		txtMatKhau.setText("");
+		txtNhapLaiMatKhau.setText("");
+		txtMaNhanVien.setText("");
+		txtHoVaTenDem.setText("");
+		txtTen.setText("");
+		txtSoDienThoai.setText("");
+		txtSoCMND.setText("");
+		txtAvatar.setText("");
+		txtDiaChi.setText("");
+		dateNgaySinh.setValue(null);
+		this.mainSenceControl.showQuanLyNhanVien();
 	}
 
 	private void initButtonFile() {
@@ -139,9 +157,23 @@ public class ThemNhanVienControl implements Initializable {
 		initTen();
 		initSoDienThoai();
 		initSoCMND();
-		initMaNhanVien();
+		initFilePicker();
 	}
-	private void initMaNhanVien() {
+	private void initFilePicker() {
+		// TODO Auto-generated method stub
+		txtAvatar.setDisable(true);
+	}
+	
+	private boolean checkAvatar() {
+		if (txtAvatar.getText().isEmpty()) {
+			lblAvatar.setText("Avatar không được để trống!");
+			return false;
+		}
+		lblAvatar.setText("");
+		return true;
+	}
+
+	public void initMaNhanVien() {
 		// TODO Auto-generated method stub
 		txtMaNhanVien.setText(daoNhanVien.generateMaNhanVien());
 	}

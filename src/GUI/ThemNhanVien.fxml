@@ -139,6 +139,7 @@
                   <Text fx:id="lblHoVaTenDem" layoutX="357.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.rowIndex="5" />
                   <Text fx:id="lblTen" layoutX="10.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.rowIndex="8" />
                   <Text fx:id="lblSoDienThoai" layoutX="10.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.rowIndex="14" />
+                  <Text fx:id="lblAvatar" layoutX="357.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                </children>
             </GridPane>
          </children>

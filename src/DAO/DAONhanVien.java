@@ -27,9 +27,10 @@ public class DAONhanVien {
 	}
 
 	public boolean themNhanVien(NhanVienBanThuoc nhanVienBanThuoc, String filePath) {
-		if (daoTaiKhoan.themTaiKhoan(nhanVienBanThuoc)) {
+		if (daoTaiKhoan.themTaiKhoan(conn, nhanVienBanThuoc)) {
 			String sql = "INSERT into NhaVienBanThuoc(Avatar, DiaChi, GioiTinh, HoTenDem, NgaySinh, NhanVienBanThuocId, SoCMND, SoDienThoai, Ten, TenDangNhap) VALUES ((SELECT * FROM OPENROWSET(BULK N'"+filePath+"', SINGLE_BLOB) as T1), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			try {
+				conn.setAutoCommit(false);
 				PreparedStatement ps = conn.prepareStatement(sql);
 				ps.setNString(1, nhanVienBanThuoc.getDiaChi());
 				ps.setBoolean(2, nhanVienBanThuoc.isGioiTinh());
@@ -43,10 +44,18 @@ public class DAONhanVien {
 				
 				boolean rs = ps.executeUpdate() > 0;
 				
+				conn.commit();
+				
 				return rs;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				return false;
 			}
 		}else {

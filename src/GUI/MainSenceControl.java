@@ -47,6 +47,7 @@ public class MainSenceControl implements Initializable {
 	public HBox btnKhoHang;
 	public HBox btnThongKe;
 	public HBox btnNhanVien;
+	private ThemNhanVienControl themNhanVienControl;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -132,7 +133,7 @@ public class MainSenceControl implements Initializable {
 		}
 		
 		FXMLLoader loaderThemNhanVien = new FXMLLoader(getClass().getResource("ThemNhanVien.fxml"));
-		ThemNhanVienControl themNhanVienControl = new ThemNhanVienControl();
+		themNhanVienControl = new ThemNhanVienControl();
 		themNhanVienControl.setMainSenceControl(this);
 		loaderThemNhanVien.setController(themNhanVienControl);
 		try {
@@ -168,6 +169,7 @@ public class MainSenceControl implements Initializable {
 		thongKe.setVisible(false);
 		nhanVien.setVisible(false);
 		themNhanVien.setVisible(true);
+		themNhanVienControl.initMaNhanVien();
 	}
 	
 	@FXML
