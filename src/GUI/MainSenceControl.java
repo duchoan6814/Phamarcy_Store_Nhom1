@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import DAO.DAONhanVien;
 import GUI.control.NhanVienControl;
+import GUI.control.ThemNhanVienControl;
 import GUI.control.ThongKeGlobal;
 import entity.HoaDon;
 import entity.NhanVienBanThuoc;
@@ -121,9 +122,20 @@ public class MainSenceControl implements Initializable {
 		
 		FXMLLoader loaderNhanVien = new FXMLLoader(getClass().getResource("QuanLyNV.fxml"));
 		NhanVienControl control = new NhanVienControl();
+		control.setMainSenceControl(this);
 		loaderNhanVien.setController(control);
 		try {
 			stkOptions.getChildren().add(3, loaderNhanVien.load());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		FXMLLoader loaderThemNhanVien = new FXMLLoader(getClass().getResource("ThemNhanVien.fxml"));
+		ThemNhanVienControl themNhanVienControl = new ThemNhanVienControl();
+		loaderNhanVien.setController(themNhanVienControl);
+		try {
+			stkOptions.getChildren().add(4, loaderThemNhanVien.load());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -134,11 +146,27 @@ public class MainSenceControl implements Initializable {
 		Node khoHang = stkOptions.getChildren().get(1);
 		Node banHang = stkOptions.getChildren().get(0);
 		Node nhanVien = stkOptions.getChildren().get(3);
+		Node themNhanVien = stkOptions.getChildren().get(4);
+		
 		khoHang.setVisible(false);
 		banHang.setVisible(true);
 		thongKe.setVisible(false);
 		nhanVien.setVisible(false);
+		themNhanVien.setVisible(false);
 		
+	}
+	
+	public void showThemNhanVien() {
+		Node thongKe = stkOptions.getChildren().get(2);
+		Node khoHang = stkOptions.getChildren().get(1);
+		Node banHang = stkOptions.getChildren().get(0);
+		Node nhanVien = stkOptions.getChildren().get(3);
+		Node themNhanVien = stkOptions.getChildren().get(4);
+		khoHang.setVisible(false);
+		banHang.setVisible(false);
+		thongKe.setVisible(false);
+		nhanVien.setVisible(false);
+		themNhanVien.setVisible(true);
 	}
 	
 	@FXML

@@ -6,6 +6,7 @@ import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
 
 import DAO.DAONhanVien;
+import GUI.MainSenceControl;
 import common.Common;
 import common.QuanLyNhanVienTable;
 import entity.NhanVienBanThuoc;
@@ -47,6 +48,7 @@ public class NhanVienControl implements Initializable {
 	private ObservableList<QuanLyNhanVienTable> dataTable;
 	private Common common = new Common();
 	private DAONhanVien daoNhanVien = new DAONhanVien();
+	private MainSenceControl mainSenceControl;
 	
 
 	@Override
@@ -56,6 +58,21 @@ public class NhanVienControl implements Initializable {
 		initButtonTim();
 		initGioiTinhField();
 		initPhanQuyenField();
+		initButtonThem();
+	}
+
+
+	private void initButtonThem() {
+		// TODO Auto-generated method stub
+		btnThem.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				mainSenceControl.showThemNhanVien();
+			}
+		});
+		
 	}
 
 
@@ -138,6 +155,12 @@ public class NhanVienControl implements Initializable {
 	private void createButtonSua() {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	public void setMainSenceControl(MainSenceControl mainSenceControl) {
+		// TODO Auto-generated method stub
+		this.mainSenceControl = mainSenceControl;
 	}
 
 }
