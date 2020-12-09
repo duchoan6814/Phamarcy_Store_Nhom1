@@ -113,9 +113,15 @@ public class NhanVienControl implements Initializable {
 					common.showNotification(AlertType.INFORMATION, "INFORMATION", "Không tìm thấy kết quả phù hợp!");
 				}else {
 					for (NhanVienBanThuoc nhanVienBanThuoc : list) {
+						String _ngaySinh = null;
+						try {
+							_ngaySinh = nhanVienBanThuoc.getNgaySinh().toString();
+						} catch (Exception e) {
+							// TODO: handle exception
+						}
 						dataTable.add(new QuanLyNhanVienTable(dataTable.size(), nhanVienBanThuoc.getId(),
 								nhanVienBanThuoc.getHoTenDem()+" "+nhanVienBanThuoc.getTen(),
-								nhanVienBanThuoc.getNgaySinh().toString(), nhanVienBanThuoc.getSoDienThoai(),
+								_ngaySinh, nhanVienBanThuoc.getSoDienThoai(),
 								nhanVienBanThuoc.getSoCMND(), nhanVienBanThuoc.isGioiTinh() ? "Nam" : "Nữ", nhanVienBanThuoc.getTaiKhoan().getPhanQuyen().getPhanQuyen()));
 					}
 				}

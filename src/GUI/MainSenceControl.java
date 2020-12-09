@@ -133,7 +133,8 @@ public class MainSenceControl implements Initializable {
 		
 		FXMLLoader loaderThemNhanVien = new FXMLLoader(getClass().getResource("ThemNhanVien.fxml"));
 		ThemNhanVienControl themNhanVienControl = new ThemNhanVienControl();
-		loaderNhanVien.setController(themNhanVienControl);
+		themNhanVienControl.setMainSenceControl(this);
+		loaderThemNhanVien.setController(themNhanVienControl);
 		try {
 			stkOptions.getChildren().add(4, loaderThemNhanVien.load());
 		} catch (IOException e) {
@@ -175,10 +176,13 @@ public class MainSenceControl implements Initializable {
 		Node banHang = stkOptions.getChildren().get(0);
 		Node thongKe = stkOptions.getChildren().get(2);
 		Node nhanVien = stkOptions.getChildren().get(3);
+		Node themNhanVien = stkOptions.getChildren().get(4);
+		themNhanVien.setVisible(false);
 		khoHang.setVisible(true);
 		banHang.setVisible(false);
 		thongKe.setVisible(false);
 		nhanVien.setVisible(false);
+		
 		btnKhoHang.getStyleClass().add("activeButton");
 		btnBanHang.getStyleClass().clear();
 		btnBanHang.getStyleClass().addAll("button", "buttonSelectMain");
@@ -194,6 +198,8 @@ public class MainSenceControl implements Initializable {
 		Node khoHang = stkOptions.getChildren().get(1);
 		Node thongKe = stkOptions.getChildren().get(2);
 		Node nhanVien = stkOptions.getChildren().get(3);
+		Node themNhanVien = stkOptions.getChildren().get(4);
+		themNhanVien.setVisible(false);
 		khoHang.setVisible(false);
 		banHang.setVisible(true);
 		thongKe.setVisible(false);
@@ -213,6 +219,8 @@ public class MainSenceControl implements Initializable {
 		Node khoHang = stkOptions.getChildren().get(1);
 		Node thongKe = stkOptions.getChildren().get(2);
 		Node nhanVien = stkOptions.getChildren().get(3);
+		Node themNhanVien = stkOptions.getChildren().get(4);
+		themNhanVien.setVisible(false);
 		khoHang.setVisible(false);
 		banHang.setVisible(false);
 		nhanVien.setVisible(false);
@@ -232,6 +240,8 @@ public class MainSenceControl implements Initializable {
 		Node khoHang = stkOptions.getChildren().get(1);
 		Node thongKe = stkOptions.getChildren().get(2);
 		Node nhanVien = stkOptions.getChildren().get(3);
+		Node themNhanVien = stkOptions.getChildren().get(4);
+		themNhanVien.setVisible(false);
 		khoHang.setVisible(false);
 		banHang.setVisible(false);
 		nhanVien.setVisible(true);
@@ -259,6 +269,20 @@ public class MainSenceControl implements Initializable {
 		// TODO Auto-generated method stub
 		this.nhanVienBanThuoc = nhanVienBanThuoc;
 
+	}
+
+	public void showQuanLyNhanVien() {
+		// TODO Auto-generated method stub
+		Node thongKe = stkOptions.getChildren().get(2);
+		Node khoHang = stkOptions.getChildren().get(1);
+		Node banHang = stkOptions.getChildren().get(0);
+		Node nhanVien = stkOptions.getChildren().get(3);
+		Node themNhanVien = stkOptions.getChildren().get(4);
+		khoHang.setVisible(false);
+		banHang.setVisible(false);
+		thongKe.setVisible(false);
+		nhanVien.setVisible(true);
+		themNhanVien.setVisible(false);
 	}
 
 

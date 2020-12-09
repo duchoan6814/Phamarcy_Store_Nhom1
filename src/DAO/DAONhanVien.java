@@ -19,15 +19,91 @@ import entity.TaiKhoan;
 
 public class DAONhanVien {
 	Connection conn;
+	private DAOTaiKhoan daoTaiKhoan = new DAOTaiKhoan();
 
 	public DAONhanVien() {
 		// TODO Auto-generated constructor stub
 		conn = DAO.getInstance().getConn();
 	}
 
+	public boolean themNhanVien(NhanVienBanThuoc nhanVienBanThuoc, String filePath) {
+		if (daoTaiKhoan.themTaiKhoan(nhanVienBanThuoc)) {
+			String sql = "INSERT into NhaVienBanThuoc(Avatar, DiaChi, GioiTinh, HoTenDem, NgaySinh, NhanVienBanThuocId, SoCMND, SoDienThoai, Ten, TenDangNhap) VALUES ((SELECT * FROM OPENROWSET(BULK N'"+filePath+"', SINGLE_BLOB) as T1), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			try {
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setNString(1, nhanVienBanThuoc.getDiaChi());
+				ps.setBoolean(2, nhanVienBanThuoc.isGioiTinh());
+				ps.setNString(3, nhanVienBanThuoc.getHoTenDem());
+				ps.setDate(4, nhanVienBanThuoc.getNgaySinh());
+				ps.setString(5, nhanVienBanThuoc.getId());
+				ps.setString(6, nhanVienBanThuoc.getSoCMND());
+				ps.setString(7, nhanVienBanThuoc.getSoDienThoai());
+				ps.setNString(8, nhanVienBanThuoc.getTen());
+				ps.setString(9, nhanVienBanThuoc.getTaiKhoan().getTenDangNhap());
+				
+				boolean rs = ps.executeUpdate() > 0;
+				
+				return rs;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+		}else {
+			return false;
+		}
+	}
+	
+//	public boolean setAvatarForNhanVien(String filePath, NhanVienBanThuoc nhanVienBanThuoc) {
+//		String sql = "update NhaVienBanThuoc set Avatar = (SELECT * FROM OPENROWSET(BULK N'"+filePath+"', SINGLE_BLOB) as T1) where NhanVienBanThuocId = ?";
+//		try {
+//			PreparedStatement ps = conn.prepareStatement(sql);
+//			ps.setNString(1, filePath);
+////			ps.setString(2, nhanVienBanThuoc.getId());
+//			
+//			return ps.executeUpdate() > 0;
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return false;
+//	}
+//	
+	public String generateMaNhanVien() {
+		String sql = "SELECT top 1 NhanVienBanThuocId FROM NhaVienBanThuoc ORDER BY NhanVienBanThuocId DESC";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				String id = rs.getString("NhanVienBanThuocId");
+				int doDaiID = id.length();
+				String text = id.substring(0, 2);
+				int number = Integer.parseInt(id.substring(2, doDaiID));
+				int sqNumber = number + 1;
+				String sqNumberString = Integer.toString(sqNumber);
+				String reID;
+				if (sqNumberString.length() >= 1 && sqNumberString.length() < 2){
+					reID = text+"00"+sqNumberString;
+				}else if (sqNumberString.length() >= 2 && sqNumberString.length() < 3) {
+					reID = text+"0"+sqNumberString;
+				}else {
+					reID = text+sqNumberString;
+				}
+				
+				return reID;
+			}else {
+				return "NV001";
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "NV001";
+	}
+
 	public List<NhanVienBanThuoc> filterNhanVienBanThuoc(String maNhanVien, String tenNhanVien, String soDienThoai, String gioiTinh, String phanQuyen, String soCMND){
 		List<NhanVienBanThuoc> list = new ArrayList<>();
-		
+
 		String _gioiTinh;
 		if (gioiTinh.equals("Cả Hai")) {
 			_gioiTinh = "1, 0";
@@ -43,7 +119,7 @@ public class DAONhanVien {
 		}else {
 			_phanQuyen = "= '"+phanQuyen+"'";
 		}
-		
+
 		String sql = "SELECT * FROM NhaVienBanThuoc nv JOIN TaiKhoan tk on tk.TenDangNhap = nv.TenDangNhap where NhanVienBanThuocId like ? and CONCAT_WS(' ', HoTenDem, Ten) like ? AND GioiTinh in ("+_gioiTinh+") AND SoDienThoai like ? AND SoCMND LIKE ? AND PhanQuyen "+_phanQuyen+"";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -51,7 +127,7 @@ public class DAONhanVien {
 			ps.setNString(2, "%"+tenNhanVien+"%");
 			ps.setString(3, "%"+soDienThoai+"%");
 			ps.setString(4, "%"+soCMND+"%");
-			
+
 			ResultSet result = ps.executeQuery();
 			while(result.next()) {
 				NhanVienBanThuoc nhanVienBanThuoc = new NhanVienBanThuoc();
@@ -68,7 +144,7 @@ public class DAONhanVien {
 				taiKhoan.setTenDangNhap(result.getString("TenDangNhap"));
 				taiKhoan.setPhanQuyen(PhanQuyen.get(result.getString("PhanQuyen").trim()));
 				nhanVienBanThuoc.setTaiKhoan(taiKhoan);
-				
+
 				list.add(nhanVienBanThuoc);
 			}
 		} catch (SQLException e) {

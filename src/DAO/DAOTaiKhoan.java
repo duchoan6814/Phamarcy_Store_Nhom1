@@ -17,6 +17,22 @@ public class DAOTaiKhoan {
 		conn = DAO.getInstance().getConn();
 	}
 	
+	public boolean themTaiKhoan(NhanVienBanThuoc nhanVienBanThuoc) {
+		String sql = "INSERT into TaiKhoan(TenDangNhap, MatKhau, PhanQuyen) VALUES (?, ?, ?)";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, nhanVienBanThuoc.getTaiKhoan().getTenDangNhap());
+			ps.setString(2, nhanVienBanThuoc.getTaiKhoan().getMatKhau());
+			ps.setString(3, nhanVienBanThuoc.getTaiKhoan().getPhanQuyen().getPhanQuyen());
+			
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	public boolean checkTaiKhoan(String userName) {
 		String sql = "select * from TaiKhoan WHERE TenDangNhap = ?";
 		try {
