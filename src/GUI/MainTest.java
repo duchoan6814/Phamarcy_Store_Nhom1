@@ -15,7 +15,6 @@ public class MainTest extends Application {
 
 	public static void main(String passes[]) {
 		// TODO Auto-generated method stub
-		DAO dao = new DAO("localhost", "sa", "Tokelovip123");
 		launch(passes);
 	}
 
