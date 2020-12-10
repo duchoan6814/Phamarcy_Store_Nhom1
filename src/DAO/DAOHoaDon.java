@@ -235,17 +235,20 @@ public class DAOHoaDon {
 		}
 	}
 
-	public List<HoaDon> filterHoaDon(LocalDate dateFrom, LocalDate dateTo, String maHoaDon, String tenNhanVien, String tenKhachHang){
+	public List<HoaDon> filterHoaDon(boolean tatCaThoiGian ,LocalDate dateFrom, LocalDate dateTo, String maHoaDon, String tenNhanVien, String tenKhachHang){
 		System.out.println(dateFrom.compareTo(dateTo));
 		List<HoaDon> list = new ArrayList<>();
 		String _ngayLap = "";
-		if (dateFrom.compareTo(dateTo) == 0) {
-			dateTo = dateTo.plusDays(1);
+		if (!tatCaThoiGian) {
+			if (dateFrom.compareTo(dateTo) == 0) {
+				dateTo = dateTo.plusDays(1);
+			}
+			java.sql.Date _dateFrom = java.sql.Date.valueOf(dateFrom.toString());
+			java.sql.Date _dateTo = java.sql.Date.valueOf(dateTo.toString());
+			_ngayLap = "and hd.ThoiGianLap BETWEEN '"+_dateFrom.toString()+"' and '"+_dateTo.toString()+"'";
 		}
-		java.sql.Date _dateFrom = java.sql.Date.valueOf(dateFrom.toString());
-		java.sql.Date _dateTo = java.sql.Date.valueOf(dateTo.toString());
-		_ngayLap = "hd.ThoiGianLap BETWEEN '"+_dateFrom.toString()+"' and '"+_dateTo.toString()+"'";
-		String sql = "SELECT hd.*, nv.HoTenDem as HoTenDemNV, nv.Ten as TenNV, kh.HoTenDem as HoTenDemKH, kh.Ten as TenKH from HoaDon as hd LEFT JOIN NhaVienBanThuoc as nv on hd.NhanVienBanThuocId = nv.NhanVienBanThuocId LEFT JOIN KhachHang as kh on hd.KhachHangId = kh.KhachHangId WHERE CONCAT_WS(' ', kh.HoTenDem, kh.Ten) like N'%"+tenKhachHang+"%' and CONCAT_WS(' ', nv.HoTenDem, nv.Ten) like N'%"+tenNhanVien+"%' and hd.HoaDonId like '%"+maHoaDon+"%' and "+_ngayLap+"";
+
+		String sql = "SELECT hd.*, nv.HoTenDem as HoTenDemNV, nv.Ten as TenNV, kh.HoTenDem as HoTenDemKH, kh.Ten as TenKH from HoaDon as hd LEFT JOIN NhaVienBanThuoc as nv on hd.NhanVienBanThuocId = nv.NhanVienBanThuocId LEFT JOIN KhachHang as kh on hd.KhachHangId = kh.KhachHangId WHERE CONCAT_WS(' ', kh.HoTenDem, kh.Ten) like N'%"+tenKhachHang+"%' and CONCAT_WS(' ', nv.HoTenDem, nv.Ten) like N'%"+tenNhanVien+"%' and hd.HoaDonId like '%"+maHoaDon+"%' "+_ngayLap+"";
 
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);		

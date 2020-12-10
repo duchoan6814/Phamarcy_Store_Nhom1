@@ -11,6 +11,8 @@ import DAO.DAOHoaDon;
 import common.Common;
 import common.HoaDonTable;
 import entity.HoaDon;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,18 +20,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class HoaDonControl implements Initializable {
 	DAOHoaDon daoHoaDon = new DAOHoaDon();
 	Common common = new Common();
+	
+	private int soHoaDon;
+	private double tongDoanhThu;
 	
 	public TableView<HoaDonTable> tbsHoaDon;
 	public DatePicker dateFrom;
@@ -38,6 +45,9 @@ public class HoaDonControl implements Initializable {
 	public TextField txtMaHoaDon;
 	public TextField txtNhanVien;
 	public TextField txtKhachHang;
+	public RadioButton rbtTatCaThoiGian;
+	public Text lblTongSoHoaDon;
+	public Text lblTongDoanhThu;
 	public TableColumn<HoaDonTable, Integer> colSTT;
 	public TableColumn<HoaDonTable, String> colMaHoaDon;
 	public TableColumn<HoaDonTable, String> colNgayLap;
@@ -56,6 +66,28 @@ public class HoaDonControl implements Initializable {
 		// TODO Auto-generated method stub
 		initNgayLap();
 		initTable();
+		initSomeField();
+	}
+
+	private void initSomeField() {
+		// TODO Auto-generated method stub
+		rbtTatCaThoiGian.setSelected(true);
+		dateFrom.setDisable(true);
+		dateTo.setDisable(true);
+		rbtTatCaThoiGian.selectedProperty().addListener(new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+				// TODO Auto-generated method stub
+				if (!rbtTatCaThoiGian.isSelected()) {
+					dateFrom.setDisable(false);
+					dateTo.setDisable(false);
+				}else {
+					dateFrom.setDisable(true);
+					dateTo.setDisable(true);
+				}
+			}
+		});
 	}
 
 	private void initTable() {
@@ -128,29 +160,42 @@ public class HoaDonControl implements Initializable {
 
 	@FXML
 	public void actionButtonTim() {
-		dataTable.clear();
-		List<HoaDon> list = daoHoaDon.filterHoaDon(dateFrom.getValue(), dateTo.getValue(),
-				txtMaHoaDon.getText(), txtNhanVien.getText(), txtKhachHang.getText());
-		if (list.size() <= 0) {
-			common.showNotification(AlertType.INFORMATION, "Không tìm thấy!", "Không tìm thấy thuốc hóa đơn tương thích!");
-		}else {
-			list.forEach(i -> {
-				String _tenKhachHang = "";
-				try {
-					_tenKhachHang = i.getKhachHang().getHoTenDem()+" "+i.getKhachHang().getTen();
-				}catch (Exception e) {
-					// TODO: handle exception
-					;
-				}
+		if (dateFrom.getValue().compareTo(dateTo.getValue()) <= 0) {
+			dataTable.clear();
+			this.soHoaDon = 0;
+			this.tongDoanhThu = 0;
+			List<HoaDon> list = daoHoaDon.filterHoaDon(rbtTatCaThoiGian.isSelected(),dateFrom.getValue(), dateTo.getValue(),
+					txtMaHoaDon.getText(), txtNhanVien.getText(), txtKhachHang.getText());
+			if (list.size() <= 0) {
+				common.showNotification(AlertType.INFORMATION, "Không tìm thấy!", "Không tìm thấy thuốc hóa đơn tương thích!");
+				lblTongSoHoaDon.setText("Tổng Số Hóa Đơn: 0");
+				lblTongDoanhThu.setText("Tổng Doanh Thu: ođ");
+			}else {
+				list.forEach(i -> {
+					String _tenKhachHang = "";
+					try {
+						_tenKhachHang = i.getKhachHang().getHoTenDem()+" "+i.getKhachHang().getTen();
+					}catch (Exception e) {
+						// TODO: handle exception
+						;
+					}
 
-				dataTable.add(new HoaDonTable(dataTable.size(), i.getId(),
-						i.getThoiGianLap().toString(), i.getNhanVienBanThuoc().getHoTenDem()+" "+i.getNhanVienBanThuoc().getTen(),
-						_tenKhachHang,
-						common.formatMoney(i.tinhTienHoaDonBaoGomThue()),
-						common.formatMoney(i.getDiemSuDung()),
-						common.formatMoney(i.getTienPhaiTra()),
-						common.formatMoney(i.tinhDiemTichLuy())));
-			});
+					dataTable.add(new HoaDonTable(dataTable.size(), i.getId(),
+							i.getThoiGianLap().toString(), i.getNhanVienBanThuoc().getHoTenDem()+" "+i.getNhanVienBanThuoc().getTen(),
+							_tenKhachHang,
+							common.formatMoney(i.tinhTienHoaDonBaoGomThue()),
+							common.formatMoney(i.getDiemSuDung()),
+							common.formatMoney(i.getTienPhaiTra()),
+							common.formatMoney(i.tinhDiemTichLuy())));
+					
+					soHoaDon += 1;
+					tongDoanhThu += i.tinhTienPhaiTra();
+				});
+				lblTongSoHoaDon.setText("Tổng Số Hóa Đơn: "+soHoaDon);
+				lblTongDoanhThu.setText("Tổng Doanh Thu: "+common.formatMoney(tongDoanhThu));
+			}
+		}else {
+			common.showNotification(AlertType.INFORMATION, "INFORMATION", "Ngày bắt đầu Chỉ được phép bé hơn hoặc bằng ngày kết thúc!");
 		}
 	}
 	
