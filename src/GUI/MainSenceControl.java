@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import DAO.DAONhanVien;
@@ -14,11 +15,18 @@ import entity.HoaDon;
 import entity.NhanVienBanThuoc;
 import entity.PhanQuyen;
 import entity.QuanLy;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Shadow;
@@ -30,6 +38,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class MainSenceControl implements Initializable {
 	private NhanVienBanThuoc nhanVienBanThuoc;
@@ -47,6 +56,7 @@ public class MainSenceControl implements Initializable {
 	public HBox btnKhoHang;
 	public HBox btnThongKe;
 	public HBox btnNhanVien;
+	public HBox btnDangXuat;
 	private ThemNhanVienControl themNhanVienControl;
 
 	@Override
@@ -58,6 +68,41 @@ public class MainSenceControl implements Initializable {
 		//set active button
 		btnBanHang.getStyleClass().add("activeButton");
 		phanQuyen();
+		
+		btnDangXuat.setOnMouseClicked(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event arg0) {
+				// TODO Auto-generated method stub
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Đăng Xuất");
+				alert.setHeaderText(null);
+				alert.setContentText("Bạn có muốn đăng xuất?");
+
+				Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == ButtonType.OK){
+					// ... user chose OK
+					Stage stage = (Stage) ((Node)arg0.getSource()).getScene().getWindow();
+					stage.close();
+					
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+					Parent root;
+					try {
+						root = loader.load();
+						Stage loginStage = new Stage();
+						Scene scene = new Scene(root);
+						loginStage.setScene(scene);
+						loginStage.show();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				} else {
+					// ... user chose CANCEL or closed the dialog
+				}
+			}
+		});
 
 	}
 
@@ -256,8 +301,7 @@ public class MainSenceControl implements Initializable {
 		btnThongKe.getStyleClass().clear();
 		btnThongKe.getStyleClass().addAll("button", "buttonSelectMain");
 	}
-
-
+	
 	private void setAvatar() {
 		// TODO Auto-generated method stub
 		//		set avatar
