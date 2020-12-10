@@ -7,9 +7,10 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
-import javax.swing.text.TabableView;
+import java.util.ResourceBundle;
+import java.util.regex.Pattern;
+
 
 import org.controlsfx.control.textfield.TextFields;
 
@@ -23,20 +24,18 @@ import entity.HoaDon;
 import entity.KhachHang;
 import entity.NhanVienBanThuoc;
 import entity.Thuoc;
-import javafx.beans.binding.IntegerExpression;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
@@ -44,7 +43,6 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -52,10 +50,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import javafx.util.converter.NumberStringConverter;
+
 
 public class TaoHoaDonControl implements Initializable {
-	
+
+	private Common common = new Common();
 	private BanHangControl banHangControl;
 
 	private DAOKhachHang kh_dao = new DAOKhachHang();
@@ -69,7 +68,7 @@ public class TaoHoaDonControl implements Initializable {
 
 	private ObservableList<common.ChiTietHoaDon> data;
 
-	
+
 
 	public BanHangControl getBanHangControl() {
 		return banHangControl;
@@ -79,12 +78,8 @@ public class TaoHoaDonControl implements Initializable {
 		this.banHangControl = banHangControl;
 	}
 
-	public TextField txtMaNhanVien;
-	public TextField txtTenNhanVien;
-
 	public TextField txtSoDienThoai;
 	public TextField txtTenKhachHang;
-	public Text lblDiemTichLuy;
 	public Text lblXoaKH;
 	public Pane btnXoaKH;
 
@@ -98,6 +93,7 @@ public class TaoHoaDonControl implements Initializable {
 	public TextField txtSoLuong;
 	public TextField txtDonGia;
 	public TextField txtTongTien;
+	public TextField txtDienTichLuy;
 
 	public TableView<common.ChiTietHoaDon> tblChiTietHoaDon;
 	public TableColumn<common.ChiTietHoaDon, Integer> colSTT;
@@ -150,16 +146,16 @@ public class TaoHoaDonControl implements Initializable {
 					thanhToanStage.initModality(Modality.APPLICATION_MODAL);
 					thanhToanStage.initStyle(StageStyle.UNDECORATED);
 					thanhToanStage.show();
-					
+
 					thanhToanStage.setOnHiding( event -> {
 						if (thanhToanControl.isTrangThaiThanhToan()) {
 							hoaDon = null;
 							clearAllField();
 							data.clear();
-							
+
 							txtTenKhachHang.setText("");
 							txtSoDienThoai.setText("");
-							lblDiemTichLuy.setText("Điểm tích lũy: 0đ");
+							txtDienTichLuy.setText("0đ");
 							txtSoDienThoai.setEditable(true);
 							txtTenKhachHang.setEditable(true);
 							btnXoaKH.setDisable(true);
@@ -187,8 +183,6 @@ public class TaoHoaDonControl implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		txtMaNhanVien.setText(nhanVienBanThuoc.getId());
-		txtTenNhanVien.setText(nhanVienBanThuoc.getHoTenDem()+" "+nhanVienBanThuoc.getTen());
 		try {
 			TextFields.bindAutoCompletion(txtSoDienThoai, kh_dao.getAllSoDienThoai());
 		} catch (SQLException e) {
@@ -198,20 +192,7 @@ public class TaoHoaDonControl implements Initializable {
 
 		TextFields.bindAutoCompletion(txtMaThuoc, thuoc_dao.getAllMaThuoc());
 
-		data = FXCollections.observableArrayList();
-		//		maThuoc, tenThuoc, donViTinh, nuocSanXuat, loaiThuoc, donGia, tongTien
-		colMaThuoc.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
-		colTenThuoc.setCellValueFactory(new PropertyValueFactory<>("tenThuoc"));
-		colDonViTinh.setCellValueFactory(new PropertyValueFactory<>("donViTinh"));
-		colNuocSanXuat.setCellValueFactory(new PropertyValueFactory<>("nuocSanXuat"));
-		colLoaiThuoc.setCellValueFactory(new PropertyValueFactory<>("loaiThuoc"));
-		colDonGia.setCellValueFactory(new PropertyValueFactory<>("donGia"));
-		colSoLuong.setCellValueFactory(new PropertyValueFactory<>("soLuong"));
-		colSTT.setCellValueFactory(new PropertyValueFactory<>("stt"));
-		colDonGia.setCellValueFactory(new PropertyValueFactory<>("donGia"));
-		colTongTien.setCellValueFactory(new PropertyValueFactory<>("tongTien"));
-
-		tblChiTietHoaDon.setItems(data);
+		initTable();
 
 		txtMaThuoc.textProperty().addListener((observable, oldValue, newValue) -> {
 			Thuoc thuoc = thuoc_dao.getThuocById(newValue);
@@ -253,7 +234,7 @@ public class TaoHoaDonControl implements Initializable {
 				final TableCell<common.ChiTietHoaDon, String> cell = new TableCell<common.ChiTietHoaDon, String>()
 				{
 
-					final Button btn = new Button("delete");
+					final Button btn = new Button("Xóa");
 
 					{
 						btn.setStyle("-fx-background-color: red");
@@ -310,6 +291,46 @@ public class TaoHoaDonControl implements Initializable {
 		});
 	}
 
+	private void initTable() {
+		// TODO Auto-generated method stub
+		data = FXCollections.observableArrayList();
+		tblChiTietHoaDon.setEditable(true);
+		//		maThuoc, tenThuoc, donViTinh, nuocSanXuat, loaiThuoc, donGia, tongTien
+		colMaThuoc.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
+		colTenThuoc.setCellValueFactory(new PropertyValueFactory<>("tenThuoc"));
+		colDonViTinh.setCellValueFactory(new PropertyValueFactory<>("donViTinh"));
+		colNuocSanXuat.setCellValueFactory(new PropertyValueFactory<>("nuocSanXuat"));
+		colLoaiThuoc.setCellValueFactory(new PropertyValueFactory<>("loaiThuoc"));
+		colDonGia.setCellValueFactory(new PropertyValueFactory<>("donGia"));
+		colSoLuong.setCellValueFactory(new PropertyValueFactory<>("soLuong"));
+		colSTT.setCellValueFactory(new PropertyValueFactory<>("stt"));
+		colDonGia.setCellValueFactory(new PropertyValueFactory<>("donGia"));
+		colTongTien.setCellValueFactory(new PropertyValueFactory<>("tongTien"));
+
+		colSoLuong.setCellFactory(col -> new IntegerEditingCell());
+		colSoLuong.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<common.ChiTietHoaDon,Integer>>() {
+
+			@Override
+			public void handle(CellEditEvent<common.ChiTietHoaDon, Integer> temp) {
+				// TODO Auto-generated method stub
+
+				String maThuoc = temp.getTableView().getItems().get(temp.getTablePosition().getRow()).getMaThuoc();
+				Integer soLuong = temp.getNewValue();
+
+				if (thuoc_dao.getSoLuongTon(maThuoc) >= soLuong) {
+					hoaDon.suaSoLuongThuoc(maThuoc, soLuong);
+					common.ChiTietHoaDon chiTietHoaDon = temp.getTableView().getItems().get(temp.getTablePosition().getRow());
+					chiTietHoaDon.setTongTien(common.formatMoney(hoaDon.timChiTietHoaDon(maThuoc).tinhTongTienChuaThue()));
+					data.set(temp.getTablePosition().getRow(), chiTietHoaDon);
+					handleWhenTableChange();
+				}
+			}
+		});
+
+		tblChiTietHoaDon.setItems(data);
+
+	}
+
 	public void setKhachHangAndFieldKhachHang(KhachHang khachHang) {
 		hoaDon.setKhachHang(khachHang);
 		Date date= new Date();
@@ -319,7 +340,7 @@ public class TaoHoaDonControl implements Initializable {
 		txtMaHoaDon.setText(hoaDon.getId());
 		txtSoDienThoai.setText(khachHang.getSoDienThoai());
 		txtTenKhachHang.setText(hoaDon.getKhachHang().getHoTenDem()+" "+hoaDon.getKhachHang().getTen());
-		lblDiemTichLuy.setText("Điểm tích lũy: "+new Common().formatMoney(hoaDon.getKhachHang().getDienTichLuy()));
+		txtDienTichLuy.setText(new Common().formatMoney(hoaDon.getKhachHang().getDienTichLuy()));
 		dateNgayLap.setValue(LocalDate.now());
 		txtSoDienThoai.setEditable(false);
 		txtTenKhachHang.setEditable(false);
@@ -378,7 +399,7 @@ public class TaoHoaDonControl implements Initializable {
 				txtMaHoaDon.setText("");
 				txtTenKhachHang.setText("");
 				txtSoDienThoai.setText("");
-				lblDiemTichLuy.setText("Điểm tích lũy: 0đ");
+				txtDienTichLuy.setText("0đ");
 				txtSoDienThoai.setEditable(true);
 				txtTenKhachHang.setEditable(true);
 				btnXoaKH.setDisable(true);
@@ -604,10 +625,10 @@ public class TaoHoaDonControl implements Initializable {
 				hoaDon = null;
 				clearAllField();
 				data.clear();
-				
+
 				txtTenKhachHang.setText("");
 				txtSoDienThoai.setText("");
-				lblDiemTichLuy.setText("Điểm tích lũy: 0đ");
+				txtDienTichLuy.setText("0đ");
 				txtSoDienThoai.setEditable(true);
 				txtTenKhachHang.setEditable(true);
 				btnXoaKH.setDisable(true);
@@ -622,16 +643,16 @@ public class TaoHoaDonControl implements Initializable {
 			alert.setTitle("Confirmation Dialog");
 			alert.setHeaderText(null);
 			alert.setContentText("Bạn chưa có hóa đơn để hủy!");
-			
+
 			alert.show();
 		}
 	}
-	
+
 	public void actionSelectInTabThuoc(Thuoc thuoc) {
 		chiTietHoaDon = new ChiTietHoaDon();
 		chiTietHoaDon.setThuoc(thuoc);
 		chiTietHoaDon.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
-		
+
 		txtMaThuoc.setText(thuoc.getId());
 		txtTenThuoc.setText(thuoc.getTenThuoc());
 		txtDonViTinh.setText(thuoc.getDonViTinh());
@@ -650,4 +671,86 @@ public class TaoHoaDonControl implements Initializable {
 			setKhachHangAndFieldKhachHang(kh_dao.getKhachHangBySoDienThoai(string));
 		}
 	}
+
+	public class IntegerEditingCell extends TableCell<common.ChiTietHoaDon, Integer> {
+
+		private final TextField textField = new TextField();
+		private final Pattern intPattern = Pattern.compile("-?\\d+");
+		private DAOThuoc daoThuoc = new DAOThuoc();
+		private String maThuoc;
+
+		public IntegerEditingCell() {
+			textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+				if (! isNowFocused) {
+					processEdit();
+				}
+			});
+			textField.setOnAction(event -> processEdit());
+		}
+
+		private void processEdit() {
+			String text = textField.getText();
+			if (intPattern.matcher(text).matches()) {
+				commitEdit(Integer.parseInt(text));	
+			} else {
+				cancelEdit();
+			}
+		}
+
+		@Override
+		public void updateItem(Integer value, boolean empty) {
+			super.updateItem(value, empty);
+			if (empty) {
+				setText(null);
+				setGraphic(null);
+			} else if (isEditing()) {
+				setText(null);
+				textField.setText(value.toString());
+				setGraphic(textField);
+			} else {
+				setText(value.toString());
+				setGraphic(null);
+			}
+		}
+
+		@Override
+		public void startEdit() {
+			super.startEdit();
+			Integer value = getItem();
+			if (value != null) {
+				textField.setText(value.toString());
+				setGraphic(textField);
+				setText(null);
+			}
+		}
+
+		@Override
+		public void cancelEdit() {
+			super.cancelEdit();
+			setText(getItem().toString());
+			setGraphic(null);
+		}
+
+		// This seems necessary to persist the edit on loss of focus; not sure why:
+		@Override
+		public void commitEdit(Integer value) {
+			super.commitEdit(value);
+			if (daoThuoc.getSoLuongTon(((common.ChiTietHoaDon)this.getTableRow().getItem()).getMaThuoc()) >= value) {
+				((common.ChiTietHoaDon)this.getTableRow().getItem()).setSoLuong(value.intValue());
+			}else {
+				common.ChiTietHoaDon chiTietHoaDon = this.getTableView().getItems().get(this.getTableRow().getItem().getStt());
+				chiTietHoaDon.setSoLuong(this.getTableRow().getItem().getSoLuong());
+				data.set(this.getTableRow().getItem().getStt(), chiTietHoaDon);
+
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("INFORMATION");
+				alert.setHeaderText(null);
+				alert.setContentText("Số lượng thuốc không đủ, số lượng còn lại là: "+daoThuoc.getSoLuongTon(((common.ChiTietHoaDon)this.getTableRow().getItem()).getMaThuoc()));
+
+				alert.show();
+			}
+		}
+	}
+
 }
+
