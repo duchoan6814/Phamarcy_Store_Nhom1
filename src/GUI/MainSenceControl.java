@@ -4,8 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import DAO.DAONhanVien;
 import GUI.control.NhanVienControl;
@@ -15,6 +20,9 @@ import entity.HoaDon;
 import entity.NhanVienBanThuoc;
 import entity.PhanQuyen;
 import entity.QuanLy;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -39,17 +47,19 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class MainSenceControl implements Initializable {
 	private NhanVienBanThuoc nhanVienBanThuoc;
 	private QuanLy quanLy;
-	
+
 	private DAONhanVien daoNhanVien = new DAONhanVien();
 
 	public Text lblTenNhanVien1;
 	public Text lblTenNhanVien2;
 	public Text lblId;
 	public Text lblSoHoaDon;
+	public Text txtTime;
 	public StackPane stkOptions;
 	public Circle cirAvatar;
 	public HBox btnBanHang;
@@ -68,7 +78,16 @@ public class MainSenceControl implements Initializable {
 		//set active button
 		btnBanHang.getStyleClass().add("activeButton");
 		phanQuyen();
-		
+
+		Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {        
+			LocalDateTime currentTime = LocalDateTime.now();
+			txtTime.setText(currentTime.getHour() + ":" + currentTime.getMinute() + " - " + currentTime.getDayOfMonth() + "/" + currentTime.getMonthValue() + "/" + currentTime.getYear());
+		}),
+				new KeyFrame(Duration.seconds(60))
+				);
+		clock.setCycleCount(Animation.INDEFINITE);
+		clock.play();
+
 		btnDangXuat.setOnMouseClicked(new EventHandler<Event>() {
 
 			@Override
@@ -84,7 +103,7 @@ public class MainSenceControl implements Initializable {
 					// ... user chose OK
 					Stage stage = (Stage) ((Node)arg0.getSource()).getScene().getWindow();
 					stage.close();
-					
+
 					FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
 					Parent root;
 					try {
@@ -97,7 +116,7 @@ public class MainSenceControl implements Initializable {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+
 				} else {
 					// ... user chose CANCEL or closed the dialog
 				}
@@ -143,7 +162,7 @@ public class MainSenceControl implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void initOptionPanel() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("PanelKhoHang.fxml"));
 		KhoHangControl khoHangControl = new KhoHangControl();
@@ -155,7 +174,7 @@ public class MainSenceControl implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		FXMLLoader loaderThongKe = new FXMLLoader(getClass().getResource("pnlThongKeGlobal.fxml"));
 		ThongKeGlobal thongKeGlobal = new ThongKeGlobal();
 		loaderThongKe.setController(thongKeGlobal);
@@ -165,7 +184,7 @@ public class MainSenceControl implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		FXMLLoader loaderNhanVien = new FXMLLoader(getClass().getResource("QuanLyNV.fxml"));
 		NhanVienControl control = new NhanVienControl();
 		control.setMainSenceControl(this);
@@ -176,7 +195,7 @@ public class MainSenceControl implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		FXMLLoader loaderThemNhanVien = new FXMLLoader(getClass().getResource("ThemNhanVien.fxml"));
 		themNhanVienControl = new ThemNhanVienControl();
 		themNhanVienControl.setMainSenceControl(this);
@@ -187,22 +206,22 @@ public class MainSenceControl implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
+
 		Node thongKe = stkOptions.getChildren().get(2);
 		Node khoHang = stkOptions.getChildren().get(1);
 		Node banHang = stkOptions.getChildren().get(0);
 		Node nhanVien = stkOptions.getChildren().get(3);
 		Node themNhanVien = stkOptions.getChildren().get(4);
-		
+
 		khoHang.setVisible(false);
 		banHang.setVisible(true);
 		thongKe.setVisible(false);
 		nhanVien.setVisible(false);
 		themNhanVien.setVisible(false);
-		
+
 	}
-	
+
 	public void showThemNhanVien() {
 		Node thongKe = stkOptions.getChildren().get(2);
 		Node khoHang = stkOptions.getChildren().get(1);
@@ -216,7 +235,7 @@ public class MainSenceControl implements Initializable {
 		themNhanVien.setVisible(true);
 		themNhanVienControl.initMaNhanVien();
 	}
-	
+
 	@FXML
 	public void actionButtonKhoHang() {
 		Node khoHang = stkOptions.getChildren().get(1);
@@ -229,7 +248,7 @@ public class MainSenceControl implements Initializable {
 		banHang.setVisible(false);
 		thongKe.setVisible(false);
 		nhanVien.setVisible(false);
-		
+
 		btnKhoHang.getStyleClass().add("activeButton");
 		btnBanHang.getStyleClass().clear();
 		btnBanHang.getStyleClass().addAll("button", "buttonSelectMain");
@@ -238,7 +257,7 @@ public class MainSenceControl implements Initializable {
 		btnNhanVien.getStyleClass().clear();
 		btnNhanVien.getStyleClass().addAll("button", "buttonSelectMain");
 	}
-	
+
 	@FXML
 	public void actionButtonBanHang() {
 		Node banHang = stkOptions.getChildren().get(0);
@@ -259,7 +278,7 @@ public class MainSenceControl implements Initializable {
 		btnNhanVien.getStyleClass().clear();
 		btnNhanVien.getStyleClass().addAll("button", "buttonSelectMain");
 	}
-	
+
 	@FXML
 	public void actionButtonThongKe() {
 		Node banHang = stkOptions.getChildren().get(0);
@@ -280,7 +299,7 @@ public class MainSenceControl implements Initializable {
 		btnNhanVien.getStyleClass().clear();
 		btnNhanVien.getStyleClass().addAll("button", "buttonSelectMain");
 	}
-	
+
 	@FXML
 	public void actionButtonNhanVien() {
 		Node banHang = stkOptions.getChildren().get(0);
@@ -301,7 +320,7 @@ public class MainSenceControl implements Initializable {
 		btnThongKe.getStyleClass().clear();
 		btnThongKe.getStyleClass().addAll("button", "buttonSelectMain");
 	}
-	
+
 	private void setAvatar() {
 		// TODO Auto-generated method stub
 		//		set avatar
@@ -330,7 +349,5 @@ public class MainSenceControl implements Initializable {
 		nhanVien.setVisible(true);
 		themNhanVien.setVisible(false);
 	}
-
-
 
 }
