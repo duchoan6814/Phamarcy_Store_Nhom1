@@ -141,7 +141,12 @@ public class ThemNhanVienControl implements Initializable {
 				// TODO Auto-generated method stub
 				Stage stage = (Stage) ((Node)arg0.getSource()).getScene().getWindow();
 				File file = fileChooser.showOpenDialog(stage);
-				txtAvatar.setText(file.getPath());
+				try {
+					txtAvatar.setText(file.getPath());
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
 			}
 		});
 	}
