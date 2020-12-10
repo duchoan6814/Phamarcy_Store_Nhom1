@@ -77,7 +77,37 @@ public class DAONhaCungCap extends DAO {
 			return null;
 		}
 	}
-	
+	public List<NhaCungCap> filterPhieuNhapNCC(String ma,String ten,String sdt,String fax,String trangChu,String diaChi ){
+		List<NhaCungCap> list = new ArrayList<NhaCungCap>();
+		String sql = "select *from [dbo].[NhaCungCap] where [NhaCungCapId] like ? and [TenNhaCungCap] like ? and [SoDienThoai] like ? and [FAX] like ? and [TrangChu] like ? and ([DiaChi] like ? or  [DiaChi] is null)";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setNString(1,"%"+ma+"%" );
+			ps.setNString(2,"%"+ten+"%" );
+			ps.setNString(3,"%"+sdt+"%" );
+			ps.setNString(4,"%"+fax+"%" );
+			ps.setNString(5,"%"+trangChu+"%" );
+			ps.setNString(6,"%"+diaChi+"%" );
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				NhaCungCap cap = new NhaCungCap();
+				cap.setDiaChi(rs.getString("DiaChi"));
+				cap.setFax(rs.getString("Fax"));
+				cap.setId(rs.getString("NhaCungCapId"));
+				cap.setSoDienThoai(rs.getString("SoDienThoai"));
+				cap.setTenNhaCungCap(rs.getString("TenNhaCungCap"));
+				cap.setTrangChu(rs.getString("TrangChu"));
+				list.add(cap);
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return list;
+		}
+	}
 	public static void main(String[] args) {
 		DAONhaCungCap cap = new DAONhaCungCap();
 		System.out.println(cap.getNhaCungCapByID("NCC302"));

@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class DAO {
 	protected Connection conn;
-	private String url = "jdbc:sqlserver://192.168.131.60:1433;databasename=PhamarcyHMTV";
+	private String url = "jdbc:sqlserver://DESKTOP-S55O1QQ:1433;databasename=PhamarcyHMTV";
 	private String username = "sa";
-	private String password = "Tokelovip123";
+	private String password = "123456";
 	public DAO() {
 		// TODO Auto-generated constructor stub
 		try {
