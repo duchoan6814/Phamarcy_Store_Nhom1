@@ -1,7 +1,11 @@
 package GUI;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ResourceBundle;
 
 import DAO.DAONhanVien;
@@ -11,16 +15,19 @@ import entity.NhanVienBanThuoc;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 
-public class LoginControl{
+public class LoginControl implements Initializable{
 
 	DAOTaiKhoan tk = new DAOTaiKhoan();
 	DAONhanVien nv_dao = new DAONhanVien();
@@ -30,6 +37,7 @@ public class LoginControl{
 	public TextField userName;
 	public PasswordField password;
 	public Button buttonLogin;
+	public ImageView imgBackground;
 
 	@FXML
 	public void login(ActionEvent event) {
@@ -72,6 +80,20 @@ public class LoginControl{
 	public void closeStageWhenLoginSuccess(ActionEvent event) {
 		Stage stage = (Stage) buttonLogin.getScene().getWindow();
 		stage.close();
+	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		FileInputStream fileInputStream;
+		try {
+			fileInputStream = new FileInputStream(new File("image/8764.jpg"));
+			imgBackground.setImage(new Image(fileInputStream));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }

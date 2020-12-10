@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,8 +12,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import entity.LoThuoc;
 
-public class DAOLoThuoc extends DAO {
+public class DAOLoThuoc{
+	private Connection conn;
+	
 	DAOThuoc daoThuoc = new DAOThuoc();
+	
+	public DAOLoThuoc() {
+		// TODO Auto-generated constructor stub
+		conn = DAO.getInstance().getConn();
+	}
 	
 	public boolean themLoThuoc(String phieuNhapHangId, LoThuoc loThuoc) {
 		String sql = "INSERT into LoThuoc(PhieuNhapHangId, SoLuong, SoLuongConLai, ThuocId, NgaySanXuat) VALUES (?, ?, ?, ?, ?)";

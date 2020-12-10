@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +10,13 @@ import java.util.List;
 import entity.NhaCungCap;
 import entity.NhanVienBanThuoc;
 
-public class DAONhaCungCap extends DAO {
+public class DAONhaCungCap{
+	private Connection conn;
+	
+	public DAONhaCungCap() {
+		// TODO Auto-generated constructor stub
+		conn = DAO.getInstance().getConn();
+	}
 	
 	public List<String> getListTenNhaCungCap(){
 		String sql = "SELECT TenNhaCungCap FROM NhaCungCap";

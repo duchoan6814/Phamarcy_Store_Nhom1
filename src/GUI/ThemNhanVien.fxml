@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="657.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane prefHeight="49.0" prefWidth="1080.0" style="-fx-background-color: #64AD4A;">
+         <children>
+            <Text layoutX="447.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #fff; -fx-font-size: 20px; -fx-font-weight: bold;" text="Thêm Nhân Viên" textAlignment="CENTER" />
+         </children>
+      </Pane>
+      <Pane layoutX="14.0" layoutY="85.0" prefHeight="446.0" prefWidth="321.0" style="-fx-background-color: #fff; -fx-border-color: grey; -fx-border-radius: 5px;">
+         <children>
+            <GridPane layoutX="9.0" layoutY="53.0" prefHeight="255.0" prefWidth="304.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="24.0" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="24.0" minHeight="0.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="24.0" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tên Đăng Nhập" />
+                  <TextField fx:id="txtTenDangNhap" GridPane.rowIndex="1" />
+                  <Text layoutX="10.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mật Khẩu" GridPane.rowIndex="3" />
+                  <PasswordField fx:id="txtMatKhau" GridPane.rowIndex="4" />
+                  <PasswordField fx:id="txtNhapLaiMatKhau" GridPane.rowIndex="7" />
+                  <Text layoutX="10.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nhập Lại Mật Khẩu" GridPane.rowIndex="6" />
+                  <Text fx:id="lblTenDangNhap" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.rowIndex="2" />
+                  <Text fx:id="lblMatKhau" layoutX="10.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.rowIndex="5" />
+                  <Text fx:id="lblNhapLaiMatKhau" layoutX="10.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.rowIndex="8" />
+               </children>
+            </GridPane>
+         </children>
+      </Pane>
+      <Label layoutX="26.0" layoutY="76.0" style="-fx-background-color: #fff; -fx-font-size: 15px;" text="Thông Tin Đăng Nhâp">
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding></Label>
+      <Pane layoutX="348.0" layoutY="85.0" prefHeight="446.0" prefWidth="723.0" style="-fx-background-color: #fff; -fx-border-color: grey; -fx-border-radius: 5px;">
+         <children>
+            <Label layoutX="26.0" layoutY="-9.0" style="-fx-background-color: #fff; -fx-font-size: 15px;" text="Thông Tin Cá Nhân">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding></Label>
+            <GridPane fx:id="gridThongTinCaNhan" layoutX="14.0" layoutY="14.0" prefHeight="422.0" prefWidth="694.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Text layoutX="10.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Họ Và Tên Đệm" GridPane.rowIndex="3" />
+                  <Text layoutX="10.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên" GridPane.rowIndex="6" />
+                  <Text layoutX="10.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày Sinh" GridPane.rowIndex="9" />
+                  <Text layoutX="10.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Số Điện Thoại" GridPane.rowIndex="12" />
+                  <Text layoutX="10.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Số CMND" GridPane.columnIndex="1" />
+                  <Text layoutX="357.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Giới Tính" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Text layoutX="357.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avatar" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <Text layoutX="357.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phân Quyền" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                  <Text layoutX="357.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Địa Chỉ" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                  <Text layoutX="357.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã Nhân Viên" />
+                  <TextField fx:id="txtMaNhanVien" disable="true" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="txtHoVaTenDem" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="txtTen" GridPane.rowIndex="7">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="txtSoDienThoai" GridPane.rowIndex="13">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="txtSoCMND" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <DatePicker fx:id="dateNgaySinh" prefHeight="26.0" prefWidth="367.0" GridPane.rowIndex="10">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin>
+                  </DatePicker>
+                  <ComboBox fx:id="cmbGioiTinh" prefHeight="26.0" prefWidth="405.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <ComboBox fx:id="cmbPhanQuyen" layoutX="357.0" layoutY="146.0" prefHeight="26.0" prefWidth="405.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                  <TextField fx:id="txtDiaChi" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                     <children>
+                        <TextField fx:id="txtAvatar" prefHeight="26.0" prefWidth="273.0" />
+                        <Button fx:id="btnAvatar" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" style="-fx-background-color: #64AD4A; -fx-text-fill: #fff;" text="File">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <Text fx:id="lblSoCMND" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Text fx:id="lblHoVaTenDem" layoutX="357.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.rowIndex="5" />
+                  <Text fx:id="lblTen" layoutX="10.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.rowIndex="8" />
+                  <Text fx:id="lblSoDienThoai" layoutX="10.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.rowIndex="14" />
+                  <Text fx:id="lblAvatar" layoutX="357.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+               </children>
+            </GridPane>
+         </children>
+      </Pane>
+      <Button fx:id="btnThem" layoutX="367.0" layoutY="564.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="193.0" style="-fx-background-color: #64AD4A; -fx-text-fill: #fff; -fx-font-size: 15; -fx-font-weight: bold;" text="Thêm" />
+      <Button fx:id="btnHuy" layoutX="590.0" layoutY="564.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="123.0" style="-fx-background-color: #F5508B; -fx-text-fill: #fff; -fx-font-size: 15; -fx-font-weight: bold;" text="Hủy" />
+   </children>
+</AnchorPane>

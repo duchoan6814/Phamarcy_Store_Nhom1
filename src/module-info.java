@@ -17,6 +17,7 @@ module PhamarcyStore_Nhom1 {
 	
 	exports GUI;
 	exports common;
+	exports GUI.control;
 
 	opens common to javafx.base;
 	opens GUI to javafx.fxml;

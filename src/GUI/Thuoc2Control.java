@@ -22,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -71,7 +72,8 @@ private BanHangControl banHangControl;
 	public TextField txtTenThuoc;
 	public TextField txtNhaCungCap;
 	public Button btnThem;
-
+	public RadioButton rbtSoLuong;
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
@@ -258,7 +260,7 @@ private BanHangControl banHangControl;
 	public void actionButtonTim() {
 		dataListThuoc.clear();
 		List<Thuoc> listThuoc = daoThuoc.filterThuoc(txtMaThuoc.getText(), txtTenThuoc.getText(),
-				cmbNuocSanXuat.getValue(), txtNhaCungCap.getText(), cmbLoaiThuoc.getValue(), cmbDonViTinh.getValue());
+				cmbNuocSanXuat.getValue(), txtNhaCungCap.getText(), cmbLoaiThuoc.getValue(), cmbDonViTinh.getValue(), rbtSoLuong.isSelected());
 		if (listThuoc.size() <= 0) {
 			common.showNotification(AlertType.INFORMATION, "Không tìm thấy!", "Không tìm thấy thuốc phù hợp!");
 		}else {
