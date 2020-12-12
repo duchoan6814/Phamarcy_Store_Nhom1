@@ -14,9 +14,11 @@ module PhamarcyStore_Nhom1 {
 	requires javafx.controls;
 	requires javafx.base;
 	requires javafx.graphics;
+	requires java.desktop;
 	
 	exports GUI;
 	exports common;
+	exports GUI.control;
 
 	opens common to javafx.base;
 	opens GUI to javafx.fxml;

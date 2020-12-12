@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -15,9 +17,15 @@ import entity.PhieuNhapHang;
 import entity.QuanLy;
 import entity.Thuoc;
 
-public class DAOPhieuNhap extends DAO {
+public class DAOPhieuNhap {
+	private Connection conn;
 	DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
 	DAONhanVien daoNhanVien = new DAONhanVien();
+	
+	public DAOPhieuNhap() {
+		// TODO Auto-generated constructor stub
+		conn = DAO.getInstance().getConn();
+	}
 
 //	public void autoNhap() {
 //		Set<String> getListMaThuoc = new DAOThuoc().getAllMaThuoc();
@@ -61,6 +69,32 @@ public class DAOPhieuNhap extends DAO {
 //		System.out.println("done");
 //	}
 
+	public List<PhieuNhapHang> filterPhieuNhap(String dateFrom , String dateTo, String nhanVien,String maPhieu){
+		List<PhieuNhapHang> list = new ArrayList<PhieuNhapHang>();
+		
+		String sql = "select p.*, nv.HoTenDem, nv.Ten from [dbo].[PhieuNhapHang] p join [dbo].[NhaVienBanThuoc] nv on p.QuanLyId = nv.NhanVienBanThuocId where  CONCAT_WS(' ', nv.HoTenDem, nv.Ten) like ? and p.PhieuNhapHangId like ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setNString(1, "%"+nhanVien+"%");
+			ps.setString(2, "%"+maPhieu+"%");
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				PhieuNhapHang hang = new PhieuNhapHang();
+				hang.setId(rs.getString("PhieuNhapHangId"));
+				hang.setThoiGianLap(rs.getTimestamp("ThoiGianLap"));
+				hang.setNhanVienBanThuoc(daoNhanVien.getNhanVienById(rs.getString("QuanLyId")));
+				hang.setDsLoThuoc((ArrayList<LoThuoc>) daoLoThuoc.getListLoThuocByIdPhieuNhap(hang.getId()));
+				list.add(hang);
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return list;
+		}
+		
+	}
+	
 	public String generateIDPhieuNhap() {
 		String sql = "SELECT top 1 PhieuNhapHangId from PhieuNhapHang ORDER BY PhieuNhapHangId DESC";
 		try {

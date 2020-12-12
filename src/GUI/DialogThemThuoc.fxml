@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.stage.Stage?>
+
+<Stage xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <scene>
+        <Scene>
+            <AnchorPane prefHeight="734.0" prefWidth="680.0">
+            <children>
+               <Pane prefHeight="51.0" prefWidth="680.0" style="-fx-background-color: #64AD4A;">
+                  <children>
+                     <Text fx:id="lblTitle" layoutX="272.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #fff; -fx-font-size: 20; -fx-font-weight: bold;" text="Thêm Thuốc" />
+                  </children>
+               </Pane>
+               <GridPane layoutX="12.0" layoutY="57.0" prefHeight="586.0" prefWidth="657.0">
+                 <columnConstraints>
+                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="321.0" minWidth="10.0" prefWidth="144.0" />
+                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="513.0" minWidth="10.0" prefWidth="513.0" />
+                 </columnConstraints>
+                 <rowConstraints>
+                   <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="160.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="162.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="158.0" minHeight="10.0" prefHeight="66.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="158.0" minHeight="0.0" prefHeight="65.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="158.0" minHeight="5.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="156.0" minHeight="10.0" prefHeight="71.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="146.0" minHeight="6.0" prefHeight="48.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="148.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                   <RowConstraints maxHeight="115.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                 </rowConstraints>
+                  <children>
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mã Thuốc" />
+                     <Text layoutX="10.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên Thuốc" GridPane.rowIndex="1" />
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Loại Thuốc" GridPane.rowIndex="2" />
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nhà Cung Cấp" GridPane.rowIndex="3" />
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nước Sản Xuất" GridPane.rowIndex="4" />
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Đơn Vị Tính" GridPane.rowIndex="6" />
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hạn Sử Dụng" GridPane.rowIndex="7" />
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dạng Bào Chế" GridPane.rowIndex="8" />
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Quy Cách Đóng Gói" GridPane.rowIndex="9" />
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mô Tả" GridPane.rowIndex="10" />
+                     <TextField fx:id="txtDangBaoChe" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                     <TextField fx:id="txtQuyCachDongGoi" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                     <TextArea fx:id="txaMoTa" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                     <ComboBox fx:id="cmbLoaiThuoc" prefHeight="26.0" prefWidth="520.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                     <ComboBox fx:id="cmbNhaCungCap" prefHeight="26.0" prefWidth="566.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                     <ComboBox fx:id="cmbDonViTinh" prefHeight="26.0" prefWidth="554.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                     <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                        <children>
+                           <TextField fx:id="txtMaThuoc">
+                              <VBox.margin>
+                                 <Insets top="10.0" />
+                              </VBox.margin>
+                           </TextField>
+                           <Text fx:id="lblMaThuoc" fill="#e80b0b" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã thuốc không được để trống.">
+                              <VBox.margin>
+                                 <Insets top="5.0" />
+                              </VBox.margin>
+                              <font>
+                                 <Font name="System Italic" size="13.0" />
+                              </font>
+                           </Text>
+                        </children>
+                     </VBox>
+                     <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <children>
+                           <TextField fx:id="txtTenThuoc">
+                              <VBox.margin>
+                                 <Insets top="10.0" />
+                              </VBox.margin>
+                           </TextField>
+                           <Text fx:id="lblTenThuoc" fill="#e80b0b" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên thuốc không được để trống">
+                              <font>
+                                 <Font name="System Italic" size="13.0" />
+                              </font>
+                              <VBox.margin>
+                                 <Insets top="5.0" />
+                              </VBox.margin>
+                           </Text>
+                        </children>
+                     </VBox>
+                     <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <children>
+                           <TextField fx:id="txtNuocSanXuat">
+                              <VBox.margin>
+                                 <Insets top="10.0" />
+                              </VBox.margin>
+                           </TextField>
+                           <Text fx:id="lblNuocSanXuat" fill="#e80b0b" strokeType="OUTSIDE" strokeWidth="0.0" text="Nước sản xuất không được để trống">
+                              <font>
+                                 <Font name="System Italic" size="13.0" />
+                              </font>
+                              <VBox.margin>
+                                 <Insets top="5.0" />
+                              </VBox.margin>
+                           </Text>
+                        </children>
+                     </VBox>
+                     <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                        <children>
+                           <TextField fx:id="txtHanSuDung">
+                              <VBox.margin>
+                                 <Insets top="10.0" />
+                              </VBox.margin>
+                           </TextField>
+                           <Text fx:id="lblHanSuDung" fill="#e80b0b" strokeType="OUTSIDE" strokeWidth="0.0" text="Hạn sử dụng không được để trống">
+                              <font>
+                                 <Font name="System Italic" size="13.0" />
+                              </font>
+                              <VBox.margin>
+                                 <Insets top="5.0" />
+                              </VBox.margin>
+                           </Text>
+                        </children>
+                     </VBox>
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Giá Thuốc" GridPane.rowIndex="5" />
+                     <VBox layoutX="154.0" layoutY="360.0" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <children>
+                           <TextField fx:id="txtGiaThuoc">
+                              <VBox.margin>
+                                 <Insets top="10.0" />
+                              </VBox.margin>
+                           </TextField>
+                           <Text fx:id="lblGiaThuoc" fill="#e80b0b" strokeType="OUTSIDE" strokeWidth="0.0" text="Giá không được để trống">
+                              <font>
+                                 <Font name="System Italic" size="13.0" />
+                              </font>
+                              <VBox.margin>
+                                 <Insets top="5.0" />
+                              </VBox.margin>
+                           </Text>
+                        </children>
+                     </VBox>
+                  </children>
+               </GridPane>
+               <Button fx:id="btnThem" layoutX="203.0" layoutY="667.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="177.0" style="-fx-background-color: #64AD4A; -fx-text-fill: #fff; -fx-font-size: 17; -fx-font-weight: bold;" text="Thêm" />
+               <Button fx:id="btnHuy" layoutX="403.0" layoutY="667.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="74.0" style="-fx-background-color: #F5508B; -fx-text-fill: #fff; -fx-font-size: 17; -fx-font-weight: bold;" text="Hủy" />
+            </children></AnchorPane>
+        </Scene>
+    </scene>
+</Stage>

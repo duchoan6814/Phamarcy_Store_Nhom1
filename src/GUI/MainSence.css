@@ -3,7 +3,7 @@
 }
 
 .buttonSelectMain {
-	-fx-padding: 10px 40px
+	-fx-padding: 10px 30px 10px 30px;
 }
 
 .buttonSelectMain:hover {

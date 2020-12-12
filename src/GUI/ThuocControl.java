@@ -167,7 +167,7 @@ public class ThuocControl implements Initializable {
 	public void actionButtonTim() {
 		dataListThuoc.clear();
 		List<Thuoc> listThuoc = daoThuoc.filterThuoc(txtMaThuoc.getText(), txtTenThuoc.getText(),
-				cmbNuocSanXuat.getValue(), txtNhaCungCap.getText(), cmbLoaiThuoc.getValue(), cmbDonViTinh.getValue());
+				cmbNuocSanXuat.getValue(), txtNhaCungCap.getText(), cmbLoaiThuoc.getValue(), cmbDonViTinh.getValue(), false);
 		if (listThuoc.size() <= 0) {
 			common.showNotification(AlertType.INFORMATION, "Không tìm thấy!", "Không tìm thấy thuốc phù hợp!");
 		}else {

@@ -1,9 +1,29 @@
 package GUI;
 
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
+
+import javax.print.Doc;
+import javax.print.DocPrintJob;
+import javax.print.SimpleDoc;
+import javax.print.StreamPrintService;
+import javax.print.StreamPrintServiceFactory;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
 
 import DAO.DAOHoaDon;
 import common.Common;
@@ -22,7 +42,7 @@ import javafx.stage.Stage;
 
 public class ThanhToanControl implements Initializable {
 	private boolean trangThaiThanhToan = false;
-	
+
 	public boolean isTrangThaiThanhToan() {
 		return trangThaiThanhToan;
 	}
@@ -33,7 +53,7 @@ public class ThanhToanControl implements Initializable {
 
 	private Common common = new Common();
 	private HoaDon hoaDon;
-	
+
 	private DAOHoaDon daoHoaDon = new DAOHoaDon();
 
 	public Text lblKhachHang;
@@ -177,7 +197,7 @@ public class ThanhToanControl implements Initializable {
 		Stage thanhToanStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
 		thanhToanStage.close();
 	}
-	
+
 	@FXML
 	public void btnThanhToan(ActionEvent event) {
 		double tienKhachDua;
@@ -186,7 +206,7 @@ public class ThanhToanControl implements Initializable {
 		}else {
 			tienKhachDua = Double.parseDouble(txtTienKhachDua.getText());
 		}
-		
+
 		if (tienKhachDua < hoaDon.getTienPhaiTra()) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Information Dialog");
@@ -206,6 +226,17 @@ public class ThanhToanControl implements Initializable {
 				alert.showAndWait();
 				Stage thanhToanStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
 				thanhToanStage.close();
+
+
+
+				PrinterJob pj = PrinterJob.getPrinterJob();        
+				pj.setPrintable(new BillPrintable(),getPageFormat(pj));
+				try {
+					pj.print();
+				} catch (PrinterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}else {
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Information Dialog");
@@ -214,11 +245,144 @@ public class ThanhToanControl implements Initializable {
 
 				alert.showAndWait();
 			}
-			
+
 		}
 	}
 
 
 
+	public static PageFormat getPageFormat(PrinterJob pj)
+	{
+
+		PageFormat pf = pj.defaultPage();
+		Paper paper = pf.getPaper();    
+
+		double middleHeight =8.0;  
+		double headerHeight = 2.0;                  
+		double footerHeight = 2.0;                  
+		double width = convert_CM_To_PPI(8);      //printer know only point per inch.default value is 72ppi
+		double height = convert_CM_To_PPI(headerHeight+middleHeight+footerHeight); 
+		paper.setSize(width, height);
+		paper.setImageableArea(                    
+				0,
+				10,
+				width,            
+				height - convert_CM_To_PPI(1)
+				);   //define boarder size    after that print area width is about 180 points
+
+		pf.setOrientation(PageFormat.PORTRAIT);           //select orientation portrait or landscape but for this time portrait
+		pf.setPaper(paper);    
+
+		return pf;
+	}
+
+	protected static double convert_CM_To_PPI(double cm) {            
+		return toPPI(cm * 0.393600787);            
+	}
+
+	protected static double toPPI(double inch) {            
+		return inch * 72d;            
+	}
+
+	public class BillPrintable implements Printable {
+
+		private int y=20;
+
+
+		public int print(Graphics graphics, PageFormat pageFormat,int pageIndex) 
+				throws PrinterException 
+		{    
+
+
+
+			int result = NO_SUCH_PAGE;    
+			if (pageIndex == 0) {                    
+
+				Graphics2D g2d = (Graphics2D) graphics;                    
+
+				double width = pageFormat.getImageableWidth();                    
+
+				g2d.translate((int) pageFormat.getImageableX(),(int) pageFormat.getImageableY()); 
+
+				////////// code by alqama//////////////
+
+				FontMetrics metrics=g2d.getFontMetrics(new Font("Arial",Font.BOLD,7));
+				//    int idLength=metrics.stringWidth("000000");
+				//int idLength=metrics.stringWidth("00");
+				int idLength=metrics.stringWidth("000");
+				int amtLength=metrics.stringWidth("000000");
+				int qtyLength=metrics.stringWidth("00000");
+				int priceLength=metrics.stringWidth("000000");
+				int prodLength=(int)width - idLength - amtLength - qtyLength - priceLength-17;
+
+				//    int idPosition=0;
+				//    int productPosition=idPosition + idLength + 2;
+				//    int pricePosition=productPosition + prodLength +10;
+				//    int qtyPosition=pricePosition + priceLength + 2;
+				//    int amtPosition=qtyPosition + qtyLength + 2;
+
+				int productPosition = 0;
+				int discountPosition= prodLength+5;
+				int pricePosition = discountPosition +idLength+10;
+				int qtyPosition=pricePosition + priceLength + 4;
+				int amtPosition=qtyPosition + qtyLength;
+
+
+
+				try{
+					/*Draw Header*/
+					int yShift = 10;
+					int headerRectHeight=15;
+					int headerRectHeighta=40;
+
+					///////////////// Product names Get ///////////
+
+					///////////////// Product names Get ///////////
+
+
+					///////////////// Product price Get ///////////
+					///////////////// Product price Get ///////////
+
+					g2d.setFont(new Font("Monospaced",Font.PLAIN,9));
+					g2d.drawString("-------------------------------------",12,y);y+=yShift;
+					g2d.drawString("      Restaurant Bill Receipt        ",12,y);y+=yShift;
+					g2d.drawString("-------------------------------------",12,y);y+=headerRectHeight;
+
+					g2d.drawString("-------------------------------------",10,y);y+=yShift;
+					g2d.drawString(" Food Name                 T.Price   ",10,y);y+=yShift;
+					g2d.drawString("-------------------------------------",10,y);y+=headerRectHeight;
+
+					hoaDon.getDsChiTietHoaDon().forEach(i -> {
+						g2d.drawString(" "+i.getThuoc().getTenThuoc()+"                  "+i.tinhTongTienChuaThue()+"  ",10,y);y+=yShift;
+					});
+
+
+					g2d.drawString("-------------------------------------",10,y);y+=yShift;
+					g2d.drawString(" Total amount: "+hoaDon.tinhTienHoaDonBaoGomThue()+"               ",10,y);y+=yShift;
+					g2d.drawString("-------------------------------------",10,y);y+=yShift;
+					g2d.drawString("          Free Home Delivery         ",10,y);y+=yShift;
+					g2d.drawString("             03111111111             ",10,y);y+=yShift;
+					g2d.drawString("*************************************",10,y);y+=yShift;
+					g2d.drawString("    THANKS TO VISIT OUR RESTUARANT   ",10,y);y+=yShift;
+					g2d.drawString("*************************************",10,y);y+=yShift;
+
+
+
+
+
+					//		            g2d.setFont(new Font("Monospaced",Font.BOLD,10));
+					//		            g2d.drawString("Customer Shopping Invoice", 30,y);y+=yShift; 
+
+
+				}
+				catch(Exception r){
+					r.printStackTrace();
+				}
+
+				result = PAGE_EXISTS;    
+			}    
+			return result;    
+		}
+	}
 
 }

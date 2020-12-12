@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +16,14 @@ import entity.HoaDon;
 import entity.KhachHang;
 import entity.LoaiKhachHang;
 
-public class DAOKhachHang extends DAO {
+public class DAOKhachHang {
+	
+	private Connection conn;
+	
+	public DAOKhachHang() {
+		// TODO Auto-generated constructor stub
+		conn = DAO.getInstance().getConn();
+	}
 	
 	public boolean suaKhachHang(KhachHang khachHang) {
 		String sql = "update KhachHang set HoTenDem = ?, Ten = ?, NgaySinh = ?, GioiTinh = ?, SoDienThoai = ?, LoaiKhachHang = ?, DiaChi = ? WHERE KhachHangId = ?";
