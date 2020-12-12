@@ -248,7 +248,7 @@ public class DAOHoaDon {
 			_ngayLap = "and hd.ThoiGianLap BETWEEN '"+_dateFrom.toString()+"' and '"+_dateTo.toString()+"'";
 		}
 
-		String sql = "SELECT hd.*, nv.HoTenDem as HoTenDemNV, nv.Ten as TenNV, kh.HoTenDem as HoTenDemKH, kh.Ten as TenKH from HoaDon as hd LEFT JOIN NhaVienBanThuoc as nv on hd.NhanVienBanThuocId = nv.NhanVienBanThuocId LEFT JOIN KhachHang as kh on hd.KhachHangId = kh.KhachHangId WHERE CONCAT_WS(' ', kh.HoTenDem, kh.Ten) like N'%"+tenKhachHang+"%' and CONCAT_WS(' ', nv.HoTenDem, nv.Ten) like N'%"+tenNhanVien+"%' and hd.HoaDonId like '%"+maHoaDon+"%' "+_ngayLap+"";
+		String sql = "SELECT hd.*, nv.HoTenDem as HoTenDemNV, nv.Ten as TenNV, kh.HoTenDem as HoTenDemKH, kh.Ten as TenKH from HoaDon as hd LEFT JOIN NhaVienBanThuoc as nv on hd.NhanVienBanThuocId = nv.NhanVienBanThuocId LEFT JOIN KhachHang as kh on hd.KhachHangId = kh.KhachHangId WHERE CONCAT_WS(' ', kh.HoTenDem, kh.Ten) like N'%"+tenKhachHang+"%' and CONCAT_WS(' ', nv.HoTenDem, nv.Ten) like N'%"+tenNhanVien+"%' and hd.HoaDonId like '%"+maHoaDon+"%' "+_ngayLap+" order by ThoiGianLap desc";
 
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);		
