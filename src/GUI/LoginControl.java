@@ -64,10 +64,11 @@ public class LoginControl implements Initializable{
 			controller.setNhanVienBanThuoc(nhanVienBanThuoc);
 			loader.setController(controller);
 			Parent root = loader.load();
-			Scene scene = new Scene(root);
+			Scene scene = new Scene(root, 1280, 700);
 			Stage stage = new Stage();
 			//			arg0.initStyle(StageStyle.TRANSPARENT);
 			stage.setTitle("TestAPP");
+			stage.setFullScreen(false);
 			stage.setScene(scene);
 			stage.show();
 		} catch (IOException e) {
