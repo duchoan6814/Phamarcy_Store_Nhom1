@@ -115,10 +115,6 @@ public class DAOThuoc {
 				"GROUP BY t.ThuocId, t.DangBaoChe, t.DonViTinh, t.DonViTinh, t.Gia, t.HanSuDung, t.LoaiThuocId, CAST(t.MoTa AS NVARCHAR(255)), t.NhaCungCapId, t.NuocSanXuat, t.QuyCachDongGoi, t.TenThuoc, t.Thue, t.TonKho " + 
 				_querySoLuong;
 		
-//		String sql = "SELECT t.* FROM Thuoc as t INNER JOIN NhaCungCap ncc on t.NhaCungCapId = ncc.NhaCungCapId INNER JOIN "
-//				+"LoaiThuoc as lt on lt.LoaiThuocId = t.LoaiThuocId where t.ThuocId like ? and t.TenThuoc like ? "
-//				+"and "+_tenNuocSanXuat +" and ncc.TenNhaCungCap like ? and "
-//				+"lt.TenLoaiThuoc like "+_loaiThuoc+" and t.DonViTinh like "+_donViTinh+"";
 		List<Thuoc> list = new ArrayList<>();
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -220,7 +216,91 @@ public class DAOThuoc {
 			return list;
 		}
 	}
+	
+	public List<String> getAllTenThuoc() {
+		List<String> list = new ArrayList<>();
+		String sql = "select TenThuoc from Thuoc";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				list.add(rs.getString("TenThuoc"));
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public List<Thuoc> getAllThuoc(){
+		List<Thuoc> list = new ArrayList<>();
+		String sql = "select * from Thuoc";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+		
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Thuoc thuoc = new Thuoc();
+				thuoc.setDangBaoChe(rs.getString("DangBaoChe"));
+				thuoc.setDonViTinh(rs.getString("DonViTinh"));
+				thuoc.setGia(rs.getDouble("Gia"));
+				thuoc.setHanSuDung(rs.getInt("HanSuDung"));
+				thuoc.setId(rs.getString("ThuocId"));
+				thuoc.setLoaiThuoc(daoLoaiThuoc.getLoaiThuocById(rs.getString("LoaiThuocId")));
+				thuoc.setMoTa(rs.getString("MoTa"));
+				thuoc.setNhaCungCap(daoNhaCungCap.getNhaCungCapByID(rs.getString("NhaCungCapId")));
+				thuoc.setNuocSanXuat(rs.getString("NuocSanXuat"));
+				thuoc.setQuyCachDongGoi(rs.getString("QuyCachDongGoi"));
+				thuoc.setTenThuoc(rs.getString("TenThuoc"));
+				thuoc.setThue(rs.getDouble("Thue"));
+				thuoc.setTonKho(rs.getInt("TonKho"));
+				list.add(thuoc);
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	
 
+	public Thuoc getThuocByName(String name) {
+		
+		String sql = "select * from Thuoc where TenThuoc like ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setNString(1, name);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				Thuoc thuoc = new Thuoc();
+				thuoc.setDangBaoChe(rs.getString("DangBaoChe"));
+				thuoc.setDonViTinh(rs.getString("DonViTinh"));
+				thuoc.setGia(rs.getDouble("Gia"));
+				thuoc.setHanSuDung(rs.getInt("HanSuDung"));
+				thuoc.setId(rs.getString("ThuocId"));
+				thuoc.setLoaiThuoc(daoLoaiThuoc.getLoaiThuocById(rs.getString("LoaiThuocId")));
+				thuoc.setMoTa(rs.getString("MoTa"));
+				thuoc.setNhaCungCap(daoNhaCungCap.getNhaCungCapByID(rs.getString("NhaCungCapId")));
+				thuoc.setNuocSanXuat(rs.getString("NuocSanXuat"));
+				thuoc.setQuyCachDongGoi(rs.getString("QuyCachDongGoi"));
+				thuoc.setTenThuoc(rs.getString("TenThuoc"));
+				thuoc.setThue(rs.getDouble("Thue"));
+				thuoc.setTonKho(rs.getInt("TonKho"));
+				return thuoc;
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public Thuoc getThuocById(String id) {
 
 		String sql = "select * from Thuoc where ThuocId = ?";

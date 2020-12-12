@@ -5,10 +5,13 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 
@@ -110,11 +113,16 @@ public class TaoHoaDonControl implements Initializable {
 	public TextField txtTongTienAll;
 	public TextField txtThue;
 	public TextField txtThanhTien;
+	
+	private Set<String> listMaThuoc;
+	private List<String> listTenThuoc;
 
 
 	public TaoHoaDonControl(NhanVienBanThuoc nhanVienBanThuoc2) {
 		// TODO Auto-generated constructor stub
 		this.nhanVienBanThuoc = nhanVienBanThuoc2;
+		this.listMaThuoc = thuoc_dao.getAllMaThuoc();
+		this.listTenThuoc = thuoc_dao.getAllTenThuoc();
 	}
 
 	@FXML
@@ -189,23 +197,12 @@ public class TaoHoaDonControl implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		initTenThuoc();
 
-		TextFields.bindAutoCompletion(txtMaThuoc, thuoc_dao.getAllMaThuoc());
+		initMaThuocField();
 
 		initTable();
-
-		txtMaThuoc.textProperty().addListener((observable, oldValue, newValue) -> {
-			Thuoc thuoc = thuoc_dao.getThuocById(newValue);
-			if (thuoc != null) {
-				chiTietHoaDon = new ChiTietHoaDon();
-				chiTietHoaDon.setThuoc(thuoc);
-				chiTietHoaDon.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
-				txtTenThuoc.setText(chiTietHoaDon.getThuoc().getTenThuoc());
-				txtDonViTinh.setText(chiTietHoaDon.getThuoc().getDonViTinh());
-				txtDonGia.setText(new Common().formatMoney(chiTietHoaDon.getGiaBan()));
-				txtTongTien.setText(new Common().formatMoney(chiTietHoaDon.tinhTongTienChuaThue()));
-			}
-		});
 
 		txtSoLuong.textProperty().addListener(new ChangeListener<String>() {
 
@@ -288,6 +285,43 @@ public class TaoHoaDonControl implements Initializable {
 				}
 			}
 
+		});
+	}
+
+	private void initTenThuoc() {
+		// TODO Auto-generated method stub
+		TextFields.bindAutoCompletion(txtTenThuoc, listTenThuoc);
+		txtTenThuoc.textProperty().addListener((ob, old, newv) -> {
+			Thuoc thuoc = thuoc_dao.getThuocByName(newv);
+			if (thuoc != null) {
+				chiTietHoaDon = new ChiTietHoaDon();
+				chiTietHoaDon.setThuoc(thuoc);
+				chiTietHoaDon.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+				txtTenThuoc.setText(chiTietHoaDon.getThuoc().getTenThuoc());
+				txtDonViTinh.setText(chiTietHoaDon.getThuoc().getDonViTinh());
+				txtDonGia.setText(new Common().formatMoney(chiTietHoaDon.getGiaBan()));
+				txtTongTien.setText(new Common().formatMoney(chiTietHoaDon.tinhTongTienChuaThue()));
+				txtMaThuoc.setText(chiTietHoaDon.getThuoc().getId());
+			}
+		});
+	}
+
+	private void initMaThuocField() {
+		// TODO Auto-generated method stub
+		
+		TextFields.bindAutoCompletion(txtMaThuoc, listMaThuoc);
+		
+		txtMaThuoc.textProperty().addListener((observable, oldValue, newValue) -> {
+			Thuoc thuoc = thuoc_dao.getThuocById(newValue);
+			if (thuoc != null) {
+				chiTietHoaDon = new ChiTietHoaDon();
+				chiTietHoaDon.setThuoc(thuoc);
+				chiTietHoaDon.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+				txtTenThuoc.setText(chiTietHoaDon.getThuoc().getTenThuoc());
+				txtDonViTinh.setText(chiTietHoaDon.getThuoc().getDonViTinh());
+				txtDonGia.setText(new Common().formatMoney(chiTietHoaDon.getGiaBan()));
+				txtTongTien.setText(new Common().formatMoney(chiTietHoaDon.tinhTongTienChuaThue()));
+			}
 		});
 	}
 
