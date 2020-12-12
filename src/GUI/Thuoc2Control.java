@@ -10,6 +10,7 @@ import com.gluonhq.impl.charm.a.b.b.a.c;
 import DAO.DAOLoThuoc;
 import DAO.DAOLoaiThuoc;
 import DAO.DAOThuoc;
+import GUI.control.ThemThuocControl;
 import common.Common;
 import common.ThuocTable;
 import entity.Thuoc;
@@ -27,8 +28,10 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -73,6 +76,7 @@ private BanHangControl banHangControl;
 	public TextField txtNhaCungCap;
 	public Button btnThem;
 	public RadioButton rbtSoLuong;
+	public StackPane stkOptions;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -93,20 +97,33 @@ private BanHangControl banHangControl;
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("DialogThemThuoc.fxml"));
-				ThemThuocControl control = new ThemThuocControl();
-				loader.setController(control);
-				Stage themThuoc;
-				try {
-					themThuoc = loader.load();
-					themThuoc.show();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+				actionButtonThem();
 			}
 		});
+	}
+	
+	private void actionButtonThem() {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ThemThuocNew.fxml"));
+		ThemThuocControl themThuocControl = new ThemThuocControl(this);
+		fxmlLoader.setController(themThuocControl);
+		try {
+			stkOptions.getChildren().add(1, fxmlLoader.load());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Node themThuoc = stkOptions.getChildren().get(1);
+		Node quanLyThuoc = stkOptions.getChildren().get(0);
+		themThuoc.setVisible(true);
+		quanLyThuoc.setVisible(false);
+	}
+	
+	public void showquanLyThuoc() {
+		Node themThuoc = stkOptions.getChildren().get(1);
+		Node quanLyThuoc = stkOptions.getChildren().get(0);
+		themThuoc.setVisible(false);
+		quanLyThuoc.setVisible(true);
 	}
 
 	private void createButtonChon() {

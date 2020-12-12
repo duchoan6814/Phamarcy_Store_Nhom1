@@ -79,6 +79,22 @@ public class DAOLoaiThuoc {
 		}
 	}
 	
+	public boolean themLoaiThuoc(LoaiThuoc loaiThuoc) {
+		String sql = "insert into LoaiThuoc (LoaiThuocId, TenLoaiThuoc, MoTa) VALUES (?, ?, ?)";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, loaiThuoc.getId());
+			ps.setNString(2, loaiThuoc.getTenLoai());
+			ps.setString(3, loaiThuoc.getMoTa());
+			
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public static void main(String[] args) {
 		DAOLoaiThuoc daoLoaiThuoc = new DAOLoaiThuoc();
 		System.out.println(daoLoaiThuoc.getLoaiThuocById("1"));
