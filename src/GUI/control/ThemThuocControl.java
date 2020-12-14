@@ -116,6 +116,34 @@ public class ThemThuocControl implements Initializable {
 		listNhaCungCap = FXCollections.observableArrayList(daoNhaCungCap.getListTenNhaCungCap());
 		cmbNhaCungCap.setItems(listNhaCungCap);
 		cmbNhaCungCap.setValue(listNhaCungCap.get(0));
+		btnNhaCungCap.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				actionButtonNhaCungCap();
+			}
+		});
+	}
+	
+	private void actionButtonNhaCungCap() {
+		// TODO Auto-generated method stub
+		FileInputStream stream;
+		try {
+			stream = new FileInputStream(new File("src/GUI/ThemNhaCungCap.fxml"));
+			FXMLLoader loader = new FXMLLoader();
+			ThemNhaCungCapControl capControl = new ThemNhaCungCapControl();
+			loader.setController(capControl);
+			
+			Stage stage = loader.load(stream);
+			stage.show();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	//=======================================================

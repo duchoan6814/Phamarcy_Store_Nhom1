@@ -49,7 +49,7 @@
                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mã Nhà Cung Cấp" />
                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tên Nhà Cung Cấp" GridPane.rowIndex="1" />
                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Số Điện Thoại" GridPane.rowIndex="3" />
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="FAX" GridPane.rowIndex="5" />
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email" GridPane.rowIndex="5" />
                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Trang Chủ" GridPane.rowIndex="7" />
                      <Text layoutX="10.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Địa Chỉ" GridPane.rowIndex="9" />
                      <TextField fx:id="txtMaNhaCungCap" GridPane.columnIndex="1" />

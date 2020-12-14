@@ -17,6 +17,10 @@ public class DAONhaCungCap{
 		// TODO Auto-generated constructor stub
 		conn = DAO.getInstance().getConn();
 	}
+//	
+//	public String generateID() {
+//		String sql = "";
+//	}
 	
 	public List<String> getListTenNhaCungCap(){
 		String sql = "SELECT TenNhaCungCap FROM NhaCungCap";
