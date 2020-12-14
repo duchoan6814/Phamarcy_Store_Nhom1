@@ -193,7 +193,7 @@ public class DAOThuoc {
 	}
 
 	public List<String> getListNuocSanXuat(){
-		String sql = "SELECT NuocSanXuat FROM Thuoc group BY NuocSanXuat";
+		String sql = "SELECT NuocSanXuat FROM Thuoc where NuocSanXuat is not null and NuocSanXuat not like '' group BY NuocSanXuat";
 		List<String> list = new ArrayList<>();
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
