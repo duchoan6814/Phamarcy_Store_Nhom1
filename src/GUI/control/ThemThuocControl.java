@@ -60,8 +60,8 @@ public class ThemThuocControl implements Initializable {
 	private ObservableList<String> listNhaCungCap;
 	private ObservableList<String> listNuocSanXuat;
 	private ObservableList<String> listDonViTinh;
-	
-	
+
+
 
 	public ObservableList<String> getListLoaiThuoc() {
 		return listLoaiThuoc;
@@ -124,9 +124,9 @@ public class ThemThuocControl implements Initializable {
 		listLoaiThuoc = FXCollections.observableArrayList(daoLoaiThuoc.getListLoaiThuoc());
 		cmbLoaiThuoc.setItems(listLoaiThuoc);
 		cmbLoaiThuoc.setValue(listLoaiThuoc.get(0));
-		
+
 		btnLoaiThuoc.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -134,7 +134,7 @@ public class ThemThuocControl implements Initializable {
 			}
 		});
 	}
-	
+
 	private void actionButtonThemLoaiThuoc(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		try {
@@ -164,8 +164,14 @@ public class ThemThuocControl implements Initializable {
 
 	private boolean checkHanSuDung() {
 		// TODO Auto-generated method stub
+
 		if (txtHanSuDung.getText().isEmpty()) {
 			lblHanSuDung.setText("* Hạn sử dụng không được để trống!");
+			return false;
+		}
+		
+		if (!isStringInt(txtHanSuDung.getText())) {
+			lblHanSuDung.setText("* Tháng quá lớn!");
 			return false;
 		}
 
@@ -176,6 +182,24 @@ public class ThemThuocControl implements Initializable {
 
 		lblHanSuDung.setText("*");
 		return true;
+	}
+
+	public boolean isStringInt(String s){
+		try  {
+			Integer.parseInt(s);
+			return true;
+		} catch (NumberFormatException ex) {
+			return false;
+		}
+	}
+	
+	public boolean isStringDouble(String s){
+		try  {
+			Double.parseDouble(s);
+			return true;
+		} catch (NumberFormatException ex) {
+			return false;
+		}
 	}
 
 	//	=====================================================
@@ -189,11 +213,17 @@ public class ThemThuocControl implements Initializable {
 		});
 	}
 	private boolean checkGiaThuoc() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stu		
 		if (txtGiaThuoc.getText().isEmpty()) {
 			lblGiaThuoc.setText("* Giá thuốc không được để trống!");
 			return false;
 		}
+		
+		if (!isStringDouble(txtGiaThuoc.getText())) {
+			lblGiaThuoc.setText("* Giá quá lớn vượt ra khỏi giới hạn!");
+			return false;
+		}
+		
 		lblGiaThuoc.setText("*");
 		return true;
 	}
