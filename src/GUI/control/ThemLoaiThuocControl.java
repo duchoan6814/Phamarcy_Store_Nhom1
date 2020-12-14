@@ -41,8 +41,15 @@ public class ThemLoaiThuocControl implements Initializable {
 		initTenLoai();
 		initButtonHuy();
 		initButtonThem();
+		initMaLoai();
 	}
 
+
+	private void initMaLoai() {
+		// TODO Auto-generated method stub
+		txtMaLoai.setDisable(true);
+		txtMaLoai.setText(daoLoaiThuoc.generateID());
+	}
 
 	private void initButtonThem() {
 		// TODO Auto-generated method stub
@@ -67,6 +74,7 @@ public class ThemLoaiThuocControl implements Initializable {
 			}else {
 				common.showNotification(AlertType.INFORMATION, "INFORMATION", "Thêm thành công.");
 				this.themThuocControl.getListLoaiThuoc().add(txtTenLoai.getText());
+				this.themThuocControl.cmbLoaiThuoc.setValue(txtTenLoai.getText());
 				Stage thanhToanStage = (Stage) ((Node)arg0.getSource()).getScene().getWindow();
 				thanhToanStage.close();
 			}
