@@ -23,6 +23,41 @@ public class DAOThuoc {
 		// TODO Auto-generated constructor stub
 		conn = DAO.getInstance().getConn();
 	}
+	
+	public boolean checkCountry(String countryName) {
+		String sql = "SELECT name from country where name = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, countryName);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public List<String> getAllCountry() {
+		String sql = "SELECT name from country";
+		List<String> list = new ArrayList<String>();
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				list.add(rs.getString("name"));
+			}
+			
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return list;
+		}
+	}
 
 	public String generateID() {
 		String sql = "select ThuocId from Thuoc WHERE ThuocId like 'TH%' order by ThuocId desc";

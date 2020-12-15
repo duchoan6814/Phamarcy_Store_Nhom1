@@ -58,8 +58,8 @@ public class ThemThuocControl implements Initializable {
 	private Common common = new Common();
 	private ObservableList<String> listLoaiThuoc;
 	public ObservableList<String> listNhaCungCap;
-	private ObservableList<String> listNuocSanXuat;
-	private ObservableList<String> listDonViTinh;
+	public ObservableList<String> listNuocSanXuat;
+	public ObservableList<String> listDonViTinh;
 
 
 
@@ -109,7 +109,35 @@ public class ThemThuocControl implements Initializable {
 		listNuocSanXuat = FXCollections.observableArrayList(daoThuoc.getListNuocSanXuat());
 		cmbNuocSanXuat.setItems(listNuocSanXuat);
 		cmbNuocSanXuat.setValue(listNuocSanXuat.get(0));
+		btnNuocSanXuat.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				actionButtonNuocSanXuat();
+			}
+		});
 	}
+	protected void actionButtonNuocSanXuat() {
+		// TODO Auto-generated method stub
+		FileInputStream fileInputStream;
+		try {
+			fileInputStream = new FileInputStream(new File("src/GUI/ThemCountry.fxml"));
+			FXMLLoader loader = new FXMLLoader();
+			ThemNuocSanXuatControl themNuocSanXuatControl = new ThemNuocSanXuatControl(this);
+			loader.setController(themNuocSanXuatControl);
+			
+			Stage stage = loader.load(fileInputStream);
+			stage.show();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	//========================================
 	private void initNhaCungCap() {
 		// TODO Auto-generated method stub
