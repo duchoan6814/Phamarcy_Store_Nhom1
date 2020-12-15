@@ -94,12 +94,12 @@
                            <Font name="System Italic" size="13.0" />
                         </font>
                      </Text>
-                     <Text fx:id="lblFAX" fill="RED" layoutX="148.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <Text fx:id="lblFAX" fill="RED" layoutX="148.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                         <font>
                            <Font name="System Italic" size="13.0" />
                         </font>
                      </Text>
-                     <Text fx:id="lblTrangChu" fill="RED" layoutX="148.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                     <Text fx:id="lblTrangChu" fill="RED" layoutX="148.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                         <font>
                            <Font name="System Italic" size="13.0" />
                         </font>

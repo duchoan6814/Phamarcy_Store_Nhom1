@@ -57,7 +57,7 @@ public class ThemThuocControl implements Initializable {
 	private DAOThuoc daoThuoc = new DAOThuoc();
 	private Common common = new Common();
 	private ObservableList<String> listLoaiThuoc;
-	private ObservableList<String> listNhaCungCap;
+	public ObservableList<String> listNhaCungCap;
 	private ObservableList<String> listNuocSanXuat;
 	private ObservableList<String> listDonViTinh;
 
@@ -132,7 +132,7 @@ public class ThemThuocControl implements Initializable {
 		try {
 			stream = new FileInputStream(new File("src/GUI/ThemNhaCungCap.fxml"));
 			FXMLLoader loader = new FXMLLoader();
-			ThemNhaCungCapControl capControl = new ThemNhaCungCapControl();
+			ThemNhaCungCapControl capControl = new ThemNhaCungCapControl(this);
 			loader.setController(capControl);
 			
 			Stage stage = loader.load(stream);

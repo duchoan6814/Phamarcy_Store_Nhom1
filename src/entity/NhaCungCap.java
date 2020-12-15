@@ -1,7 +1,7 @@
 package entity;
 
 public class NhaCungCap {
-	private String id, tenNhaCungCap, soDienThoai, fax, trangChu;
+	private String id, tenNhaCungCap, soDienThoai, email, trangChu;
 	private String diaChi;
 	public String getId() {
 		return id;
@@ -21,11 +21,11 @@ public class NhaCungCap {
 	public void setSoDienThoai(String soDienThoai) {
 		this.soDienThoai = soDienThoai;
 	}
-	public String getFax() {
-		return fax;
+	public String getEmail() {
+		return email;
 	}
-	public void setFax(String fax) {
-		this.fax = fax;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getTrangChu() {
 		return trangChu;
@@ -39,12 +39,12 @@ public class NhaCungCap {
 	public void setDiaChi(String diaChi) {
 		this.diaChi = diaChi;
 	}
-	public NhaCungCap(String id, String tenNhaCungCap, String soDienThoai, String fax, String trangChu, String diaChi) {
+	public NhaCungCap(String id, String tenNhaCungCap, String soDienThoai, String email, String trangChu, String diaChi) {
 		super();
 		this.id = id;
 		this.tenNhaCungCap = tenNhaCungCap;
 		this.soDienThoai = soDienThoai;
-		this.fax = fax;
+		this.email = email;
 		this.trangChu = trangChu;
 		this.diaChi = diaChi;
 	}
@@ -81,7 +81,7 @@ public class NhaCungCap {
 	@Override
 	public String toString() {
 		return "NhaCungCap [id=" + id + ", tenNhaCungCap=" + tenNhaCungCap + ", soDienThoai=" + soDienThoai + ", fax="
-				+ fax + ", trangChu=" + trangChu + ", diaChi=" + diaChi + "]";
+				+ email + ", trangChu=" + trangChu + ", diaChi=" + diaChi + "]";
 	}
 
 

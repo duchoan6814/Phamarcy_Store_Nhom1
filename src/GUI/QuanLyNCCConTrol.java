@@ -77,7 +77,7 @@ public class QuanLyNCCConTrol implements Initializable {
 					common.showNotification(AlertType.INFORMATION, "No Data", "Không tìm thấy kết quả phù hợp!");
 				}else {
 					list.forEach(i -> {
-						QLNhaCungCapTable capTable = new QLNhaCungCapTable(data.size(), i.getId(), i.getTenNhaCungCap(), i.getSoDienThoai(), i.getFax(), i.getTrangChu(), i.getDiaChi());
+						QLNhaCungCapTable capTable = new QLNhaCungCapTable(data.size(), i.getId(), i.getTenNhaCungCap(), i.getSoDienThoai(), i.getEmail(), i.getTrangChu(), i.getDiaChi());
 						data.add(capTable);
 					});
 				}
