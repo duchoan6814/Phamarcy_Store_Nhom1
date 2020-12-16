@@ -1,6 +1,7 @@
 package GUI;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -8,6 +9,8 @@ import DAO.DAOPhieuNhap;
 import common.Common;
 import common.PhieuNhapTable;
 import entity.PhieuNhapHang;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -31,6 +35,7 @@ public class QuanlyphieunhapControl implements Initializable {
 	public TextField txtNhanVien;
 	public TextField txtMaPhieu;
 	public Button btnTim;
+	public RadioButton rbtTatCaThoiGian;
 	
 	public TableView<PhieuNhapTable> tblPhieuNhap;
 	public TableColumn<PhieuNhapTable, Integer> colSTT;
@@ -43,7 +48,35 @@ public class QuanlyphieunhapControl implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		initbtnTim();
 		initTable();
+		initButtonRadio();
+		initSomeField();
 		
+	}
+	
+	private void initSomeField() {
+		// TODO Auto-generated method stub
+		dateNgayLapFrom.setDisable(true);
+		dateNgayLapTo.setDisable(true);
+		dateNgayLapFrom.setValue(LocalDate.now());
+		dateNgayLapTo.setValue(LocalDate.now());
+	}
+	private void initButtonRadio() {
+		// TODO Auto-generated method stub
+		rbtTatCaThoiGian.setSelected(true);
+		rbtTatCaThoiGian.selectedProperty().addListener(new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+				// TODO Auto-generated method stub
+				if (rbtTatCaThoiGian.isSelected()) {
+					dateNgayLapFrom.setDisable(true);
+					dateNgayLapTo.setDisable(true);
+				}else {
+					dateNgayLapFrom.setDisable(false);
+					dateNgayLapTo.setDisable(false);
+				}
+			}
+		});
 	}
 	private void initTable() {
 		data = FXCollections.observableArrayList();
@@ -61,7 +94,7 @@ public class QuanlyphieunhapControl implements Initializable {
 			@Override
 			public void handle(ActionEvent arg0) {
 				data.clear();
-				List<PhieuNhapHang> list = daoPhieuNhap.filterPhieuNhap(null, null, txtNhanVien.getText(), txtMaPhieu.getText());
+				List<PhieuNhapHang> list = daoPhieuNhap.filterPhieuNhap(rbtTatCaThoiGian.isSelected() ,dateNgayLapFrom.getValue(), dateNgayLapTo.getValue(), txtNhanVien.getText(), txtMaPhieu.getText());
 				if (list.size() <= 0) {
 					common.showNotification(AlertType.INFORMATION, "No Data", "Không tìm thấy kết quả phù hợp!");
 				}else {
