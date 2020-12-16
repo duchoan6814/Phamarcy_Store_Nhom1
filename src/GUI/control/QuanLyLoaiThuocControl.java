@@ -206,8 +206,11 @@ public class QuanLyLoaiThuocControl implements Initializable {
 					{
 						btn.setStyle("-fx-background-color: orange");
 						btn.setOnAction(event -> {
-							TableColumn col = tblLoaiThuoc.getColumns().get(1);
+							TableColumn col = tblLoaiThuoc.getColumns().get(0);
 							String data = (String) col.getCellObservableValue(tblLoaiThuoc.getItems().get(getIndex())).getValue();
+							
+							suaLoaiThuoc(data);
+							
 						});
 					}
 
@@ -230,6 +233,28 @@ public class QuanLyLoaiThuocControl implements Initializable {
 		};
 
 		colSua.setCellFactory(cellFactory);
+	}
+	
+	private void suaLoaiThuoc(String data) {
+		// TODO Auto-generated method stub
+		LoaiThuoc loaiThuoc = daoLoaiThuoc.getLoaiThuocById(data);
+		
+		try {
+			FileInputStream stream = new FileInputStream(new File("src/GUI/ThemLoaiThuoc.fxml"));
+			FXMLLoader loader = new FXMLLoader();
+			SuaLoaiThuocControl control = new SuaLoaiThuocControl(this, loaiThuoc);
+			loader.setController(control);
+			
+			Stage stage = loader.load(stream);
+			stage.show();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

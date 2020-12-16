@@ -17,6 +17,22 @@ public class DAOLoaiThuoc {
 		conn = DAO.getInstance().getConn();
 	}
 	
+	public boolean suaLoaiThuoc(LoaiThuoc loaiThuoc) {
+		String sql = "update LoaiThuoc set TenLoaiThuoc = ?, MoTa = ? where LoaiThuocId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setNString(1, loaiThuoc.getTenLoai());
+			ps.setNString(2, loaiThuoc.getMoTa());
+			ps.setString(3, loaiThuoc.getId());
+			
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public Boolean xoaLoaiThuocByID(String id) {
 		String sql = "delete from LoaiThuoc WHERE LoaiThuocId = ?";
 		try {
