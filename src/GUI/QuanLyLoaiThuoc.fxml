@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="623.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane prefHeight="40.0" prefWidth="1080.0" style="-fx-background-color: #64AD4A;">
+         <children>
+            <Text fill="WHITE" layoutX="435.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quản Lý Loại Thuốc">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane layoutX="12.0" layoutY="49.0" prefHeight="159.0" prefWidth="1057.0" style="-fx-border-color: grey; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-background-color: #fff;">
+         <children>
+            <GridPane layoutX="21.0" layoutY="14.0" prefHeight="132.0" prefWidth="833.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mã Loại Thuốc" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tên Loại Thuốc" GridPane.columnIndex="1" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mô Tả" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtMaLoai" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="txtTenLoai" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="txtMoTa" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin>
+                  </TextField>
+               </children>
+            </GridPane>
+            <Button fx:id="btnTim" layoutX="863.0" layoutY="14.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="177.0" style="-fx-background-color: #64AD4A; -fx-text-fill: #fff; -fx-font-size: 17px; -fx-font-weight: bold;" text="Tìm" />
+            <Button fx:id="btnThem" layoutX="863.0" layoutY="86.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="177.0" style="-fx-background-color: #F5508B; -fx-text-fill: #fff; -fx-font-size: 17px; -fx-font-weight: bold;" text="Thêm" />
+         </children>
+      </Pane>
+      <TableView fx:id="tblLoaiThuoc" layoutX="12.0" layoutY="225.0" prefHeight="384.0" prefWidth="1057.0">
+        <columns>
+          <TableColumn fx:id="colMaLoai" prefWidth="221.0" text="Mã Loại Thuốc" />
+          <TableColumn fx:id="colTenLoai" prefWidth="328.0" text="Thên Loại Thuốc" />
+            <TableColumn fx:id="colMoTa" prefWidth="295.0" text="Mô Tả" />
+            <TableColumn fx:id="colSua" prefWidth="111.0" text="Sửa" />
+            <TableColumn fx:id="colXoa" prefWidth="101.0" text="Xóa" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

@@ -17,30 +17,28 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class ThemLoaiThuocControl implements Initializable {
+public class SuaLoaiThuocControl implements Initializable {
 	public TextField txtMaLoai;
 	public TextField txtTenLoai;
 	public TextArea txaMoTa;
 	public Button btnThem;
 	public Button btnHuy;
 	public Text lblTenLoai;
+	public Text lblTitle;
 	
-	
+
+
 	private Common common = new Common();
 	private DAOLoaiThuoc daoLoaiThuoc = new DAOLoaiThuoc();
-	private ThemThuocControl themThuocControl;
 	private QuanLyLoaiThuocControl quanLyLoaiThuocControl;
-	
-	public ThemLoaiThuocControl(ThemThuocControl themThuocControl) {
-		// TODO Auto-generated constructor stub
-		this.themThuocControl = themThuocControl;
-	}
+	private LoaiThuoc loaiThuoc;
 
-	public ThemLoaiThuocControl(QuanLyLoaiThuocControl quanLyLoaiThuocControl) {
+	public SuaLoaiThuocControl(QuanLyLoaiThuocControl quanLyLoaiThuocControl, LoaiThuoc loaiThuoc) {
 		// TODO Auto-generated constructor stub
 		this.quanLyLoaiThuocControl = quanLyLoaiThuocControl;
+		this.loaiThuoc = loaiThuoc;
 	}
-
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
@@ -48,19 +46,24 @@ public class ThemLoaiThuocControl implements Initializable {
 		initButtonHuy();
 		initButtonThem();
 		initMaLoai();
+		
+		btnThem.setText("Sửa");
+		lblTitle.setText("Sửa Loại Thuốc");
+		txaMoTa.setText(loaiThuoc.getMoTa());
 	}
 
 
 	private void initMaLoai() {
 		// TODO Auto-generated method stub
+		txtMaLoai.setText(loaiThuoc.getId());
 		txtMaLoai.setDisable(true);
-		txtMaLoai.setText(daoLoaiThuoc.generateID());
+//		txtMaLoai.setText(daoLoaiThuoc.generateID());
 	}
 
 	private void initButtonThem() {
 		// TODO Auto-generated method stub
 		btnThem.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -68,24 +71,18 @@ public class ThemLoaiThuocControl implements Initializable {
 			}
 		});
 	}
-	
+
 	private void actionButtonThem(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		if (!checkTenLoaiThuoc()) {
-			common.showNotification(AlertType.ERROR, "ERROR", "Lỗi thêm loại thuốc vui lòng kiểm tra lại điều kiện!");
+			common.showNotification(AlertType.ERROR, "ERROR", "Lỗi sửa loại thuốc vui lòng kiểm tra lại điều kiện!");
 		}else {
 			LoaiThuoc loaiThuoc = new LoaiThuoc(txtMaLoai.getText(), txtTenLoai.getText(), txaMoTa.getText());
-			if (!daoLoaiThuoc.themLoaiThuoc(loaiThuoc)) {
-				common.showNotification(AlertType.ERROR, "ERROR", "Lỗi thêm vui lòng kiểm tra lại!");
+			if (!daoLoaiThuoc.suaLoaiThuoc(loaiThuoc)) {
+				common.showNotification(AlertType.ERROR, "ERROR", "Lỗi sửa vui lòng kiểm tra lại!");
 			}else {
-				common.showNotification(AlertType.INFORMATION, "INFORMATION", "Thêm thành công.");
-				if (this.themThuocControl != null) {
-					this.themThuocControl.getListLoaiThuoc().add(txtTenLoai.getText());
-					this.themThuocControl.cmbLoaiThuoc.setValue(txtTenLoai.getText());
-				}else {
-					this.quanLyLoaiThuocControl.actionButtonTim();
-				}
-				
+				common.showNotification(AlertType.INFORMATION, "INFORMATION", "Sửa thành công.");
+				this.quanLyLoaiThuocControl.actionButtonTim();
 				Stage thanhToanStage = (Stage) ((Node)arg0.getSource()).getScene().getWindow();
 				thanhToanStage.close();
 			}
@@ -96,7 +93,7 @@ public class ThemLoaiThuocControl implements Initializable {
 	private void initButtonHuy() {
 		// TODO Auto-generated method stub
 		btnHuy.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -109,6 +106,7 @@ public class ThemLoaiThuocControl implements Initializable {
 
 	private void initTenLoai() {
 		// TODO Auto-generated method stub
+		txtTenLoai.setText(loaiThuoc.getTenLoai());
 		txtTenLoai.textProperty().addListener((ob, old, newv) -> {
 			checkTenLoaiThuoc();
 		});

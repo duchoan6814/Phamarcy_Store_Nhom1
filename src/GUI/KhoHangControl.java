@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import GUI.control.QuanLyLoaiThuocControl;
 import entity.NhanVienBanThuoc;
 import entity.QuanLy;
 import javafx.event.Event;
@@ -21,6 +22,7 @@ public class KhoHangControl implements Initializable {
 	public Tab tabThuoc;
 	public Tab tabPhieuNhap;
 	public Tab tabNCC;
+	public Tab tabLoaiThuoc;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
@@ -28,6 +30,20 @@ public class KhoHangControl implements Initializable {
 		setContentThuoc();
 		setContenPhieuNhapThuoc();
 		setcontentQLNhaCC();
+		setContentQLLoaiThuoc();
+	}
+
+	private void setContentQLLoaiThuoc() {
+		// TODO Auto-generated method stub
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("QuanLyLoaiThuoc.fxml"));
+		QuanLyLoaiThuocControl control = new QuanLyLoaiThuocControl();
+		loader.setController(control);
+		try {
+			tabLoaiThuoc.setContent(loader.load());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void setcontentQLNhaCC() {
@@ -88,6 +104,7 @@ public class KhoHangControl implements Initializable {
 			}
 		});
 	}
+	
 
 	public NhanVienBanThuoc getNhanVienBanThuoc() {
 		return nhanVienBanThuoc;
