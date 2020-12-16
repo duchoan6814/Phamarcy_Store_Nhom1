@@ -106,12 +106,12 @@ public class SuaNhaCungCapControl implements Initializable {
 			nhaCungCap.setTenNhaCungCap(txtTenNhaCungCap.getText());
 			nhaCungCap.setTrangChu(txtTrangChu.getText());
 			if (daoNhaCungCap.suaNhaCungCap(nhaCungCap)) {
-				common.showNotification(AlertType.INFORMATION, "INFORMATION", "SửaSửa nhà cung cấp thành công!");
+				common.showNotification(AlertType.INFORMATION, "INFORMATION", "Sửa nhà cung cấp thành công!");
 				this.quanLyNCCConTrol.actionButtonTim();
 				Stage thanhToanStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
 				thanhToanStage.close();
 			}else {
-				common.showNotification(AlertType.ERROR, "ERROR", "Có lỗi sảy ra khi SửaSửa, vui lòng kiểm tra kết nối!");
+				common.showNotification(AlertType.ERROR, "ERROR", "Có lỗi sảy ra khi Sửa, vui lòng kiểm tra kết nối!");
 			}
 		}else {
 			common.showNotification(AlertType.ERROR, "ERROR", "Sửa không thành công vui lòng kiểm tra lại điều kiện!");

@@ -192,4 +192,19 @@ public class DAONhaCungCap{
 		}	
 		return false;
 	}
+
+	public boolean xoaNhaCungCapByID(String data) {
+		// TODO Auto-generated method stub
+		String sql = "delete NhaCungCap WHERE NhaCungCapId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, data);
+			
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

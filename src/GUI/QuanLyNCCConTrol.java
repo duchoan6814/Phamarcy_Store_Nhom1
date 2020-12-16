@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import DAO.DAONhaCungCap;
@@ -26,7 +27,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -129,6 +135,24 @@ public class QuanLyNCCConTrol implements Initializable {
 						btn.setOnAction(event -> {
 							TableColumn col = tabNCC.getColumns().get(1);
 							String data = (String) col.getCellObservableValue(tabNCC.getItems().get(getIndex())).getValue();
+							Alert alert = new Alert(AlertType.CONFIRMATION);
+							alert.setTitle("Xóaóa");
+							alert.setHeaderText(null);
+							alert.setContentText("Bạn có muốn xóa nhà cung cấp?");
+
+							Optional<ButtonType> result = alert.showAndWait();
+							if (result.get() == ButtonType.OK){
+								// ... user chose OK'
+								if (!daoNhaCungCap.xoaNhaCungCapByID(data)) {
+									common.showNotification(AlertType.ERROR, "ERROR", "Bạn không thể xóa nhà cung cấp này!");
+								}else {
+									common.showNotification(AlertType.INFORMATION, "INFORMATION", "Xóa thành công!");
+									actionButtonTim();
+								}
+
+							} else {
+								// ... user chose CANCEL or closed the dialog
+							}
 						});
 					}
 
