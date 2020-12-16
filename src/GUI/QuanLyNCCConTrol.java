@@ -1,10 +1,15 @@
 package GUI;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import DAO.DAONhaCungCap;
+import GUI.control.ThemNhaCungCapControl;
 import common.Common;
 import common.PhieuNhapTable;
 import common.QLNhaCungCapTable;
@@ -13,9 +18,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -50,6 +57,37 @@ public class QuanLyNCCConTrol implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		initbtnTim();
 		initTable();
+		initButtonThem();
+	}
+
+	private void initButtonThem() {
+		// TODO Auto-generated method stub
+		btnThem.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				actionButtonThem();
+			}
+		});
+	}
+
+	protected void actionButtonThem() {
+		// TODO Auto-generated method stub
+		try {
+			FileInputStream stream = new FileInputStream(new File("src/GUI/ThemNhaCungCap.fxml"));
+			FXMLLoader loader = new FXMLLoader();
+			ThemNhaCungCapControl control = new ThemNhaCungCapControl(this);
+			loader.setController(control);
+			Stage stage = loader.load(stream);
+			stage.show();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void initTable() {
@@ -70,19 +108,24 @@ public class QuanLyNCCConTrol implements Initializable {
 			
 			@Override
 			public void handle(ActionEvent arg0) {
-				data.clear();
-				
-				List<NhaCungCap> list = daoNhaCungCap.filterPhieuNhapNCC(txtMa.getText(), txtTen.getText(), txtSDT.getText(), txtFax.getText(), txtTrangChu.getText(), txtDiaChi.getText());
-				if(list.size() <= 0) {
-					common.showNotification(AlertType.INFORMATION, "No Data", "Không tìm thấy kết quả phù hợp!");
-				}else {
-					list.forEach(i -> {
-						QLNhaCungCapTable capTable = new QLNhaCungCapTable(data.size(), i.getId(), i.getTenNhaCungCap(), i.getSoDienThoai(), i.getEmail(), i.getTrangChu(), i.getDiaChi());
-						data.add(capTable);
-					});
-				}
+				actionButtonTim();
 			}
 		});
+	}
+
+	public void actionButtonTim() {
+		// TODO Auto-generated method stub
+		data.clear();
+		
+		List<NhaCungCap> list = daoNhaCungCap.filterPhieuNhapNCC(txtMa.getText(), txtTen.getText(), txtSDT.getText(), txtFax.getText(), txtTrangChu.getText(), txtDiaChi.getText());
+		if(list.size() <= 0) {
+			common.showNotification(AlertType.INFORMATION, "No Data", "Không tìm thấy kết quả phù hợp!");
+		}else {
+			list.forEach(i -> {
+				QLNhaCungCapTable capTable = new QLNhaCungCapTable(data.size(), i.getId(), i.getTenNhaCungCap(), i.getSoDienThoai(), i.getEmail(), i.getTrangChu(), i.getDiaChi());
+				data.add(capTable);
+			});
+		}
 	}
 	
 }

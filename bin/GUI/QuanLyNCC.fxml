@@ -81,9 +81,9 @@
             <TableColumn fx:id="colSDT" prefWidth="128.0" text="Số Điện Thoại" />
             <TableColumn fx:id="colFax" prefWidth="100.0" text="Email" />
             <TableColumn fx:id="colTrangChu" prefWidth="149.0" text="Trang Chủ" />
-            <TableColumn fx:id="colDiaChi" prefWidth="204.0" text="Địa Chỉ" />
-            <TableColumn fx:id="colSua" minWidth="0.0" prefWidth="83.0" text="Sửa" />
-            <TableColumn fx:id="colXoa" prefWidth="77.0" text="Xóa" />
+            <TableColumn fx:id="colDiaChi" prefWidth="217.0" text="Địa Chỉ" />
+            <TableColumn fx:id="colSua" minWidth="0.0" prefWidth="74.0" text="Sửa" />
+            <TableColumn fx:id="colXoa" prefWidth="58.0" text="Xóa" />
          </columns>
       </TableView>
    </children>

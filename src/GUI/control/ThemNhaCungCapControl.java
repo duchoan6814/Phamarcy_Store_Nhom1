@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import DAO.DAOLocation;
 import DAO.DAONhaCungCap;
+import GUI.QuanLyNCCConTrol;
 import common.Common;
 import entity.NhaCungCap;
 import javafx.collections.FXCollections;
@@ -43,6 +44,7 @@ public class ThemNhaCungCapControl implements Initializable {
 	private DAONhaCungCap daoNhaCungCap = new DAONhaCungCap();
 	private DAOLocation daoLocation = new DAOLocation();
 	private ThemThuocControl themThuocControl;
+	private QuanLyNCCConTrol quanLyNCCConTrol;
 
 	private ObservableList<String> listTinh;
 	private ObservableList<String> listQuan;
@@ -51,6 +53,11 @@ public class ThemNhaCungCapControl implements Initializable {
 	public ThemNhaCungCapControl(ThemThuocControl control) {
 		// TODO Auto-generated constructor stub
 		this.themThuocControl = control;
+	}
+
+	public ThemNhaCungCapControl(QuanLyNCCConTrol conTrol) {
+		// TODO Auto-generated constructor stub
+		this.quanLyNCCConTrol = conTrol;
 	}
 
 	@Override
@@ -99,7 +106,12 @@ public class ThemNhaCungCapControl implements Initializable {
 			nhaCungCap.setTrangChu(txtTrangChu.getText());
 			if (daoNhaCungCap.themNhaCungCap(nhaCungCap)) {
 				common.showNotification(AlertType.INFORMATION, "INFORMATION", "Thêm nhà cung cấp thành công!");
-				this.themThuocControl.cmbNhaCungCap.setValue(txtTenNhaCungCap.getText());
+				if (this.themThuocControl != null) {
+					this.themThuocControl.listNhaCungCap.add(txtTenNhaCungCap.getText());
+					this.themThuocControl.cmbNhaCungCap.setValue(txtTenNhaCungCap.getText());
+				}else {
+					this.quanLyNCCConTrol.actionButtonTim();
+				}
 				Stage thanhToanStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
 				thanhToanStage.close();
 			}else {
