@@ -29,10 +29,16 @@ public class ThemLoaiThuocControl implements Initializable {
 	private Common common = new Common();
 	private DAOLoaiThuoc daoLoaiThuoc = new DAOLoaiThuoc();
 	private ThemThuocControl themThuocControl;
+	private QuanLyLoaiThuocControl quanLyLoaiThuocControl;
 	
 	public ThemLoaiThuocControl(ThemThuocControl themThuocControl) {
 		// TODO Auto-generated constructor stub
 		this.themThuocControl = themThuocControl;
+	}
+
+	public ThemLoaiThuocControl(QuanLyLoaiThuocControl quanLyLoaiThuocControl) {
+		// TODO Auto-generated constructor stub
+		this.quanLyLoaiThuocControl = quanLyLoaiThuocControl;
 	}
 
 	@Override
@@ -73,8 +79,13 @@ public class ThemLoaiThuocControl implements Initializable {
 				common.showNotification(AlertType.ERROR, "ERROR", "Lỗi thêm vui lòng kiểm tra lại!");
 			}else {
 				common.showNotification(AlertType.INFORMATION, "INFORMATION", "Thêm thành công.");
-				this.themThuocControl.getListLoaiThuoc().add(txtTenLoai.getText());
-				this.themThuocControl.cmbLoaiThuoc.setValue(txtTenLoai.getText());
+				if (this.themThuocControl != null) {
+					this.themThuocControl.getListLoaiThuoc().add(txtTenLoai.getText());
+					this.themThuocControl.cmbLoaiThuoc.setValue(txtTenLoai.getText());
+				}else {
+					this.quanLyLoaiThuocControl.actionButtonTim();
+				}
+				
 				Stage thanhToanStage = (Stage) ((Node)arg0.getSource()).getScene().getWindow();
 				thanhToanStage.close();
 			}
