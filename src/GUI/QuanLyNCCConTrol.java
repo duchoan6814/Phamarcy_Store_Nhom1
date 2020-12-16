@@ -9,11 +9,13 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import DAO.DAONhaCungCap;
+import GUI.control.SuaNhaCungCapControl;
 import GUI.control.ThemNhaCungCapControl;
 import common.Common;
 import common.PhieuNhapTable;
 import common.QLNhaCungCapTable;
 import entity.NhaCungCap;
+import entity.Thuoc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,7 +25,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -99,7 +103,117 @@ public class QuanLyNCCConTrol implements Initializable {
 		colFax.setCellValueFactory(new PropertyValueFactory<>("fax"));
 		colTrangChu.setCellValueFactory(new PropertyValueFactory<>("trangChu"));
 		colDiaChi.setCellValueFactory(new PropertyValueFactory<>("diaChi"));
+		
+		createButtonSua();
+		createButtonXoa();
+		
 		tabNCC.setItems(data);
+	}
+
+	private void createButtonXoa() {
+		// TODO Auto-generated method stub
+		Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>> cellFactory
+		= //
+		new Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>>()
+		{
+			@Override
+			public TableCell call(final TableColumn<common.ChiTietHoaDon, String> param)
+			{
+				final TableCell<common.ChiTietHoaDon, String> cell = new TableCell<common.ChiTietHoaDon, String>()
+				{
+
+					final Button btn = new Button("Xóa");
+
+					{
+						btn.setStyle("-fx-background-color: red");
+						btn.setOnAction(event -> {
+							TableColumn col = tabNCC.getColumns().get(1);
+							String data = (String) col.getCellObservableValue(tabNCC.getItems().get(getIndex())).getValue();
+						});
+					}
+
+					@Override
+					public void updateItem(String item, boolean empty)
+					{
+						super.updateItem(item, empty);
+						if (empty) {
+							setGraphic(null);
+							setText(null);
+						}
+						else {
+							setGraphic(btn);
+							setText(null);
+						}
+					}
+				};
+				return cell;
+			}
+		};
+
+		colXoa.setCellFactory(cellFactory);
+	}
+
+	private void createButtonSua() {
+		// TODO Auto-generated method stub
+		Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>> cellFactory
+		= //
+		new Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>>()
+		{
+			@Override
+			public TableCell call(final TableColumn<common.ChiTietHoaDon, String> param)
+			{
+				final TableCell<common.ChiTietHoaDon, String> cell = new TableCell<common.ChiTietHoaDon, String>()
+				{
+
+					final Button btn = new Button("Sửa");
+
+					{
+						btn.setStyle("-fx-background-color: orange");
+						btn.setOnAction(event -> {
+							TableColumn col = tabNCC.getColumns().get(1);
+							String data = (String) col.getCellObservableValue(tabNCC.getItems().get(getIndex())).getValue();
+							showStageSuaNhaCungCap(data);
+						});
+					}
+
+					@Override
+					public void updateItem(String item, boolean empty)
+					{
+						super.updateItem(item, empty);
+						if (empty) {
+							setGraphic(null);
+							setText(null);
+						}
+						else {
+							setGraphic(btn);
+							setText(null);
+						}
+					}
+				};
+				return cell;
+			}
+		};
+
+		colSua.setCellFactory(cellFactory);
+	}
+	
+	private void showStageSuaNhaCungCap(String id) {
+		// TODO Auto-generated method stub
+		NhaCungCap cap = daoNhaCungCap.getNhaCungCapByID(id);
+		try {
+			FileInputStream fileInputStream = new FileInputStream(new File("src/GUI/ThemNhaCungCap.fxml"));
+			FXMLLoader loader = new FXMLLoader();
+			SuaNhaCungCapControl capControl = new SuaNhaCungCapControl(this, cap);
+			loader.setController(capControl);
+			Stage stage = loader.load(fileInputStream);
+			stage.show();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void initbtnTim() {

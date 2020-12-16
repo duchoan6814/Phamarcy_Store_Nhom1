@@ -20,7 +20,7 @@
             <children>
                <Pane prefHeight="36.0" prefWidth="614.0" style="-fx-background-color: #64AD4A;">
                   <children>
-                     <Text fill="WHITE" layoutX="222.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thêm Nhà Cung Cấp">
+                     <Text fx:id="txtTitle" fill="WHITE" layoutX="222.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thêm Nhà Cung Cấp">
                         <font>
                            <Font name="System Bold" size="15.0" />
                         </font>

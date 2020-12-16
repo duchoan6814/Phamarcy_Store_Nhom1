@@ -171,4 +171,25 @@ public class DAONhaCungCap{
 			return list;
 		}
 	}
+
+	public boolean suaNhaCungCap(NhaCungCap nhaCungCap) {
+		// TODO Auto-generated method stub
+		String sql = "update NhaCungCap SET DiaChi = ?, Email = ?, SoDienThoai = ?, TenNhaCungCap = ?, TrangChu = ? WHERE NhaCungCapId = ?";
+		PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setNString(1, nhaCungCap.getDiaChi());
+			ps.setString(2, nhaCungCap.getEmail());
+			ps.setString(3, nhaCungCap.getSoDienThoai());
+			ps.setNString(4, nhaCungCap.getTenNhaCungCap());
+			ps.setString(5, nhaCungCap.getTrangChu());
+			ps.setString(6, nhaCungCap.getId());
+			
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		return false;
+	}
 }
