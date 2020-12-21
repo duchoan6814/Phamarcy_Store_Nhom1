@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import GUI.control.PhieuHuyControl;
 import GUI.control.QuanLyLoaiThuocControl;
 import entity.NhanVienBanThuoc;
 import entity.QuanLy;
@@ -16,13 +17,14 @@ import javafx.scene.control.TabPane;
 
 public class KhoHangControl implements Initializable {
 	private NhanVienBanThuoc nhanVienBanThuoc;
-	
+
 	public TabPane tabKhoHang;
 	public Tab tabNhapThuoc;
 	public Tab tabThuoc;
 	public Tab tabPhieuNhap;
 	public Tab tabNCC;
 	public Tab tabLoaiThuoc;
+	public Tab tabHuyThuoc;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
@@ -31,6 +33,24 @@ public class KhoHangControl implements Initializable {
 		setContenPhieuNhapThuoc();
 		setcontentQLNhaCC();
 		setContentQLLoaiThuoc();
+		setContentHuyThuoc();
+	}
+
+	private void setContentHuyThuoc() {
+		// TODO Auto-generated method stub
+		tabHuyThuoc.setOnSelectionChanged(e -> {
+			if (tabHuyThuoc.isSelected()) {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("HuyThuoc.fxml"));
+				PhieuHuyControl control = new PhieuHuyControl(nhanVienBanThuoc);
+				loader.setController(control);
+				try {
+					tabHuyThuoc.setContent(loader.load());
+				} catch (IOException q) {
+					// TODO Auto-generated catch block
+					q.printStackTrace();
+				}
+			}
+		});
 	}
 
 	private void setContentQLLoaiThuoc() {
@@ -56,7 +76,7 @@ public class KhoHangControl implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private void setContenPhieuNhapThuoc() {
@@ -70,7 +90,7 @@ public class KhoHangControl implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private void setContentNhapThuoc() {
@@ -86,25 +106,25 @@ public class KhoHangControl implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void setContentThuoc() {
 		tabThuoc.setOnSelectionChanged(e -> {
 			if (tabThuoc.isSelected()) {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("PnlThuoc2.fxml"));
 				Thuoc2Control control = new Thuoc2Control();
 				loader.setController(control);
-				
+
 				try {
 					tabThuoc.setContent(loader.load());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 			}
 		});
 	}
-	
+
 
 	public NhanVienBanThuoc getNhanVienBanThuoc() {
 		return nhanVienBanThuoc;
