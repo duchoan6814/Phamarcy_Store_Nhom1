@@ -22,6 +22,46 @@ public class DAOLoThuoc{
 		conn = DAO.getInstance().getConn();
 	}
 	
+	public List<LoThuoc> filterLoThuoc(String maThuoc, String tenThuoc, String loaiThuoc, boolean hetHan) {
+		List<LoThuoc> list = new ArrayList<LoThuoc>();
+		String _loaiThuoc;
+		if (loaiThuoc.equals("Tất Cả")) {
+			_loaiThuoc = "";
+		}else {
+			_loaiThuoc = loaiThuoc;
+		}
+		
+		String _hetHan = "";
+		if (hetHan) {
+			_hetHan = " and DATEDIFF(DAY, CURRENT_TIMESTAMP, DATEADD(MONTH, t.HanSuDung, lt.NgaySanXuat)) < 15";
+		}
+		
+		String sql = "SELECT lt.* from LoThuoc as lt join Thuoc as t on lt.ThuocId = t.ThuocId join LoaiThuoc lth on t.LoaiThuocId = lth.LoaiThuocId WHERE lt.ThuocId like ? and t.TenThuoc like ? and lth.TenLoaiThuoc like ?"+_hetHan;
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, "%"+maThuoc+"%");
+			ps.setNString(2, "%"+tenThuoc+"%");
+			ps.setNString(3, "%"+_loaiThuoc+"%");
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				LoThuoc loThuoc = new LoThuoc();
+				loThuoc.setNgaySanXuat(rs.getDate("NgaySanXuat"));
+				loThuoc.setSoLuong(rs.getInt("SoLuong"));
+				loThuoc.setThuoc(daoThuoc.getThuocById(rs.getString("ThuocId")));
+				loThuoc.setSoLuongConLai(rs.getInt("SoLuongConLai"));
+				list.add(loThuoc);
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return list;
+		}
+	}
+	
 	public boolean themLoThuoc(String phieuNhapHangId, LoThuoc loThuoc) {
 		String sql = "INSERT into LoThuoc(PhieuNhapHangId, SoLuong, SoLuongConLai, ThuocId, NgaySanXuat) VALUES (?, ?, ?, ?, ?)";
 		try {
