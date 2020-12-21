@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class PhieuHuyHang {
 	private String id;
 	private Timestamp thoiGianLap;
-	private QuanLy quanLy;
+	private NhanVienBanThuoc quanLy;
 	private ArrayList<LoThuoc> dsLoThuoc;
 	public String getId() {
 		return id;
@@ -20,10 +20,10 @@ public class PhieuHuyHang {
 	public void setThoiGianLap(Timestamp thoiGianLap) {
 		this.thoiGianLap = thoiGianLap;
 	}
-	public QuanLy getQuanLy() {
+	public NhanVienBanThuoc getQuanLy() {
 		return quanLy;
 	}
-	public void setQuanLy(QuanLy quanLy) {
+	public void setQuanLy(NhanVienBanThuoc nhanVienBanThuoc) {
 		this.quanLy = quanLy;
 	}
 	public ArrayList<LoThuoc> getDsLoThuoc() {
@@ -41,10 +41,12 @@ public class PhieuHuyHang {
 	}
 	public PhieuHuyHang() {
 		super();
+		this.dsLoThuoc = new ArrayList<>();
 	}
 	public PhieuHuyHang(String id) {
 		super();
 		this.id = id;
+		this.dsLoThuoc = new ArrayList<>();
 	}
 	@Override
 	public int hashCode() {
@@ -95,6 +97,10 @@ public class PhieuHuyHang {
 		return false;
 	}
 	
+	public void xoaLoThuoc(int index) {
+		this.dsLoThuoc.remove(index);
+	}
+	
 	public LoThuoc timKiemLoThuoc(String id) {
 		for (LoThuoc loThuoc : dsLoThuoc) {
 			if (loThuoc.getThuoc().getId().equals(id)) {
@@ -107,7 +113,7 @@ public class PhieuHuyHang {
 	public double tinhTongTienHuyHang() {
 		double tongTien = 0;
 		for (LoThuoc loThuoc : dsLoThuoc) {
-			tongTien += loThuoc.tinhTongTienLoThuoc();
+			tongTien += loThuoc.tinhGiaTriLoThuocConLai();
 		}
 		return tongTien;
 	}

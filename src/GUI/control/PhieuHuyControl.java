@@ -1,34 +1,48 @@
 package GUI.control;
 
 import java.net.URL;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.controlsfx.control.textfield.TextFields;
 
 import DAO.DAOLoThuoc;
 import DAO.DAOLoaiThuoc;
+import DAO.DAOPhieuHuy;
 import DAO.DAOThuoc;
 import common.ChiTietPhieuHuyTable;
 import common.Common;
 import common.LoThuocTableInPhieuHuy;
+import entity.LoThuoc;
+import entity.NhanVienBanThuoc;
+import entity.PhieuHuyHang;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 
 public class PhieuHuyControl implements Initializable {
 
-	public Text lblThanhTie;
+	public Text lblThanhTien;
 	public TextField txtMaThuoc;
 	public TextField txtTenThuoc;
 	public TextField txtMaPhieuHuy;
@@ -66,14 +80,106 @@ public class PhieuHuyControl implements Initializable {
 	private DAOThuoc daoThuoc = new DAOThuoc();
 	private DAOLoaiThuoc daoLoaiThuoc = new DAOLoaiThuoc();
 	private DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
+	private DAOPhieuHuy daoPhieuHuy = new DAOPhieuHuy();
 	private Common common = new Common();
 	private ObservableList<LoThuocTableInPhieuHuy> dataLoThuoc;
+	private LoThuoc loThuoc;
+	private PhieuHuyHang phieuHuyHang;
+	private NhanVienBanThuoc nhanVienBanThuoc;
+	private ObservableList<ChiTietPhieuHuyTable> dataChiTiet;
+	
+	public PhieuHuyControl(NhanVienBanThuoc nhanVienBanThuoc) {
+		// TODO Auto-generated constructor stub
+		this.nhanVienBanThuoc = nhanVienBanThuoc;
+	}
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		initTimThuocField();
 		initLoThuocTable();
+		initChiTietPhieuHuy();
+	}
+
+	private void initChiTietPhieuHuy() {
+		// TODO Auto-generated method stub
+		dataChiTiet = FXCollections.observableArrayList();
+		tblChiTietPhieuHuy.setItems(dataChiTiet);
+		
+		colSTTChiTiet.setCellValueFactory(new PropertyValueFactory<>("STT"));
+		colSoLuongHuyChiTiet.setCellValueFactory(new PropertyValueFactory<>("soLuongHuy"));
+		colMaThuocChiTiet.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
+		colTenThuocChiTiet.setCellValueFactory(new PropertyValueFactory<>("tenThuoc"));
+		colDonViTinhChiTiet.setCellValueFactory(new PropertyValueFactory<>("donViTinh"));
+		colDonGiaChiTiet.setCellValueFactory(new PropertyValueFactory<>("donGia"));
+		colLoaiThuocChiTiet.setCellValueFactory(new PropertyValueFactory<>("loaiThuoc"));
+		colNgaySanXuatChiTiet.setCellValueFactory(new PropertyValueFactory<>("ngaySanXuat"));
+		colHanSuDungChiTiet.setCellValueFactory(new PropertyValueFactory<>("hanSuDung"));
+		colTongTien.setCellValueFactory(new PropertyValueFactory<>("tongTien"));
+		
+		createButtonXoa();
+		
+		dataChiTiet.addListener(new ListChangeListener<ChiTietPhieuHuyTable>() {
+
+			@Override
+			public void onChanged(Change<? extends ChiTietPhieuHuyTable> arg0) {
+				// TODO Auto-generated method stub
+				lblThanhTien.setText("Thành Tiền: "+ common.formatMoney(phieuHuyHang.tinhTongTienHuyHang()));
+			}
+			
+		});
+		
+	}
+
+	private void createButtonXoa() {
+		// TODO Auto-generated method stub
+		Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>> cellFactory
+		= //
+		new Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>>()
+		{
+			@Override
+			public TableCell call(final TableColumn<common.ChiTietHoaDon, String> param)
+			{
+				final TableCell<common.ChiTietHoaDon, String> cell = new TableCell<common.ChiTietHoaDon, String>()
+				{
+
+					final Button btn = new Button("Xóa");
+
+					{
+						btn.setStyle("-fx-background-color: #F5508B");
+						btn.setOnAction(event -> {
+							int index = getIndex();
+							phieuHuyHang.xoaLoThuoc(index);
+							dataChiTiet.remove(index);
+							
+							if (phieuHuyHang.getDsLoThuoc().size() <= 0) {
+								phieuHuyHang = null;
+								
+								txtMaPhieuHuy.setText("");
+								dateNgayLap.setValue(null);
+							}
+						});
+					}
+
+					@Override
+					public void updateItem(String item, boolean empty)
+					{
+						super.updateItem(item, empty);
+						if (empty) {
+							setGraphic(null);
+							setText(null);
+						}
+						else {
+							setGraphic(btn);
+							setText(null);
+						}
+					}
+				};
+				return cell;
+			}
+		};
+
+		colXoaChiTiet.setCellFactory(cellFactory);
 	}
 
 	private void initLoThuocTable() {
@@ -93,7 +199,77 @@ public class PhieuHuyControl implements Initializable {
 		colNgaySanXuatLoThuoc.setCellValueFactory(new PropertyValueFactory<>("ngaySanXuat"));
 		colHanSuDungLoThuoc.setCellValueFactory(new PropertyValueFactory<>("hanSuDung"));
 		
+		createButtonChon();
+		
 		actionButtonTim();
+	}
+
+	private void createButtonChon() {
+		// TODO Auto-generated method stub
+		Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>> cellFactory
+		= //
+		new Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>>()
+		{
+			@Override
+			public TableCell call(final TableColumn<common.ChiTietHoaDon, String> param)
+			{
+				final TableCell<common.ChiTietHoaDon, String> cell = new TableCell<common.ChiTietHoaDon, String>()
+				{
+
+					final Button btn = new Button("Chọn");
+
+					{
+						btn.setStyle("-fx-background-color: #64AD4A");
+						btn.setOnAction(event -> {
+							TableColumn colMaPhieuNhap = tblLoThuoc.getColumns().get(1);
+							String maPhieuNhap = (String) colMaPhieuNhap.getCellObservableValue(tblLoThuoc.getItems().get(getIndex())).getValue();
+							TableColumn colMaThuoc = tblLoThuoc.getColumns().get(2);
+							String maThuoc = (String) colMaThuoc.getCellObservableValue(tblLoThuoc.getItems().get(getIndex())).getValue();
+							TableColumn colNgaySanXuat = tblLoThuoc.getColumns().get(7);
+							String ngaySanXuat = (String) colNgaySanXuat.getCellObservableValue(tblLoThuoc.getItems().get(getIndex())).getValue();
+							actionButtonChon(maThuoc, ngaySanXuat, maPhieuNhap);
+						});
+					}
+
+					@Override
+					public void updateItem(String item, boolean empty)
+					{
+						super.updateItem(item, empty);
+						if (empty) {
+							setGraphic(null);
+							setText(null);
+						}
+						else {
+							setGraphic(btn);
+							setText(null);
+						}
+					}
+				};
+				return cell;
+			}
+		};
+
+		colChonLoThuoc.setCellFactory(cellFactory);
+	}
+	
+	private void actionButtonChon(String id, String date, String maPhieuNhap) {
+		// TODO Auto-generated method stub
+		loThuoc = daoLoThuoc.getLoThuocByID(id, date, maPhieuNhap);
+		if (phieuHuyHang == null) {
+			phieuHuyHang = new PhieuHuyHang();
+			phieuHuyHang.setId(daoPhieuHuy.genenateID());
+			phieuHuyHang.setQuanLy(nhanVienBanThuoc);
+			phieuHuyHang.setThoiGianLap(Timestamp.valueOf(LocalDateTime.now()));
+			
+			txtMaPhieuHuy.setText(daoPhieuHuy.genenateID());
+			dateNgayLap.setValue(LocalDate.now());
+		}
+		
+		phieuHuyHang.getDsLoThuoc().add(loThuoc);
+		dataChiTiet.add(new ChiTietPhieuHuyTable(dataChiTiet.size(), loThuoc.getSoLuongConLai(), loThuoc.getThuoc().getId(),
+				loThuoc.getThuoc().getTenThuoc(), loThuoc.getThuoc().getDonViTinh(), common.formatMoney(loThuoc.getThuoc().getGia()),
+				loThuoc.getThuoc().getLoaiThuoc().getTenLoai(), loThuoc.getNgaySanXuat().toString(), loThuoc.tinhNgayHetHan().toString(), common.formatMoney(loThuoc.tinhGiaTriLoThuocConLai())));
+		loThuoc = null;
 	}
 
 	private void initTimThuocField() {
@@ -103,6 +279,12 @@ public class PhieuHuyControl implements Initializable {
 		initLoaiThuoc();
 		initThuocHetHan();
 		initButtonTim();
+		initThanhTien();
+	}
+
+	private void initThanhTien() {
+		// TODO Auto-generated method stub
+		lblThanhTien.setText("Thành Tiền: 0đ");
 	}
 
 	private void initButtonTim() {
@@ -120,9 +302,10 @@ public class PhieuHuyControl implements Initializable {
 	protected void actionButtonTim() {
 		// TODO Auto-generated method stub
 		dataLoThuoc.clear();
-		daoLoThuoc.filterLoThuoc(txtMaThuoc.getText(), txtTenThuoc.getText(), cmbLoaiThuoc.getValue(), rbtThuocHetHan.isSelected()).forEach(i -> {
+		
+		daoLoThuoc.filterLoThuoc(txtMaThuoc.getText(), txtTenThuoc.getText(), cmbLoaiThuoc.getValue(), rbtThuocHetHan.isSelected()).forEach((maPhieuNhap, i) -> {
 			dataLoThuoc.add(new LoThuocTableInPhieuHuy(dataLoThuoc.size(), i.getSoLuongConLai(), i.getThuoc().getId(), i.getThuoc().getTenThuoc(),
-					i.getThuoc().getDonViTinh(), common.formatMoney(i.getThuoc().getGia()), i.getThuoc().getLoaiThuoc().getTenLoai(), i.getThuoc().getNuocSanXuat(),
+					i.getThuoc().getDonViTinh(), common.formatMoney(i.getThuoc().getGia()), i.getThuoc().getLoaiThuoc().getTenLoai(), maPhieuNhap,
 					i.getNgaySanXuat().toString(), i.tinhNgayHetHan().toString()));
 		});
 	}

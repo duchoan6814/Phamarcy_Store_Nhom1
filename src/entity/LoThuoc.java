@@ -106,4 +106,8 @@ public class LoThuoc {
 		return this.getThuoc().getGia() * this.getSoLuong();
 	}
 
+	public double tinhGiaTriLoThuocConLai() {
+		return this.thuoc.getGia() * this.getSoLuongConLai();
+	}
+	
 }

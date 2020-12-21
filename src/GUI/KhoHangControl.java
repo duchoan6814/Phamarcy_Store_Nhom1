@@ -41,7 +41,7 @@ public class KhoHangControl implements Initializable {
 		tabHuyThuoc.setOnSelectionChanged(e -> {
 			if (tabHuyThuoc.isSelected()) {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("HuyThuoc.fxml"));
-				PhieuHuyControl control = new PhieuHuyControl();
+				PhieuHuyControl control = new PhieuHuyControl(nhanVienBanThuoc);
 				loader.setController(control);
 				try {
 					tabHuyThuoc.setContent(loader.load());

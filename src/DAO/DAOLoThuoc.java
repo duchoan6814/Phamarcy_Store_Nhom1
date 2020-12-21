@@ -1,6 +1,7 @@
 package DAO;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,8 +23,36 @@ public class DAOLoThuoc{
 		conn = DAO.getInstance().getConn();
 	}
 	
-	public List<LoThuoc> filterLoThuoc(String maThuoc, String tenThuoc, String loaiThuoc, boolean hetHan) {
-		List<LoThuoc> list = new ArrayList<LoThuoc>();
+	public LoThuoc getLoThuocByID(String id, String nsx, String maPhieuNhap) {
+		
+		Date _nsx = Date.valueOf(nsx);
+		
+		String sql = "select * from LoThuoc where ThuocId = ? and NgaySanXuat = ? and PhieuNhapHangId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ps.setDate(2, _nsx);
+			ps.setString(3, maPhieuNhap);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				LoThuoc loThuoc = new LoThuoc();
+				loThuoc.setNgaySanXuat(rs.getDate("NgaySanXuat"));
+				loThuoc.setSoLuong(rs.getInt("SoLuong"));
+				loThuoc.setThuoc(daoThuoc.getThuocById(rs.getString("ThuocId")));
+				loThuoc.setSoLuongConLai(rs.getInt("SoLuongConLai"));
+				return loThuoc;
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Map<String, LoThuoc> filterLoThuoc(String maThuoc, String tenThuoc, String loaiThuoc, boolean hetHan) {
+		Map<String, LoThuoc> list = new HashMap<String, LoThuoc>();
 		String _loaiThuoc;
 		if (loaiThuoc.equals("Tất Cả")) {
 			_loaiThuoc = "";
@@ -52,7 +81,7 @@ public class DAOLoThuoc{
 				loThuoc.setSoLuong(rs.getInt("SoLuong"));
 				loThuoc.setThuoc(daoThuoc.getThuocById(rs.getString("ThuocId")));
 				loThuoc.setSoLuongConLai(rs.getInt("SoLuongConLai"));
-				list.add(loThuoc);
+				list.put(rs.getString("PhieuNhapHangId"), loThuoc);
 			}
 			return list;
 		} catch (SQLException e) {

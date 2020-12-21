@@ -30,8 +30,8 @@
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mã Phiếu Hủy" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày Lập" GridPane.rowIndex="1" />
-            <TextField fx:id="txtMaPhieuHuy" editable="false" GridPane.columnIndex="1" />
-            <DatePicker fx:id="dateNgayLap" editable="false" prefHeight="26.0" prefWidth="219.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="txtMaPhieuHuy" disable="true" editable="false" GridPane.columnIndex="1" />
+            <DatePicker fx:id="dateNgayLap" disable="true" editable="false" prefHeight="26.0" prefWidth="219.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <Pane layoutX="11.0" layoutY="565.0" prefHeight="44.0" prefWidth="1059.0" style="-fx-border-color: grey; -fx-background-color: #fff; -fx-border-radius: 5px;">
@@ -48,12 +48,12 @@
       <TableView fx:id="tblLoThuoc" layoutX="11.0" layoutY="99.0" prefHeight="213.0" prefWidth="1059.0">
          <columns>
             <TableColumn fx:id="colSTTLoThuoc" prefWidth="49.0" text="STT" />
+            <TableColumn fx:id="colNuocSanXuatLoThuoc" prefWidth="119.0" text="Mã Phiếu Nhập" />
             <TableColumn fx:id="colMaThuocLoThuoc" prefWidth="115.0" text="Mã Thuốc" />
             <TableColumn fx:id="colTenThuocLoThuoc" prefWidth="148.0" text="Tên Thuốc" />
             <TableColumn fx:id="colDonViTinhLoThuoc" prefWidth="73.0" text="ĐVT" />
             <TableColumn fx:id="colDonGiaLoThuoc" prefWidth="85.0" text="Đơn Giá" />
             <TableColumn fx:id="colLoaiThuocLoThuoc" prefWidth="109.0" text="Loại Thuốc" />
-            <TableColumn fx:id="colNuocSanXuatLoThuoc" prefWidth="119.0" text="Nước SX" />
             <TableColumn fx:id="colNgaySanXuatLoThuoc" prefWidth="115.0" text="NSX" />
             <TableColumn fx:id="colHanSuDungLoThuoc" prefWidth="119.0" text="HSD" />
             <TableColumn fx:id="colSoLuongTonLoThuoc" prefWidth="70.0" text="SL Tồn" />
