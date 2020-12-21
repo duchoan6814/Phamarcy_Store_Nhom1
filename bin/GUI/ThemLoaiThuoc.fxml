@@ -20,7 +20,7 @@
             <children>
                <Pane prefHeight="43.0" prefWidth="539.0" style="-fx-background-color: #64AD4A;">
                   <children>
-                     <Text fill="WHITE" layoutX="184.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thêm Loại Thuốc">
+                     <Text fx:id="lblTitle" fill="WHITE" layoutX="184.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thêm Loại Thuốc">
                         <font>
                            <Font name="System Bold" size="18.0" />
                         </font>
