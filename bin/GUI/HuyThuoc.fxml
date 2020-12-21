@@ -94,11 +94,11 @@
       <TableView fx:id="tblChiTietPhieuHuy" layoutX="11.0" layoutY="319.0" prefHeight="239.0" prefWidth="1059.0">
          <columns>
             <TableColumn fx:id="colSTTChiTiet" prefWidth="49.0" text="STT" />
+            <TableColumn fx:id="colLoaiThuocChiTiet" prefWidth="119.0" text="Mã Phiếu Nhập" />
             <TableColumn fx:id="colMaThuocChiTiet" prefWidth="115.0" text="Mã Thuốc" />
             <TableColumn fx:id="colTenThuocChiTiet" prefWidth="148.0" text="Tên Thuốc" />
             <TableColumn fx:id="colDonViTinhChiTiet" prefWidth="73.0" text="ĐVT" />
             <TableColumn fx:id="colDonGiaChiTiet" prefWidth="85.0" text="Đơn Giá" />
-            <TableColumn fx:id="colLoaiThuocChiTiet" prefWidth="119.0" text="Loại Thuốc" />
             <TableColumn fx:id="colNgaySanXuatChiTiet" prefWidth="129.0" text="NSX" />
             <TableColumn fx:id="colHanSuDungChiTiet" prefWidth="116.0" text="HSD" />
             <TableColumn fx:id="colSoLuongHuyChiTiet" prefWidth="63.0" text="SL Huy" />

@@ -1,6 +1,7 @@
 package GUI.control;
 
 import java.net.URL;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -76,7 +77,7 @@ public class PhieuHuyControl implements Initializable {
 	public TableColumn<ChiTietPhieuHuyTable, String> colHanSuDungChiTiet;
 	public TableColumn<ChiTietPhieuHuyTable, String> colTongTien;
 	public TableColumn colXoaChiTiet;
-	
+
 	private DAOThuoc daoThuoc = new DAOThuoc();
 	private DAOLoaiThuoc daoLoaiThuoc = new DAOLoaiThuoc();
 	private DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
@@ -87,25 +88,94 @@ public class PhieuHuyControl implements Initializable {
 	private PhieuHuyHang phieuHuyHang;
 	private NhanVienBanThuoc nhanVienBanThuoc;
 	private ObservableList<ChiTietPhieuHuyTable> dataChiTiet;
-	
+
 	public PhieuHuyControl(NhanVienBanThuoc nhanVienBanThuoc) {
 		// TODO Auto-generated constructor stub
 		this.nhanVienBanThuoc = nhanVienBanThuoc;
 	}
-	
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		initTimThuocField();
 		initLoThuocTable();
 		initChiTietPhieuHuy();
+		initButtonHuy();
+		initButtonLuu();
+	}
+
+	private void initButtonLuu() {
+		// TODO Auto-generated method stub
+		btnLuu.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				actionButtonLuu();
+			}
+		});
+	}
+
+	protected void actionButtonLuu() {
+		// TODO Auto-generated method stub
+		if (phieuHuyHang == null) {
+			common.showNotification(AlertType.ERROR, "ERROR", "Phiếu hủy hàng chưa được tạo");
+		}else {
+			if (daoPhieuHuy.themPhieuHuy(phieuHuyHang)) {
+				common.showNotification(AlertType.INFORMATION, "INFORMATION", "Lưu phiếu hủy thành công!");
+				clearAllField();
+				actionButtonTim();
+			}else {
+				common.showNotification(AlertType.INFORMATION, "ERROR", "Lưu phiếu hủy không thành công vui lòng kiểm tra lại!");
+			}
+		}
+	}
+
+	private void initButtonHuy() {
+		// TODO Auto-generated method stub
+		btnHuy.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				actionButtonHuy();
+			}
+		});
+	}
+
+	protected void actionButtonHuy() {
+		// TODO Auto-generated method stub
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation Dialog");
+		alert.setHeaderText(null);
+		alert.setContentText("Bạn có chắc muốn hủy phiếu hủy này?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK){
+			// ... user chose OK
+			clearAllField();
+			
+		} else {
+			// ... user chose CANCEL or closed the dialog
+		}
+	}
+
+	private void clearAllField() {
+		// TODO Auto-generated method stub
+		phieuHuyHang = null;
+		loThuoc = null;
+		
+		txtMaPhieuHuy.setText("");
+		dateNgayLap.setValue(null);
+		dataChiTiet.clear();
+		lblThanhTien.setText("Thành Tiền: 0đ");
 	}
 
 	private void initChiTietPhieuHuy() {
 		// TODO Auto-generated method stub
 		dataChiTiet = FXCollections.observableArrayList();
 		tblChiTietPhieuHuy.setItems(dataChiTiet);
-		
+
 		colSTTChiTiet.setCellValueFactory(new PropertyValueFactory<>("STT"));
 		colSoLuongHuyChiTiet.setCellValueFactory(new PropertyValueFactory<>("soLuongHuy"));
 		colMaThuocChiTiet.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
@@ -116,19 +186,22 @@ public class PhieuHuyControl implements Initializable {
 		colNgaySanXuatChiTiet.setCellValueFactory(new PropertyValueFactory<>("ngaySanXuat"));
 		colHanSuDungChiTiet.setCellValueFactory(new PropertyValueFactory<>("hanSuDung"));
 		colTongTien.setCellValueFactory(new PropertyValueFactory<>("tongTien"));
-		
+
 		createButtonXoa();
-		
+
 		dataChiTiet.addListener(new ListChangeListener<ChiTietPhieuHuyTable>() {
 
 			@Override
 			public void onChanged(Change<? extends ChiTietPhieuHuyTable> arg0) {
 				// TODO Auto-generated method stub
-				lblThanhTien.setText("Thành Tiền: "+ common.formatMoney(phieuHuyHang.tinhTongTienHuyHang()));
+				try {
+					lblThanhTien.setText("Thành Tiền: "+ common.formatMoney(phieuHuyHang.tinhTongTienHuyHang()));
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 			}
-			
 		});
-		
+
 	}
 
 	private void createButtonXoa() {
@@ -151,10 +224,10 @@ public class PhieuHuyControl implements Initializable {
 							int index = getIndex();
 							phieuHuyHang.xoaLoThuoc(index);
 							dataChiTiet.remove(index);
-							
+
 							if (phieuHuyHang.getDsLoThuoc().size() <= 0) {
 								phieuHuyHang = null;
-								
+
 								txtMaPhieuHuy.setText("");
 								dateNgayLap.setValue(null);
 							}
@@ -186,7 +259,7 @@ public class PhieuHuyControl implements Initializable {
 		// TODO Auto-generated method stub
 		dataLoThuoc = FXCollections.observableArrayList();
 		tblLoThuoc.setItems(dataLoThuoc);
-		
+
 		colSTTLoThuoc.setCellValueFactory(new PropertyValueFactory<>("STT"));
 		colSoLuongTonLoThuoc.setCellValueFactory(new PropertyValueFactory<>("soLuongTon"));
 		colMaThuocLoThuoc.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
@@ -198,9 +271,9 @@ public class PhieuHuyControl implements Initializable {
 		colNuocSanXuatLoThuoc.setCellValueFactory(new PropertyValueFactory<>("nuocSanXuat"));
 		colNgaySanXuatLoThuoc.setCellValueFactory(new PropertyValueFactory<>("ngaySanXuat"));
 		colHanSuDungLoThuoc.setCellValueFactory(new PropertyValueFactory<>("hanSuDung"));
-		
+
 		createButtonChon();
-		
+
 		actionButtonTim();
 	}
 
@@ -251,25 +324,42 @@ public class PhieuHuyControl implements Initializable {
 
 		colChonLoThuoc.setCellFactory(cellFactory);
 	}
-	
+
 	private void actionButtonChon(String id, String date, String maPhieuNhap) {
 		// TODO Auto-generated method stub
 		loThuoc = daoLoThuoc.getLoThuocByID(id, date, maPhieuNhap);
+		loThuoc.setMaPhieuNhap(maPhieuNhap);
+		
 		if (phieuHuyHang == null) {
 			phieuHuyHang = new PhieuHuyHang();
 			phieuHuyHang.setId(daoPhieuHuy.genenateID());
-			phieuHuyHang.setQuanLy(nhanVienBanThuoc);
+			phieuHuyHang.setQuanLy(this.nhanVienBanThuoc);
 			phieuHuyHang.setThoiGianLap(Timestamp.valueOf(LocalDateTime.now()));
-			
+
 			txtMaPhieuHuy.setText(daoPhieuHuy.genenateID());
 			dateNgayLap.setValue(LocalDate.now());
 		}
 		
-		phieuHuyHang.getDsLoThuoc().add(loThuoc);
-		dataChiTiet.add(new ChiTietPhieuHuyTable(dataChiTiet.size(), loThuoc.getSoLuongConLai(), loThuoc.getThuoc().getId(),
-				loThuoc.getThuoc().getTenThuoc(), loThuoc.getThuoc().getDonViTinh(), common.formatMoney(loThuoc.getThuoc().getGia()),
-				loThuoc.getThuoc().getLoaiThuoc().getTenLoai(), loThuoc.getNgaySanXuat().toString(), loThuoc.tinhNgayHetHan().toString(), common.formatMoney(loThuoc.tinhGiaTriLoThuocConLai())));
-		loThuoc = null;
+		if (checkContrain(loThuoc, maPhieuNhap, date)) {
+			common.showNotification(AlertType.ERROR, "ERROR", "Lô thuốc đã tồn tại trong phiếu hủy!");
+		}else {
+			phieuHuyHang.getDsLoThuoc().add(loThuoc);
+			dataChiTiet.add(new ChiTietPhieuHuyTable(dataChiTiet.size(), loThuoc.getSoLuongConLai(), loThuoc.getThuoc().getId(),
+					loThuoc.getThuoc().getTenThuoc(), loThuoc.getThuoc().getDonViTinh(), common.formatMoney(loThuoc.getThuoc().getGia()),
+					maPhieuNhap, loThuoc.getNgaySanXuat().toString(), loThuoc.tinhNgayHetHan().toString(), common.formatMoney(loThuoc.tinhGiaTriLoThuocConLai())));
+			loThuoc = null;
+		}
+	}
+
+	private boolean checkContrain(LoThuoc loThuoc2, String maPhieuNhap, String date) {
+		// TODO Auto-generated method stub
+		for (ChiTietPhieuHuyTable chiTietPhieuHuyTable : dataChiTiet) {
+			if (chiTietPhieuHuyTable.getMaThuoc().equals(loThuoc2.getThuoc().getId()) && chiTietPhieuHuyTable.getLoaiThuoc().equals(maPhieuNhap) && chiTietPhieuHuyTable.getNgaySanXuat().toString().equals(date)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	private void initTimThuocField() {
@@ -290,7 +380,7 @@ public class PhieuHuyControl implements Initializable {
 	private void initButtonTim() {
 		// TODO Auto-generated method stub
 		btnTim.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -302,7 +392,7 @@ public class PhieuHuyControl implements Initializable {
 	protected void actionButtonTim() {
 		// TODO Auto-generated method stub
 		dataLoThuoc.clear();
-		
+
 		daoLoThuoc.filterLoThuoc(txtMaThuoc.getText(), txtTenThuoc.getText(), cmbLoaiThuoc.getValue(), rbtThuocHetHan.isSelected()).forEach((maPhieuNhap, i) -> {
 			dataLoThuoc.add(new LoThuocTableInPhieuHuy(dataLoThuoc.size(), i.getSoLuongConLai(), i.getThuoc().getId(), i.getThuoc().getTenThuoc(),
 					i.getThuoc().getDonViTinh(), common.formatMoney(i.getThuoc().getGia()), i.getThuoc().getLoaiThuoc().getTenLoai(), maPhieuNhap,

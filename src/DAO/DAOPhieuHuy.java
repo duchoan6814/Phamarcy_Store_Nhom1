@@ -5,12 +5,42 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import entity.LoThuoc;
+import entity.PhieuHuyHang;
+
 public class DAOPhieuHuy {
+	
+	private DAOLoThuoc daoLoThuoc = new DAOLoThuoc();
 	private Connection conn;
 	
 	public DAOPhieuHuy() {
 		// TODO Auto-generated constructor stub
 		conn = DAO.getInstance().getConn();
+	}
+	
+	public boolean themPhieuHuy(PhieuHuyHang phieuHuyHang) {
+		String sql = "insert into PhieuHuyHang (PhieuHuyId, QuanLyId, ThoiGianLap) VALUES (?, ?, ?)";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, phieuHuyHang.getId());
+			ps.setString(2, phieuHuyHang.getQuanLy().getId());
+			ps.setTimestamp(3, phieuHuyHang.getThoiGianLap());
+			
+			boolean rs = (int) ps.executeUpdate() > 0;
+			
+			if (rs) {
+				
+				for (LoThuoc i : phieuHuyHang.getDsLoThuoc()) {
+					daoLoThuoc.addPhieuHuyVaoLoThuoc(i, i.getMaPhieuNhap(), phieuHuyHang.getId());
+				}
+			}
+			return rs;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
 	}
 	
 	public String genenateID() {

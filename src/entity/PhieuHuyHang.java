@@ -24,7 +24,7 @@ public class PhieuHuyHang {
 		return quanLy;
 	}
 	public void setQuanLy(NhanVienBanThuoc nhanVienBanThuoc) {
-		this.quanLy = quanLy;
+		this.quanLy = nhanVienBanThuoc;
 	}
 	public ArrayList<LoThuoc> getDsLoThuoc() {
 		return dsLoThuoc;
@@ -109,6 +109,7 @@ public class PhieuHuyHang {
 		}
 		return null;
 	}
+	
 	
 	public double tinhTongTienHuyHang() {
 		double tongTien = 0;

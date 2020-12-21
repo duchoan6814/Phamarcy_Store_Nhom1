@@ -23,6 +23,23 @@ public class DAOLoThuoc{
 		conn = DAO.getInstance().getConn();
 	}
 	
+	public void addPhieuHuyVaoLoThuoc(LoThuoc loThuoc, String maPhieuNhap, String maPhieuHuy) {
+		String sql = "UPDATE LoThuoc set PhieuHuyHangId = ? WHERE PhieuNhapHangId = ? AND ThuocId = ? and NgaySanXuat = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, maPhieuHuy);
+			ps.setString(2, maPhieuNhap);
+			ps.setString(3, loThuoc.getThuoc().getId());
+			ps.setDate(4, loThuoc.getNgaySanXuat());
+			
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public LoThuoc getLoThuocByID(String id, String nsx, String maPhieuNhap) {
 		
 		Date _nsx = Date.valueOf(nsx);
@@ -65,7 +82,7 @@ public class DAOLoThuoc{
 			_hetHan = " and DATEDIFF(DAY, CURRENT_TIMESTAMP, DATEADD(MONTH, t.HanSuDung, lt.NgaySanXuat)) < 15";
 		}
 		
-		String sql = "SELECT lt.* from LoThuoc as lt join Thuoc as t on lt.ThuocId = t.ThuocId join LoaiThuoc lth on t.LoaiThuocId = lth.LoaiThuocId WHERE lt.ThuocId like ? and t.TenThuoc like ? and lth.TenLoaiThuoc like ?"+_hetHan;
+		String sql = "SELECT lt.* from LoThuoc as lt join Thuoc as t on lt.ThuocId = t.ThuocId join LoaiThuoc lth on t.LoaiThuocId = lth.LoaiThuocId WHERE lt.ThuocId like ? and t.TenThuoc like ? and lth.TenLoaiThuoc like ? and PhieuHuyHangId is null"+_hetHan;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
