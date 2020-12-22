@@ -17,7 +17,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="623.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text fill="#15bc5d" layoutX="347.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="QUẢN LÝ PHIẾU NHẬP" textAlignment="CENTER" wrappingWidth="386.7477722167969">
+      <Text fx:id="lblTitle" fill="#15bc5d" layoutX="347.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="QUẢN LÝ PHIẾU NHẬP" textAlignment="CENTER" wrappingWidth="386.7477722167969">
          <font>
             <Font name="Symbol" size="26.0" />
          </font>

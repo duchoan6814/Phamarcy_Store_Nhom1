@@ -23,6 +23,29 @@ public class DAOLoThuoc{
 		conn = DAO.getInstance().getConn();
 	}
 	
+	public List<LoThuoc> getLoThuocByPhieuHuy(String maPhieuHuy) {
+		String sql = "SELECT * from LoThuoc where PhieuHuyHangId = ?";
+		List<LoThuoc> list = new ArrayList<>();
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, maPhieuHuy);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				LoThuoc loThuoc = new LoThuoc();
+				loThuoc.setNgaySanXuat(rs.getDate("NgaySanXuat"));
+				loThuoc.setSoLuong(rs.getInt("SoLuong"));
+				loThuoc.setThuoc(daoThuoc.getThuocById(rs.getString("ThuocId")));
+				loThuoc.setSoLuongConLai(rs.getInt("SoLuongConLai"));
+				list.add(loThuoc);
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return list;
+		}
+	}
+	
 	public void addPhieuHuyVaoLoThuoc(LoThuoc loThuoc, String maPhieuNhap, String maPhieuHuy) {
 		String sql = "UPDATE LoThuoc set PhieuHuyHangId = ? WHERE PhieuNhapHangId = ? AND ThuocId = ? and NgaySanXuat = ?";
 		try {
