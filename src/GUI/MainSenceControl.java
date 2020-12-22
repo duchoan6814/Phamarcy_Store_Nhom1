@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import DAO.DAONhanVien;
 import GUI.control.NhanVienControl;
+import GUI.control.SuaNhanVienControl;
 import GUI.control.ThemNhanVienControl;
 import GUI.control.ThongKeGlobal;
 import entity.HoaDon;
@@ -68,6 +69,7 @@ public class MainSenceControl implements Initializable {
 	public HBox btnNhanVien;
 	public HBox btnDangXuat;
 	private ThemNhanVienControl themNhanVienControl;
+	private NhanVienControl control;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -186,7 +188,7 @@ public class MainSenceControl implements Initializable {
 		}
 
 		FXMLLoader loaderNhanVien = new FXMLLoader(getClass().getResource("QuanLyNV.fxml"));
-		NhanVienControl control = new NhanVienControl();
+		control = new NhanVienControl();
 		control.setMainSenceControl(this);
 		loaderNhanVien.setController(control);
 		try {
@@ -348,6 +350,45 @@ public class MainSenceControl implements Initializable {
 		thongKe.setVisible(false);
 		nhanVien.setVisible(true);
 		themNhanVien.setVisible(false);
+		
+		try {
+			Node suaNhanVien = stkOptions.getChildren().get(5);
+			suaNhanVien.setVisible(false);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	public void showSuaNhanVien(NhanVienBanThuoc nhanVienById) {
+		// TODO Auto-generated method stub
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ThemNhanVien.fxml"));
+		SuaNhanVienControl control = new SuaNhanVienControl(nhanVienById);
+		control.setMainSenceControl(this);
+		loader.setController(control);
+		try {
+			stkOptions.getChildren().add(5, loader.load());
+			
+			Node thongKe = stkOptions.getChildren().get(2);
+			Node khoHang = stkOptions.getChildren().get(1);
+			Node banHang = stkOptions.getChildren().get(0);
+			Node nhanVien = stkOptions.getChildren().get(3);
+			Node themNhanVien = stkOptions.getChildren().get(4);
+			Node suaNhanVien = stkOptions.getChildren().get(5);
+			suaNhanVien.setVisible(true);
+			khoHang.setVisible(false);
+			banHang.setVisible(false);
+			thongKe.setVisible(false);
+			nhanVien.setVisible(false);
+			themNhanVien.setVisible(false);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void refestPageQuanLyNhanVien() {
+		// TODO Auto-generated method stub
+		control.actionButtonTim();
 	}
 
 }
