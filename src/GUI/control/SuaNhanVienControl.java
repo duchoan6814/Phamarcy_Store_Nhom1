@@ -28,13 +28,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class ThemNhanVienControl implements Initializable {
-
+public class SuaNhanVienControl implements Initializable {
 	public Button btnHuy;
 	public Button btnThem;
 	public Button btnAvatar;
@@ -47,6 +45,7 @@ public class ThemNhanVienControl implements Initializable {
 	public Text lblSoCMND;
 	public Text lblAvatar;
 	public Text lblDiaChi;
+	public Text lblTitle;
 	public TextField txtTenDangNhap;
 	public TextField txtMaNhanVien;
 	public TextField txtHoVaTenDem;
@@ -85,6 +84,7 @@ public class ThemNhanVienControl implements Initializable {
 
 	private void initButtonThem() {
 		// TODO Auto-generated method stub
+		btnThem.setText("Sửa");
 		btnThem.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
@@ -92,7 +92,7 @@ public class ThemNhanVienControl implements Initializable {
 				// TODO Auto-generated method stub
 				if (checkDiaChi() && checkHoVaTenDem(txtHoVaTenDem.getText()) && checkMatKhau(txtMatKhau.getText()) && checkNhapLaiMatKhau(txtNhapLaiMatKhau.getText())
 						&& checkSoCMND(txtSoCMND.getText()) && checkSoDienThoai(txtSoDienThoai.getText())
-						&& checkTen(txtTen.getText()) && checkTenDangNhap(txtTenDangNhap.getText()) && checkAvatar()) {
+						&& checkTen(txtTen.getText()) && checkTenDangNhap(txtTenDangNhap.getText())) {
 					NhanVienBanThuoc nhanVienBanThuoc = new NhanVienBanThuoc();
 					nhanVienBanThuoc.setDiaChi(txtSoNha.getText()+"-"+cmbXa.getValue()+"-"+cmbHuyen.getValue()+"-"+cmbTinh.getValue());
 					nhanVienBanThuoc.setGioiTinh(cmbGioiTinh.getValue().equals("Nam") ? true : false);
@@ -112,7 +112,7 @@ public class ThemNhanVienControl implements Initializable {
 					taiKhoan.setPhanQuyen(PhanQuyen.valueOf(cmbPhanQuyen.getValue()));
 					nhanVienBanThuoc.setTaiKhoan(taiKhoan);
 					
-					if (!daoNhanVien.themNhanVien(nhanVienBanThuoc, txtAvatar.getText())) {
+					if (!daoNhanVien.suaNhanVien(nhanVienBanThuoc, txtAvatar.getText())) {
 						common.showNotification(AlertType.ERROR, "ERROR", "Lỗi kết nối vui lòng kiểm tra lại!");
 					}else {
 						common.showNotification(AlertType.INFORMATION, "INFORMATION", "Thêm thành công!");
@@ -165,6 +165,7 @@ public class ThemNhanVienControl implements Initializable {
 
 	private void initSomeField() {
 		// TODO Auto-generated method stub
+		lblTitle.setText("Sửa Nhân Viên");
 		initGioiTinh();
 		initPhanQuyen();
 		initTenDangNhap();

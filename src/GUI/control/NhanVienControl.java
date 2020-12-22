@@ -3,6 +3,7 @@ package GUI.control;
 import java.net.URL;
 import java.util.List;
 import java.util.ListResourceBundle;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import DAO.DAONhanVien;
@@ -16,13 +17,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 
 public class NhanVienControl implements Initializable {
 	public TextField txtMaNhanVien;
@@ -105,28 +110,34 @@ public class NhanVienControl implements Initializable {
 			@Override
 			public void handle(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				dataTable.clear();
-				List<NhanVienBanThuoc> list = daoNhanVien.filterNhanVienBanThuoc(txtMaNhanVien.getText(),
-						txtHoTenNhanVien.getText(), txtSoDienThoai.getText(), cmbGioiTinh.getValue(),
-						cmbChucVu.getValue(), txtSoCMND.getText());
-				if (list.size() <= 0) {
-					common.showNotification(AlertType.INFORMATION, "INFORMATION", "Không tìm thấy kết quả phù hợp!");
-				}else {
-					for (NhanVienBanThuoc nhanVienBanThuoc : list) {
-						String _ngaySinh = null;
-						try {
-							_ngaySinh = nhanVienBanThuoc.getNgaySinh().toString();
-						} catch (Exception e) {
-							// TODO: handle exception
-						}
-						dataTable.add(new QuanLyNhanVienTable(dataTable.size(), nhanVienBanThuoc.getId(),
-								nhanVienBanThuoc.getHoTenDem()+" "+nhanVienBanThuoc.getTen(),
-								_ngaySinh, nhanVienBanThuoc.getSoDienThoai(),
-								nhanVienBanThuoc.getSoCMND(), nhanVienBanThuoc.isGioiTinh() ? "Nam" : "Nữ", nhanVienBanThuoc.getTaiKhoan().getPhanQuyen().getPhanQuyen()));
-					}
-				}
+				actionButtonTim();
 			}
 		});
+	}
+
+
+	protected void actionButtonTim() {
+		// TODO Auto-generated method stub
+		dataTable.clear();
+		List<NhanVienBanThuoc> list = daoNhanVien.filterNhanVienBanThuoc(txtMaNhanVien.getText(),
+				txtHoTenNhanVien.getText(), txtSoDienThoai.getText(), cmbGioiTinh.getValue(),
+				cmbChucVu.getValue(), txtSoCMND.getText());
+		if (list.size() <= 0) {
+			common.showNotification(AlertType.INFORMATION, "INFORMATION", "Không tìm thấy kết quả phù hợp!");
+		}else {
+			for (NhanVienBanThuoc nhanVienBanThuoc : list) {
+				String _ngaySinh = null;
+				try {
+					_ngaySinh = nhanVienBanThuoc.getNgaySinh().toString();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				dataTable.add(new QuanLyNhanVienTable(dataTable.size(), nhanVienBanThuoc.getId(),
+						nhanVienBanThuoc.getHoTenDem()+" "+nhanVienBanThuoc.getTen(),
+						_ngaySinh, nhanVienBanThuoc.getSoDienThoai(),
+						nhanVienBanThuoc.getSoCMND(), nhanVienBanThuoc.isGioiTinh() ? "Nam" : "Nữ", nhanVienBanThuoc.getTaiKhoan().getPhanQuyen().getPhanQuyen()));
+			}
+		}
 	}
 
 
@@ -154,13 +165,107 @@ public class NhanVienControl implements Initializable {
 
 	private void createButtonXoa() {
 		// TODO Auto-generated method stub
-		
+		Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>> cellFactory
+		= //
+		new Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>>()
+		{
+			@Override
+			public TableCell call(final TableColumn<common.ChiTietHoaDon, String> param)
+			{
+				final TableCell<common.ChiTietHoaDon, String> cell = new TableCell<common.ChiTietHoaDon, String>()
+				{
+
+					final Button btn = new Button("Xóa");
+
+					{
+						btn.setStyle("-fx-background-color: red");
+						btn.setOnAction(event -> {
+							TableColumn col = tblNhanVien.getColumns().get(1);
+							String data = (String) col.getCellObservableValue(tblNhanVien.getItems().get(getIndex())).getValue();
+							Alert alert = new Alert(AlertType.CONFIRMATION);
+							alert.setTitle("Xóa");
+							alert.setHeaderText(null);
+							alert.setContentText("Bạn có muốn xóa nhân viên này?");
+
+							Optional<ButtonType> result = alert.showAndWait();
+							if (result.get() == ButtonType.OK){
+								// ... user chose OK'
+								if (!daoNhanVien.xoaNhanVienByID(data)) {
+									common.showNotification(AlertType.ERROR, "ERROR", "Bạn không thể xóa loại thuốc này!");
+								}else {
+									common.showNotification(AlertType.INFORMATION, "INFORMATION", "Xóa thành công!");
+									actionButtonTim();
+								}
+							} else {
+								// ... user chose CANCEL or closed the dialog
+							}
+						});
+					}
+
+					@Override
+					public void updateItem(String item, boolean empty)
+					{
+						super.updateItem(item, empty);
+						if (empty) {
+							setGraphic(null);
+							setText(null);
+						}
+						else {
+							setGraphic(btn);
+							setText(null);
+						}
+					}
+				};
+				return cell;
+			}
+		};
+
+		colXoa.setCellFactory(cellFactory);
 	}
 
 
 	private void createButtonSua() {
 		// TODO Auto-generated method stub
-		
+		Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>> cellFactory
+		= //
+		new Callback<TableColumn<common.ChiTietHoaDon, String>, TableCell<common.ChiTietHoaDon, String>>()
+		{
+			@Override
+			public TableCell call(final TableColumn<common.ChiTietHoaDon, String> param)
+			{
+				final TableCell<common.ChiTietHoaDon, String> cell = new TableCell<common.ChiTietHoaDon, String>()
+				{
+
+					final Button btn = new Button("Sửa");
+
+					{
+						btn.setStyle("-fx-background-color: orange");
+						btn.setOnAction(event -> {
+							TableColumn col = tblNhanVien.getColumns().get(1);
+							String data = (String) col.getCellObservableValue(tblNhanVien.getItems().get(getIndex())).getValue();
+							mainSenceControl.showSuaNhanVien(daoNhanVien.getNhanVienById(data));
+						});
+					}
+
+					@Override
+					public void updateItem(String item, boolean empty)
+					{
+						super.updateItem(item, empty);
+						if (empty) {
+							setGraphic(null);
+							setText(null);
+						}
+						else {
+							setGraphic(btn);
+							setText(null);
+						}
+					}
+				};
+				return cell;
+			}
+		};
+
+		colSua.setCellFactory(cellFactory);
 	}
 
 
