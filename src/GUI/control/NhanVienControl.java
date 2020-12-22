@@ -116,7 +116,7 @@ public class NhanVienControl implements Initializable {
 	}
 
 
-	protected void actionButtonTim() {
+	public void actionButtonTim() {
 		// TODO Auto-generated method stub
 		dataTable.clear();
 		List<NhanVienBanThuoc> list = daoNhanVien.filterNhanVienBanThuoc(txtMaNhanVien.getText(),

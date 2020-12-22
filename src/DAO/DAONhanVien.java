@@ -30,7 +30,7 @@ public class DAONhanVien {
 		
 		String _avatar = "";
 		if (!avatar.isEmpty()) {
-			_avatar = ", (SELECT * FROM OPENROWSET(BULK N'"+avatar+"', SINGLE_BLOB) as T1)";
+			_avatar = ", Avatar = (SELECT * FROM OPENROWSET(BULK N'"+avatar+"', SINGLE_BLOB) as T1)";
 		}
 		String sql = "update NhaVienBanThuoc SET DiaChi = ?, GioiTinh = ?, HoTenDem = ?, NgaySinh = ?, SoCMND = ?, SoDienThoai = ?, Ten = ? "+_avatar+"WHERE NhanVienBanThuocId = ?";
 		try {
@@ -524,6 +524,7 @@ public class DAONhanVien {
 				TaiKhoan taiKhoan = new TaiKhoan();
 				taiKhoan.setTenDangNhap(rs.getString("TenDangNhap"));
 				taiKhoan.setPhanQuyen(PhanQuyen.get(rs.getString("PhanQuyen").trim()));
+				taiKhoan.setMatKhau(rs.getString("MatKhau"));
 				nhanVienBanThuoc.setTaiKhoan(taiKhoan);
 				return nhanVienBanThuoc;
 			}

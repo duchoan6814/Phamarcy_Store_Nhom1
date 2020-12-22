@@ -72,6 +72,12 @@ public class SuaNhanVienControl implements Initializable {
 	private DAOLocation daoLocation = new DAOLocation();
 	private ObservableList<String> listTinh;
 	private ObservableList<String> listQuan;
+	private NhanVienBanThuoc nhanVienBanThuoc;
+	
+	public SuaNhanVienControl(NhanVienBanThuoc banThuoc) {
+		// TODO Auto-generated constructor stub
+		this.nhanVienBanThuoc = banThuoc;
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -80,6 +86,32 @@ public class SuaNhanVienControl implements Initializable {
 		initSomeField();
 		initButtonFile();
 		initButtonThem();
+		insertData();
+	}
+
+	private void insertData() {
+		// TODO Auto-generated method stub
+		txtTenDangNhap.setText(nhanVienBanThuoc.getTaiKhoan().getTenDangNhap());
+		txtMatKhau.setText(nhanVienBanThuoc.getTaiKhoan().getMatKhau());
+		txtNhapLaiMatKhau.setText(nhanVienBanThuoc.getTaiKhoan().getMatKhau());
+		txtMaNhanVien.setText(nhanVienBanThuoc.getId());
+		txtHoVaTenDem.setText(nhanVienBanThuoc.getHoTenDem());
+		txtTen.setText(nhanVienBanThuoc.getTen());
+		dateNgaySinh.setValue(nhanVienBanThuoc.getNgaySinh().toLocalDate());
+		txtSoDienThoai.setText(nhanVienBanThuoc.getSoDienThoai());
+		txtSoCMND.setText(nhanVienBanThuoc.getSoCMND());
+		cmbGioiTinh.setValue(nhanVienBanThuoc.isGioiTinh() ? "Nam" : "Nữ");
+		cmbPhanQuyen.setValue(nhanVienBanThuoc.getTaiKhoan().getPhanQuyen().getPhanQuyen());
+		try {
+			String[] diaChi = nhanVienBanThuoc.getDiaChi().split("-");
+			txtSoNha.setText(diaChi[0]);
+			cmbTinh.setValue(diaChi[3]);
+			cmbHuyen.setValue(diaChi[2]);
+			cmbXa.setValue(diaChi[1]);
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+	
 	}
 
 	private void initButtonThem() {
@@ -90,7 +122,7 @@ public class SuaNhanVienControl implements Initializable {
 			@Override
 			public void handle(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				if (checkDiaChi() && checkHoVaTenDem(txtHoVaTenDem.getText()) && checkMatKhau(txtMatKhau.getText()) && checkNhapLaiMatKhau(txtNhapLaiMatKhau.getText())
+				if (checkDiaChi() && checkHoVaTenDem(txtHoVaTenDem.getText()) && checkMatKhau() && checkNhapLaiMatKhau(txtNhapLaiMatKhau.getText())
 						&& checkSoCMND(txtSoCMND.getText()) && checkSoDienThoai(txtSoDienThoai.getText())
 						&& checkTen(txtTen.getText()) && checkTenDangNhap(txtTenDangNhap.getText())) {
 					NhanVienBanThuoc nhanVienBanThuoc = new NhanVienBanThuoc();
@@ -115,11 +147,11 @@ public class SuaNhanVienControl implements Initializable {
 					if (!daoNhanVien.suaNhanVien(nhanVienBanThuoc, txtAvatar.getText())) {
 						common.showNotification(AlertType.ERROR, "ERROR", "Lỗi kết nối vui lòng kiểm tra lại!");
 					}else {
-						common.showNotification(AlertType.INFORMATION, "INFORMATION", "Thêm thành công!");
+						common.showNotification(AlertType.INFORMATION, "INFORMATION", "Sửa thành công!");
 						themThanhcong();
 					}
 				}else {
-					common.showNotification(AlertType.ERROR, "ERROR", "Thêm không thành công vui lòng kiểm tra lại cái điều kiện!");
+					common.showNotification(AlertType.ERROR, "ERROR", "Sửa không thành công vui lòng kiểm tra lại các điều kiện!");
 				}
 			}
 		});
@@ -142,6 +174,7 @@ public class SuaNhanVienControl implements Initializable {
 		cmbXa.setValue("");
 		dateNgaySinh.setValue(null);
 		this.mainSenceControl.showQuanLyNhanVien();
+		this.mainSenceControl.refestPageQuanLyNhanVien();
 	}
 
 	private void initButtonFile() {
@@ -391,12 +424,12 @@ public class SuaNhanVienControl implements Initializable {
 	private void initMatKhau() {
 		// TODO Auto-generated method stub
 		txtMatKhau.textProperty().addListener((p, oldv, newv) -> {
-			checkMatKhau(newv);
+			checkMatKhau();
 		});
 	}
-	private boolean checkMatKhau(String newv) {
+	private boolean checkMatKhau() {
 		// TODO Auto-generated method stub
-		if (newv.isEmpty()) {
+		if (txtMatKhau.getText().isEmpty()) {
 			lblMatKhau.setText("Mật khẩu không được bỏ trống!");
 			return false;
 		}
@@ -407,6 +440,7 @@ public class SuaNhanVienControl implements Initializable {
 	//=============================================================================
 	private void initTenDangNhap() {
 		// TODO Auto-generated method stub
+		txtTenDangNhap.setDisable(true);
 		txtTenDangNhap.textProperty().addListener((p, oldv, newv) -> {
 			checkTenDangNhap(newv);
 		});
