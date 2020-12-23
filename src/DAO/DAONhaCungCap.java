@@ -101,7 +101,7 @@ public class DAONhaCungCap{
 			if (rs.next()) {
 				NhaCungCap cap = new NhaCungCap();
 				cap.setDiaChi(rs.getString("DiaChi"));
-				cap.setEmail(rs.getString("Fax"));
+				cap.setEmail(rs.getString("Email"));
 				cap.setId(rs.getString("NhaCungCapId"));
 				cap.setSoDienThoai(rs.getString("SoDienThoai"));
 				cap.setTenNhaCungCap(rs.getString("TenNhaCungCap"));

@@ -27,7 +27,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class ThemThuocControl implements Initializable {
+public class SuaThuocNewControl implements Initializable {
 	public TextField txtMaThuoc;
 	public TextField txtTenThuoc;
 	public TextField txtHanSuDung;
@@ -50,6 +50,7 @@ public class ThemThuocControl implements Initializable {
 	public Text lblTenThuoc;
 	public Text lblGiaThuoc;
 	public Text lblHanSuDung;
+	public Text lblTitle;
 
 	private Thuoc2Control thuoc2Control;
 	private DAOLoaiThuoc daoLoaiThuoc = new DAOLoaiThuoc();
@@ -60,6 +61,7 @@ public class ThemThuocControl implements Initializable {
 	public ObservableList<String> listNhaCungCap;
 	public ObservableList<String> listNuocSanXuat;
 	public ObservableList<String> listDonViTinh;
+	private Thuoc thuoc;
 	private ObservableList<String> listDangBaoChe;
 	private ObservableList<String> listQuyCachDongGoi;
 
@@ -73,9 +75,10 @@ public class ThemThuocControl implements Initializable {
 		this.listLoaiThuoc = listLoaiThuoc;
 	}
 
-	public ThemThuocControl(Thuoc2Control thuoc2Control) {
+	public SuaThuocNewControl(Thuoc2Control thuoc2Control2, Thuoc thuoc) {
 		// TODO Auto-generated constructor stub
-		this.thuoc2Control = thuoc2Control;
+		this.thuoc2Control = thuoc2Control2;
+		this.thuoc = thuoc;
 	}
 
 	@Override
@@ -84,6 +87,23 @@ public class ThemThuocControl implements Initializable {
 		initButtonHuy();
 		initField();
 		initButtonThem();
+		insertData();
+	}
+
+	private void insertData() {
+		// TODO Auto-generated method stub
+		txtMaThuoc.setText(thuoc.getId());
+		txtTenThuoc.setText(thuoc.getTenThuoc());
+		cmbLoaiThuoc.setValue(thuoc.getLoaiThuoc().getTenLoai());
+		cmbNhaCungCap.setValue(thuoc.getNhaCungCap().getTenNhaCungCap());
+		cmbNuocSanXuat.setValue(thuoc.getNuocSanXuat());
+		txtGiaThuoc.setText( Integer.toString((int)thuoc.getGia()));
+		cmbDonViTinh.setValue(thuoc.getDonViTinh());
+		txtHanSuDung.setText(Integer.toString(thuoc.getHanSuDung()));
+		cmbDangBaoChe.setValue(thuoc.getDangBaoChe());
+		cmbQuyCachDongGoi.setValue(thuoc.getQuyCachDongGoi());
+		txaMoTa.setText(thuoc.getMoTa());
+		
 	}
 
 	//=============================================
@@ -99,20 +119,21 @@ public class ThemThuocControl implements Initializable {
 		initDonViTinh();
 		initDangBaoChe();
 		initQuyCachDongGoi();
+		
+		lblTitle.setText("Sửa Thuốc");
+		btnThem.setText("Sửa");
 	}
 
 	private void initQuyCachDongGoi() {
 		// TODO Auto-generated method stub
 		listQuyCachDongGoi = FXCollections.observableArrayList(daoThuoc.getListQuyCachDongGoi());
-		cmbQuyCachDongGoi.setItems(listDangBaoChe);
-		cmbQuyCachDongGoi.setValue(listDangBaoChe.get(0));
+		cmbQuyCachDongGoi.setItems(listQuyCachDongGoi);
 	}
 
 	private void initDangBaoChe() {
 		// TODO Auto-generated method stub
 		listDangBaoChe = FXCollections.observableArrayList(daoThuoc.getListDangBaoChe());
 		cmbDangBaoChe.setItems(listDangBaoChe);
-		cmbDangBaoChe.setValue(listDangBaoChe.get(0));
 	}
 
 	private void initDonViTinh() {
@@ -324,7 +345,7 @@ public class ThemThuocControl implements Initializable {
 	private void initMaThuoc() {
 		// TODO Auto-generated method stub
 		txtMaThuoc.setEditable(false);
-		txtMaThuoc.setText(daoThuoc.generateID());
+//		txtMaThuoc.setText(daoThuoc.generateID());
 	}
 
 	private void initButtonHuy() {
@@ -350,7 +371,7 @@ public class ThemThuocControl implements Initializable {
 				boolean dk2 = checkGiaThuoc();
 				boolean dk3 = checkHanSuDung();
 				if (!dk1 || !dk2 || !dk3) {
-					common.showNotification(AlertType.ERROR, "ERROR", "Không thể thêm, vui lòng kiểm tra lại các điều kiện!");
+					common.showNotification(AlertType.ERROR, "ERROR", "Không thể sửa, vui lòng kiểm tra lại các điều kiện!");
 				}else {
 					Thuoc thuoc = new Thuoc(txtMaThuoc.getText(),
 							txtTenThuoc.getText(), txaMoTa.getText(), cmbDonViTinh.getValue(),
@@ -359,10 +380,10 @@ public class ThemThuocControl implements Initializable {
 							0.05, daoNhaCungCap.getNhaCungCapByName(cmbNhaCungCap.getValue()),
 							daoLoaiThuoc.getLoaiThuocByTen(cmbLoaiThuoc.getValue()), cmbNuocSanXuat.getValue());
 
-					if (!daoThuoc.themThuocMoi(thuoc)) {
-						common.showNotification(AlertType.ERROR, "ERROR", "Lỗi thêm thuốc không thành công, vui lòng kiểm tra lại!");
+					if (!daoThuoc.updateThuoc(thuoc)) {
+						common.showNotification(AlertType.ERROR, "ERROR", "Lỗi sửa thuốc không thành công, vui lòng kiểm tra lại!");
 					}else {
-						common.showNotification(AlertType.INFORMATION, "Information", "Thêm thuốc thành công.");
+						common.showNotification(AlertType.INFORMATION, "Information", "Sửa thuốc thành công.");
 						thuoc2Control.showquanLyThuoc();
 						thuoc2Control.actionButtonTim();
 					}

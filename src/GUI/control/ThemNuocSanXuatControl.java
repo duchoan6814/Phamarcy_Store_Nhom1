@@ -25,11 +25,17 @@ public class ThemNuocSanXuatControl implements Initializable {
 	
 	private DAOThuoc daoThuoc = new DAOThuoc();
 	private ThemThuocControl themThuocControl;
+	private SuaThuocNewControl suaThuocNewControl;
 	private Common common = new Common();
 
 	public ThemNuocSanXuatControl(ThemThuocControl themThuocControl) {
 		// TODO Auto-generated constructor stub
 		this.themThuocControl = themThuocControl;
+	}
+
+	public ThemNuocSanXuatControl(SuaThuocNewControl suaThuocNewControl) {
+		// TODO Auto-generated constructor stub
+		this.suaThuocNewControl = suaThuocNewControl;
 	}
 
 	@Override

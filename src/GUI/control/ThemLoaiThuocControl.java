@@ -30,6 +30,7 @@ public class ThemLoaiThuocControl implements Initializable {
 	private DAOLoaiThuoc daoLoaiThuoc = new DAOLoaiThuoc();
 	private ThemThuocControl themThuocControl;
 	private QuanLyLoaiThuocControl quanLyLoaiThuocControl;
+	private SuaThuocNewControl suaThuocNewControl;
 	
 	public ThemLoaiThuocControl(ThemThuocControl themThuocControl) {
 		// TODO Auto-generated constructor stub
@@ -39,6 +40,11 @@ public class ThemLoaiThuocControl implements Initializable {
 	public ThemLoaiThuocControl(QuanLyLoaiThuocControl quanLyLoaiThuocControl) {
 		// TODO Auto-generated constructor stub
 		this.quanLyLoaiThuocControl = quanLyLoaiThuocControl;
+	}
+
+	public ThemLoaiThuocControl(SuaThuocNewControl suaThuocNewControl) {
+		// TODO Auto-generated constructor stub
+		this.suaThuocNewControl = suaThuocNewControl;
 	}
 
 	@Override
@@ -82,6 +88,9 @@ public class ThemLoaiThuocControl implements Initializable {
 				if (this.themThuocControl != null) {
 					this.themThuocControl.getListLoaiThuoc().add(txtTenLoai.getText());
 					this.themThuocControl.cmbLoaiThuoc.setValue(txtTenLoai.getText());
+				}else if (this.suaThuocNewControl != null) {
+					this.suaThuocNewControl.getListLoaiThuoc().add(txtTenLoai.getText());
+					this.suaThuocNewControl.cmbLoaiThuoc.setValue(txtTenLoai.getText());
 				}else {
 					this.quanLyLoaiThuocControl.actionButtonTim();
 				}

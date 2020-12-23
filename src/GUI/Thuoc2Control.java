@@ -10,6 +10,7 @@ import com.gluonhq.impl.charm.a.b.b.a.c;
 import DAO.DAOLoThuoc;
 import DAO.DAOLoaiThuoc;
 import DAO.DAOThuoc;
+import GUI.control.SuaThuocNewControl;
 import GUI.control.ThemThuocControl;
 import common.Common;
 import common.ThuocTable;
@@ -88,6 +89,7 @@ private BanHangControl banHangControl;
 		createButtonChon();
 		createButtonDelete();
 		initButtonThem();
+		
 	}
 
 	private void initButtonThem() {
@@ -103,6 +105,7 @@ private BanHangControl banHangControl;
 	}
 	
 	private void actionButtonThem() {
+		
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ThemThuocNew.fxml"));
 		ThemThuocControl themThuocControl = new ThemThuocControl(this);
 		fxmlLoader.setController(themThuocControl);
@@ -120,9 +123,10 @@ private BanHangControl banHangControl;
 	}
 	
 	public void showquanLyThuoc() {
-		Node themThuoc = stkOptions.getChildren().get(1);
+		stkOptions.getChildren().remove(1);
+//		Node themThuoc = stkOptions.getChildren().get(1);
 		Node quanLyThuoc = stkOptions.getChildren().get(0);
-		themThuoc.setVisible(false);
+//		themThuoc.setVisible(false);
 		quanLyThuoc.setVisible(true);
 	}
 
@@ -150,7 +154,7 @@ private BanHangControl banHangControl;
 							if (thuoc == null) {
 								common.showNotification(AlertType.ERROR, "ERROR", "Lỗi get dữ liệu!");
 							}else {
-								showDialogSua(data);
+								showDialogSua(thuoc);
 							}
 						});
 					}
@@ -176,15 +180,17 @@ private BanHangControl banHangControl;
 		colEdit.setCellFactory(cellFactory);
 	}
 	
-	private void showDialogSua(String data) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("DialogThemThuoc.fxml"));
-		SuaThuocControl control = new SuaThuocControl();
-		control.setThuoc(data);
-		control.setThuoc2Control(this);
+	private void showDialogSua(Thuoc thuoc) {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ThemThuocNew.fxml"));
+		SuaThuocNewControl control = new SuaThuocNewControl(this, thuoc);
 		loader.setController(control);
 		try {
-			Stage stage = loader.load();
-			stage.show();
+			stkOptions.getChildren().add(1, loader.load());
+			Node quanLy = stkOptions.getChildren().get(0);
+			Node themThuoc = stkOptions.getChildren().get(1);
+			
+			quanLy.setVisible(false);
+			themThuoc.setVisible(true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

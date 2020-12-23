@@ -24,6 +24,49 @@ public class DAOThuoc {
 		conn = DAO.getInstance().getConn();
 	}
 	
+	
+	public List<String> getListDangBaoChe() {
+		String sql = "SELECT DangBaoChe from thuoc GROUP BY DangBaoChe";
+		List<String> listr = new ArrayList<>();
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				if (rs.getString("DangBaoChe") != null) {		
+					listr.add(rs.getString("DangBaoChe"));
+				}
+				
+			}
+			return listr;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return listr;
+		}
+	}
+	
+	public List<String> getListQuyCachDongGoi() {
+		String sql = "SELECT QuyCachDongGoi from Thuoc GROUP BY QuyCachDongGoi";
+		List<String> listr = new ArrayList<>();
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				if (rs.getString("QuyCachDongGoi") != null) {
+					listr.add(rs.getString("QuyCachDongGoi"));
+				}
+				
+			}
+			return listr;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return listr;
+		}
+	}
+	
+	
+	
 	public boolean checkCountry(String countryName) {
 		String sql = "SELECT name from country where name = ?";
 		try {

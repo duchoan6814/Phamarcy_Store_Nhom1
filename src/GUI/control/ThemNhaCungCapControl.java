@@ -45,6 +45,7 @@ public class ThemNhaCungCapControl implements Initializable {
 	private DAOLocation daoLocation = new DAOLocation();
 	private ThemThuocControl themThuocControl;
 	private QuanLyNCCConTrol quanLyNCCConTrol;
+	private SuaThuocNewControl suaThuocNewControl;
 
 	private ObservableList<String> listTinh;
 	private ObservableList<String> listQuan;
@@ -58,6 +59,11 @@ public class ThemNhaCungCapControl implements Initializable {
 	public ThemNhaCungCapControl(QuanLyNCCConTrol conTrol) {
 		// TODO Auto-generated constructor stub
 		this.quanLyNCCConTrol = conTrol;
+	}
+
+	public ThemNhaCungCapControl(SuaThuocNewControl suaThuocNewControl) {
+		// TODO Auto-generated constructor stub
+		this.suaThuocNewControl = suaThuocNewControl;
 	}
 
 	@Override
@@ -109,6 +115,9 @@ public class ThemNhaCungCapControl implements Initializable {
 				if (this.themThuocControl != null) {
 					this.themThuocControl.listNhaCungCap.add(txtTenNhaCungCap.getText());
 					this.themThuocControl.cmbNhaCungCap.setValue(txtTenNhaCungCap.getText());
+				}else if(this.suaThuocNewControl != null) {
+					this.suaThuocNewControl.listNhaCungCap.add(txtTenNhaCungCap.getText());
+					this.suaThuocNewControl.cmbNhaCungCap.setValue(txtTenNhaCungCap.getText());
 				}else {
 					this.quanLyNCCConTrol.actionButtonTim();
 				}
