@@ -1,6 +1,7 @@
 package GUI;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -40,6 +41,8 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -68,12 +71,19 @@ public class MainSenceControl implements Initializable {
 	public HBox btnThongKe;
 	public HBox btnNhanVien;
 	public HBox btnDangXuat;
+	public AnchorPane main;
+	public ImageView imgBanHang;
+	public ImageView imgKhoHang;
+	public ImageView imgThongKe;
+	public ImageView imgNhanVien;
+	public ImageView imgDangXuat;
 	private ThemNhanVienControl themNhanVienControl;
 	private NhanVienControl control;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		initStyleSheetAndImage();
 		showPaneBanHang();
 		initOptionPanel();
 		setSomeFieldNhanVien();
@@ -125,6 +135,22 @@ public class MainSenceControl implements Initializable {
 			}
 		});
 
+	}
+
+	private void initStyleSheetAndImage() {
+		// TODO Auto-generated method stub
+		String css = this.getClass().getResource("MainSence.css").toExternalForm(); 
+		main.getStylesheets().add(css);
+		
+		File cast = new File("icon/shopping-cart (1).png");
+		Image castImage = new Image(cast.toURI().toString());
+		imgBanHang.setImage(castImage);
+		
+		imgKhoHang.setImage(new Image(new File("icon/box.png").toURI().toString()));
+		imgThongKe.setImage(new Image(new File("icon/statistics.png").toURI().toString()));
+		imgNhanVien.setImage(new Image(new File("icon/employee.png").toURI().toString()));
+		imgDangXuat.setImage(new Image(new File("icon/logout.png").toURI().toString()));
+		
 	}
 
 	private void phanQuyen() {
