@@ -1,11 +1,15 @@
 package DAO;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import entity.LoaiThuoc;
 
@@ -15,6 +19,38 @@ public class DAOLoaiThuoc {
 	public DAOLoaiThuoc() {
 		// TODO Auto-generated constructor stub
 		conn = DAO.getInstance().getConn();
+	}
+	
+	public Map<String, Double> thongKeDoanhThuLoaiThuoc(boolean checkAllTime, LocalDate fromTime, LocalDate toTime){
+		
+		String _time;
+		
+		if (checkAllTime) {
+			_time = "";
+		}else {
+			Date dateFrom = Date.valueOf(fromTime);
+			Date dateTo = Date.valueOf(toTime);
+			_time = " And hd.ThoiGianLap BETWEEN '"+dateFrom+"' and '"+dateTo+"'";
+		}
+		
+		String sql = "SELECT TenLoaiThuoc, SUM(CASE WHEN ct.HoaDonId = hd.HoaDonId THEN ct.GiaBan*ct.SoLuong ELSE 0 END) as DoanhThu FROM LoaiThuoc lt left JOIN Thuoc t on t.LoaiThuocId = lt.LoaiThuocId left join ChiTietHoaDon ct on ct.ThuocId = t.ThuocId left join HoaDon hd on hd.HoaDonId = ct.HoaDonId"+_time+" group by TenLoaiThuoc";
+		
+		Map<String, Double> map = new HashMap<String, Double>();
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				map.put(rs.getString("TenLoaiThuoc"), rs.getDouble("DoanhThu"));
+			}
+			
+			return map;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return map;
+		}
 	}
 	
 	public boolean suaLoaiThuoc(LoaiThuoc loaiThuoc) {

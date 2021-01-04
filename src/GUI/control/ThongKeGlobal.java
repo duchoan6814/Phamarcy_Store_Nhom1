@@ -18,6 +18,7 @@ public class ThongKeGlobal implements Initializable {
 	
 	public TabPane tabsThongKe;
 	public Tab tabDoanhThu;
+	public Tab tabThongKeThuoc;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -28,6 +29,40 @@ public class ThongKeGlobal implements Initializable {
 	private void initLayoutTongKe() {
 		// TODO Auto-generated method stub
 		initContentThongKeDoanhThu();
+		initContentThongKeThuoc();
+	}
+
+	private void initContentThongKeThuoc() {
+		// TODO Auto-generated method stub
+		tabThongKeThuoc.setOnSelectionChanged(new EventHandler<Event>() {
+			
+			@Override
+			public void handle(Event arg0) {
+				// TODO Auto-generated method stub
+				if (tabThongKeThuoc.isSelected()) {
+					getgetFieldPnlThongKeThuoc();
+				}
+			}
+		});
+	}
+
+	protected void getgetFieldPnlThongKeThuoc() {
+		// TODO Auto-generated method stub
+		try {
+			FileInputStream fileInputStream = new FileInputStream(new File("src/GUI/ThongKeThuoc.fxml"));
+			FXMLLoader loader = new FXMLLoader();
+			ThongKeThuocControl control = new ThongKeThuocControl();
+			loader.setController(control);
+			
+			tabThongKeThuoc.setContent(loader.load(fileInputStream));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void initContentThongKeDoanhThu() {
