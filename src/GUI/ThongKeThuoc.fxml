@@ -46,15 +46,15 @@
             </GridPane>
             <Button fx:id="btnThongKe" layoutX="14.0" layoutY="117.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="350.0" style="-fx-background-color: #64AD4A; -fx-text-fill: #fff; -fx-font-size: 15px; -fx-font-weight: bold;" text="Thống Kê" />
          </children></AnchorPane>
-      <TableView layoutX="14.0" layoutY="400.0" prefHeight="212.0" prefWidth="665.0">
+      <TableView fx:id="tblThuoc" layoutX="14.0" layoutY="400.0" prefHeight="212.0" prefWidth="665.0">
         <columns>
-          <TableColumn prefWidth="62.0" text="Top" />
-          <TableColumn prefWidth="104.0" text="Mã Thuốc" />
-            <TableColumn prefWidth="145.0" text="Tên Thuốc" />
-            <TableColumn prefWidth="91.0" text="Loại Thuốc" />
-            <TableColumn prefWidth="66.0" text="ĐVT" />
-            <TableColumn prefWidth="77.0" text="Giá" />
-            <TableColumn prefWidth="119.0" text="Doanh Thu" />
+          <TableColumn fx:id="colTop" prefWidth="62.0" text="Top" />
+          <TableColumn fx:id="colMaThuoc" prefWidth="104.0" text="Mã Thuốc" />
+            <TableColumn fx:id="colTenThuoc" prefWidth="145.0" text="Tên Thuốc" />
+            <TableColumn fx:id="colLoaiThuoc" prefWidth="91.0" text="Loại Thuốc" />
+            <TableColumn fx:id="colDonViTinh" prefWidth="66.0" text="ĐVT" />
+            <TableColumn fx:id="colGia" prefWidth="77.0" text="Giá" />
+            <TableColumn fx:id="colDoanhThu" prefWidth="119.0" text="Doanh Thu" />
         </columns>
       </TableView>
    </children>

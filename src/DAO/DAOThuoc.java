@@ -1,13 +1,19 @@
 package DAO;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import entity.LoaiThuoc;
 import entity.NhaCungCap;
@@ -24,6 +30,23 @@ public class DAOThuoc {
 		conn = DAO.getInstance().getConn();
 	}
 	
+	public Map<Thuoc, Double> thongKeThuocDoanhThuThuocTheoThoiGian(boolean checkAllTime, LocalDate dateFrom, LocalDate dateTo){
+		String _date = checkAllTime ? "" : " and hd.ThoiGianLap BETWEEN '"+Date.valueOf(dateFrom).toString()+"' and '"+Date.valueOf(dateTo.plusDays(1)).toString()+"'";
+		String sql = "SELECT top 10 ct.ThuocId, SUM(GiaBan*SoLuong) as DoanhThu FROM ChiTietHoaDon ct join HoaDon hd on ct.HoaDonId=hd.HoaDonId"+_date+" GROUP BY ct.ThuocId ORDER BY DoanhThu DESC";
+		Map<Thuoc, Double> map = new LinkedHashMap<>();
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				map.put(getThuocById(rs.getString("ThuocId")), rs.getDouble("DoanhThu"));
+			}
+			return map;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return map;
+		}
+	}
 	
 	public List<String> getListDangBaoChe() {
 		String sql = "SELECT DangBaoChe from thuoc GROUP BY DangBaoChe";

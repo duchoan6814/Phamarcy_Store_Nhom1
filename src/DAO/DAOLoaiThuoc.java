@@ -29,7 +29,7 @@ public class DAOLoaiThuoc {
 			_time = "";
 		}else {
 			Date dateFrom = Date.valueOf(fromTime);
-			Date dateTo = Date.valueOf(toTime);
+			Date dateTo = Date.valueOf(toTime.plusDays(1));
 			_time = " And hd.ThoiGianLap BETWEEN '"+dateFrom+"' and '"+dateTo+"'";
 		}
 		
