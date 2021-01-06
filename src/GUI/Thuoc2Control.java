@@ -10,6 +10,8 @@ import com.gluonhq.impl.charm.a.b.b.a.c;
 import DAO.DAOLoThuoc;
 import DAO.DAOLoaiThuoc;
 import DAO.DAOThuoc;
+import GUI.control.SuaThuocNewControl;
+import GUI.control.ThemThuocControl;
 import common.Common;
 import common.ThuocTable;
 import entity.Thuoc;
@@ -27,8 +29,10 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -73,6 +77,7 @@ private BanHangControl banHangControl;
 	public TextField txtNhaCungCap;
 	public Button btnThem;
 	public RadioButton rbtSoLuong;
+	public StackPane stkOptions;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -84,6 +89,7 @@ private BanHangControl banHangControl;
 		createButtonChon();
 		createButtonDelete();
 		initButtonThem();
+		
 	}
 
 	private void initButtonThem() {
@@ -93,20 +99,35 @@ private BanHangControl banHangControl;
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("DialogThemThuoc.fxml"));
-				ThemThuocControl control = new ThemThuocControl();
-				loader.setController(control);
-				Stage themThuoc;
-				try {
-					themThuoc = loader.load();
-					themThuoc.show();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+				actionButtonThem();
 			}
 		});
+	}
+	
+	private void actionButtonThem() {
+		
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ThemThuocNew.fxml"));
+		ThemThuocControl themThuocControl = new ThemThuocControl(this);
+		fxmlLoader.setController(themThuocControl);
+		try {
+			stkOptions.getChildren().add(1, fxmlLoader.load());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Node themThuoc = stkOptions.getChildren().get(1);
+		Node quanLyThuoc = stkOptions.getChildren().get(0);
+		themThuoc.setVisible(true);
+		quanLyThuoc.setVisible(false);
+	}
+	
+	public void showquanLyThuoc() {
+		stkOptions.getChildren().remove(1);
+//		Node themThuoc = stkOptions.getChildren().get(1);
+		Node quanLyThuoc = stkOptions.getChildren().get(0);
+//		themThuoc.setVisible(false);
+		quanLyThuoc.setVisible(true);
 	}
 
 	private void createButtonChon() {
@@ -133,7 +154,7 @@ private BanHangControl banHangControl;
 							if (thuoc == null) {
 								common.showNotification(AlertType.ERROR, "ERROR", "Lỗi get dữ liệu!");
 							}else {
-								showDialogSua(data);
+								showDialogSua(thuoc);
 							}
 						});
 					}
@@ -159,15 +180,17 @@ private BanHangControl banHangControl;
 		colEdit.setCellFactory(cellFactory);
 	}
 	
-	private void showDialogSua(String data) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("DialogThemThuoc.fxml"));
-		SuaThuocControl control = new SuaThuocControl();
-		control.setThuoc(data);
-		control.setThuoc2Control(this);
+	private void showDialogSua(Thuoc thuoc) {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ThemThuocNew.fxml"));
+		SuaThuocNewControl control = new SuaThuocNewControl(this, thuoc);
 		loader.setController(control);
 		try {
-			Stage stage = loader.load();
-			stage.show();
+			stkOptions.getChildren().add(1, loader.load());
+			Node quanLy = stkOptions.getChildren().get(0);
+			Node themThuoc = stkOptions.getChildren().get(1);
+			
+			quanLy.setVisible(false);
+			themThuoc.setVisible(true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

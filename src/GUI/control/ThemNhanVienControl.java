@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import DAO.DAOLocation;
 import DAO.DAONhanVien;
 import GUI.MainSenceControl;
 import common.Common;
@@ -45,6 +46,7 @@ public class ThemNhanVienControl implements Initializable {
 	public Text lblSoDienThoai;
 	public Text lblSoCMND;
 	public Text lblAvatar;
+	public Text lblDiaChi;
 	public TextField txtTenDangNhap;
 	public TextField txtMaNhanVien;
 	public TextField txtHoVaTenDem;
@@ -52,18 +54,25 @@ public class ThemNhanVienControl implements Initializable {
 	public TextField txtSoDienThoai;
 	public TextField txtSoCMND;
 	public TextField txtAvatar;
-	public TextField txtDiaChi;
+	public TextField txtSoNha;
 	public PasswordField txtMatKhau;
 	public PasswordField txtNhapLaiMatKhau;
 	public DatePicker dateNgaySinh;
 	public ComboBox<String> cmbGioiTinh;
 	public ComboBox<String> cmbPhanQuyen;
+	public ComboBox<String> cmbTinh;
+	public ComboBox<String> cmbHuyen;
+	public ComboBox<String> cmbXa;
 
 
 	private FileChooser fileChooser = new FileChooser();
 	private MainSenceControl mainSenceControl;
 	private DAONhanVien daoNhanVien = new DAONhanVien();
 	private Common common = new Common();
+	private ObservableList<String> listXa;
+	private DAOLocation daoLocation = new DAOLocation();
+	private ObservableList<String> listTinh;
+	private ObservableList<String> listQuan;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -81,11 +90,11 @@ public class ThemNhanVienControl implements Initializable {
 			@Override
 			public void handle(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				if (checkHoVaTenDem(txtHoVaTenDem.getText()) && checkMatKhau(txtMatKhau.getText()) && checkNhapLaiMatKhau(txtNhapLaiMatKhau.getText())
+				if (checkDiaChi() && checkHoVaTenDem(txtHoVaTenDem.getText()) && checkMatKhau(txtMatKhau.getText()) && checkNhapLaiMatKhau(txtNhapLaiMatKhau.getText())
 						&& checkSoCMND(txtSoCMND.getText()) && checkSoDienThoai(txtSoDienThoai.getText())
 						&& checkTen(txtTen.getText()) && checkTenDangNhap(txtTenDangNhap.getText()) && checkAvatar()) {
 					NhanVienBanThuoc nhanVienBanThuoc = new NhanVienBanThuoc();
-					nhanVienBanThuoc.setDiaChi(txtDiaChi.getText());
+					nhanVienBanThuoc.setDiaChi(txtSoNha.getText()+"-"+cmbXa.getValue()+"-"+cmbHuyen.getValue()+"-"+cmbTinh.getValue());
 					nhanVienBanThuoc.setGioiTinh(cmbGioiTinh.getValue().equals("Nam") ? true : false);
 					nhanVienBanThuoc.setHoTenDem(txtHoVaTenDem.getText());
 					nhanVienBanThuoc.setId(txtMaNhanVien.getText());
@@ -127,7 +136,10 @@ public class ThemNhanVienControl implements Initializable {
 		txtSoDienThoai.setText("");
 		txtSoCMND.setText("");
 		txtAvatar.setText("");
-		txtDiaChi.setText("");
+		txtSoNha.setText("");
+		cmbTinh.setValue("");
+		cmbHuyen.setValue("");
+		cmbXa.setValue("");
 		dateNgaySinh.setValue(null);
 		this.mainSenceControl.showQuanLyNhanVien();
 	}
@@ -163,7 +175,98 @@ public class ThemNhanVienControl implements Initializable {
 		initSoDienThoai();
 		initSoCMND();
 		initFilePicker();
+		initDiaChi();
 	}
+	
+	
+	private void initDiaChi() {
+		// TODO Auto-generated method stub
+		initTinhThanhPho();
+		initQuanHuyen();
+		initSoNha();
+		initXa();
+	}
+
+	private void initXa() {
+		// TODO Auto-generated method stub
+		cmbXa.setValue("");
+		cmbXa.getSelectionModel().selectedItemProperty().addListener((option, old, newv) -> {
+			checkDiaChi();
+		});
+	}
+
+	private void initSoNha() {
+		// TODO Auto-generated method stub
+		txtSoNha.textProperty().addListener((options, old, newv) -> {
+			checkDiaChi();
+		});
+	}
+
+	private void initQuanHuyen() {
+		// TODO Auto-generated method stub
+		cmbHuyen.getSelectionModel().selectedItemProperty().addListener((ops, old, newv) -> {
+			try {
+				if (newv.equals("")) {
+					cmbXa.setDisable(true);
+					cmbXa.setValue("");
+				}else {
+					cmbXa.setDisable(false);
+					setValueForXa();
+				}
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+
+			checkDiaChi();
+
+		});
+	}
+
+	private boolean checkDiaChi() {
+		if ((cmbTinh.getValue() == null || cmbTinh.getValue().equals("")) || (cmbHuyen.getValue() == null || cmbHuyen.getValue().equals("")) || (cmbXa.getValue() == null || cmbXa.getValue().equals(""))) {
+			lblDiaChi.setText("* Vui lòng chọn đầy đủ thông tin địa chỉ!");
+			return false;
+		}
+
+		if (txtSoNha.getText().isEmpty()) {
+			lblDiaChi.setText("* Vui lòng nhập số nhà!");
+			return false;
+		}
+
+		lblDiaChi.setText("*");
+		return true;
+	}
+
+	private void setValueForXa() {
+		// TODO Auto-generated method stub
+		listXa = FXCollections.observableArrayList(daoLocation.getListPhuongXaByHuyenVaTinh(cmbTinh.getValue(), cmbHuyen.getValue()));
+		cmbXa.setItems(listXa);
+	}
+
+	private void initTinhThanhPho() {
+		// TODO Auto-generated method stub
+		listTinh = FXCollections.observableArrayList(daoLocation.getListThanhPho());
+		cmbTinh.setValue("");
+		cmbTinh.setItems(listTinh);
+		//		cmbTinh.setValue(listTinh.get(0));
+
+		cmbTinh.getSelectionModel().selectedItemProperty().addListener((op, old, newv) -> {
+			checkDiaChi();
+			if (newv.equals("")) {
+				cmbHuyen.setDisable(true);
+				cmbXa.setDisable(true);
+			}else {
+				cmbHuyen.setDisable(false);
+				setValueForQuanHuyen();
+			}
+		});
+	}
+	private void setValueForQuanHuyen() {
+		// TODO Auto-generated method stub
+		listQuan = FXCollections.observableArrayList(daoLocation.getListQuanHuyenByTinh(cmbTinh.getValue()));
+		cmbHuyen.setItems(listQuan);
+	}
+	
 	private void initFilePicker() {
 		// TODO Auto-generated method stub
 		txtAvatar.setDisable(true);

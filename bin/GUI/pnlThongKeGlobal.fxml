@@ -4,13 +4,12 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="657.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TabPane fx:id="tabsThongKe" prefHeight="657.0" prefWidth="1080.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="tabDoanhThu" text="Thống Kê Doanh Thu" />
-          <Tab text="Untitled Tab 2" />
+          <Tab fx:id="tabThongKeThuoc" text="Thống Kê Thuốc" />
         </tabs>
       </TabPane>
    </children>

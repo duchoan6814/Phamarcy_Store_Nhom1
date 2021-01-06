@@ -1,84 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="623.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text fill="#15bc5d" layoutX="373.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="QUẢN LÝ NHÀ CUNG CẤP" textAlignment="CENTER" wrappingWidth="386.7477722167969">
+      <Text fill="#15bc5d" layoutX="349.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="QUẢN LÝ NHÀ CUNG CẤP" textAlignment="CENTER" wrappingWidth="386.7477722167969">
          <font>
             <Font name="Symbol" size="26.0" />
          </font>
       </Text>
-      <Pane fx:id="tabQLNCC" layoutY="63.0" prefHeight="209.0" prefWidth="1078.0" style="-fx-background-color: white; -fx-border-radius: 25px; -fx-border-color: black; -fx-background-radius: 25px;">
+      <Pane fx:id="tabQLNCC" layoutX="19.0" layoutY="44.0" prefHeight="209.0" prefWidth="1047.0" style="-fx-background-color: white; -fx-border-radius: 5px; -fx-border-color: grey; -fx-background-radius: 5px;">
          <children>
-            <Label layoutX="61.0" layoutY="38.0" text="Mã nhà cung cấp">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="txtMa" focusTraversable="false" layoutX="202.0" layoutY="41.0" />
-            <TextField fx:id="txtTen" focusTraversable="false" layoutX="552.0" layoutY="42.0" />
-            <Label layoutX="409.0" layoutY="41.0" text="Tên nhà cung cấp">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Button fx:id="btnTim" layoutX="756.0" layoutY="28.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="149.0" style="-fx-background-color: #33CC33; -fx-background-radius: 20px;" text="Tìm" textFill="WHITE">
+            <Button fx:id="btnTim" layoutX="884.0" layoutY="40.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="149.0" style="-fx-background-color: #33CC33; -fx-background-radius: 5px;" text="Tìm" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="27.0" />
                </font>
             </Button>
-            <Button fx:id="btnThem" layoutX="756.0" layoutY="118.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="149.0" style="-fx-background-color: #f5508c; -fx-background-radius: 20px;" text="Thêm" textFill="WHITE">
+            <Button fx:id="btnThem" layoutX="884.0" layoutY="108.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="149.0" style="-fx-background-color: #f5508c; -fx-background-radius: 5px;" text="Thêm" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="27.0" />
                </font>
             </Button>
-            <Label layoutX="154.0" layoutY="105.0" text="SĐT">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="txtSDT" focusTraversable="false" layoutX="202.0" layoutY="105.0" />
-            <TextField fx:id="txtFax" focusTraversable="false" layoutX="552.0" layoutY="105.0" />
-            <Label layoutX="510.0" layoutY="105.0" text="Fax">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label layoutX="112.0" layoutY="157.0" text="Trang chủ">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="txtTrangChu" focusTraversable="false" layoutX="202.0" layoutY="170.0" />
-            <TextField fx:id="txtDiaChi" focusTraversable="false" layoutX="552.0" layoutY="157.0" />
-            <Label layoutX="486.0" layoutY="157.0" text="Địa chỉ">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
+            <GridPane layoutX="14.0" layoutY="10.0" prefHeight="193.0" prefWidth="833.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="130.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="130.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mã NCC" />
+                  <TextField fx:id="txtMa" GridPane.columnIndex="1" />
+                  <Text layoutX="10.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Số Điện Thoại" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtSDT" layoutX="140.0" layoutY="30.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tên NCC" GridPane.columnIndex="2">
+                     <GridPane.margin>
+                        <Insets right="20.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets right="20.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Địa Chỉ" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets right="20.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Trang Chủ" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtTrangChu" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtTen" GridPane.columnIndex="3" />
+                  <TextField fx:id="txtFax" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtDiaChi" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+               </children>
+            </GridPane>
          </children>
       </Pane>
-      <TableView fx:id="tabNCC" layoutY="280.0" prefHeight="342.0" prefWidth="1080.0">
+      <TableView fx:id="tabNCC" layoutX="10.0" layoutY="267.0" prefHeight="342.0" prefWidth="1065.0">
          <columns>
             <TableColumn fx:id="colSTT" prefWidth="63.0" text="STT" />
             <TableColumn fx:id="colMa" prefWidth="124.0" text="Mã Nhà Cung Cấp" />
             <TableColumn fx:id="colTen" prefWidth="151.0" text="Tên Nhà Cung Cấp" />
             <TableColumn fx:id="colSDT" prefWidth="128.0" text="Số Điện Thoại" />
-            <TableColumn fx:id="colFax" prefWidth="100.0" text="Fax" />
+            <TableColumn fx:id="colFax" prefWidth="100.0" text="Email" />
             <TableColumn fx:id="colTrangChu" prefWidth="149.0" text="Trang Chủ" />
-            <TableColumn fx:id="colDiaChi" prefWidth="204.0" text="Địa Chỉ" />
-            <TableColumn fx:id="colSua" minWidth="0.0" prefWidth="83.0" text="Sửa" />
-            <TableColumn fx:id="colXoa" prefWidth="77.0" text="Xóa" />
-            <TableColumn fx:id="colTen" prefWidth="151.0" text="Tên Nhà Cung Cấp" />
+            <TableColumn fx:id="colDiaChi" prefWidth="217.0" text="Địa Chỉ" />
+            <TableColumn fx:id="colSua" minWidth="0.0" prefWidth="74.0" text="Sửa" />
+            <TableColumn fx:id="colXoa" prefWidth="58.0" text="Xóa" />
          </columns>
       </TableView>
    </children>

@@ -1,6 +1,7 @@
 package GUI;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 import DAO.DAONhanVien;
 import GUI.control.NhanVienControl;
+import GUI.control.SuaNhanVienControl;
 import GUI.control.ThemNhanVienControl;
 import GUI.control.ThongKeGlobal;
 import entity.HoaDon;
@@ -39,6 +41,8 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -67,11 +71,19 @@ public class MainSenceControl implements Initializable {
 	public HBox btnThongKe;
 	public HBox btnNhanVien;
 	public HBox btnDangXuat;
+	public AnchorPane main;
+	public ImageView imgBanHang;
+	public ImageView imgKhoHang;
+	public ImageView imgThongKe;
+	public ImageView imgNhanVien;
+	public ImageView imgDangXuat;
 	private ThemNhanVienControl themNhanVienControl;
+	private NhanVienControl control;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		initStyleSheetAndImage();
 		showPaneBanHang();
 		initOptionPanel();
 		setSomeFieldNhanVien();
@@ -123,6 +135,22 @@ public class MainSenceControl implements Initializable {
 			}
 		});
 
+	}
+
+	private void initStyleSheetAndImage() {
+		// TODO Auto-generated method stub
+		String css = this.getClass().getResource("MainSence.css").toExternalForm(); 
+		main.getStylesheets().add(css);
+		
+		File cast = new File("icon/shopping-cart (1).png");
+		Image castImage = new Image(cast.toURI().toString());
+		imgBanHang.setImage(castImage);
+		
+		imgKhoHang.setImage(new Image(new File("icon/box.png").toURI().toString()));
+		imgThongKe.setImage(new Image(new File("icon/statistics.png").toURI().toString()));
+		imgNhanVien.setImage(new Image(new File("icon/employee.png").toURI().toString()));
+		imgDangXuat.setImage(new Image(new File("icon/logout.png").toURI().toString()));
+		
 	}
 
 	private void phanQuyen() {
@@ -186,7 +214,7 @@ public class MainSenceControl implements Initializable {
 		}
 
 		FXMLLoader loaderNhanVien = new FXMLLoader(getClass().getResource("QuanLyNV.fxml"));
-		NhanVienControl control = new NhanVienControl();
+		control = new NhanVienControl();
 		control.setMainSenceControl(this);
 		loaderNhanVien.setController(control);
 		try {
@@ -348,6 +376,45 @@ public class MainSenceControl implements Initializable {
 		thongKe.setVisible(false);
 		nhanVien.setVisible(true);
 		themNhanVien.setVisible(false);
+		
+		try {
+			Node suaNhanVien = stkOptions.getChildren().get(5);
+			suaNhanVien.setVisible(false);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	public void showSuaNhanVien(NhanVienBanThuoc nhanVienById) {
+		// TODO Auto-generated method stub
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ThemNhanVien.fxml"));
+		SuaNhanVienControl control = new SuaNhanVienControl(nhanVienById);
+		control.setMainSenceControl(this);
+		loader.setController(control);
+		try {
+			stkOptions.getChildren().add(5, loader.load());
+			
+			Node thongKe = stkOptions.getChildren().get(2);
+			Node khoHang = stkOptions.getChildren().get(1);
+			Node banHang = stkOptions.getChildren().get(0);
+			Node nhanVien = stkOptions.getChildren().get(3);
+			Node themNhanVien = stkOptions.getChildren().get(4);
+			Node suaNhanVien = stkOptions.getChildren().get(5);
+			suaNhanVien.setVisible(true);
+			khoHang.setVisible(false);
+			banHang.setVisible(false);
+			thongKe.setVisible(false);
+			nhanVien.setVisible(false);
+			themNhanVien.setVisible(false);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void refestPageQuanLyNhanVien() {
+		// TODO Auto-generated method stub
+		control.actionButtonTim();
 	}
 
 }

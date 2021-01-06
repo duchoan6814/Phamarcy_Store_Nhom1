@@ -8,18 +8,33 @@
    <children>
       <TabPane fx:id="tabKhoHang" layoutX="1.0" layoutY="1.0" prefHeight="657.0" prefWidth="1080.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab fx:id="tabNhapThuoc" text="Nhập Thuốc" />
           <Tab fx:id="tabThuoc" text="Quản Lý Thuốc">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>
           </Tab>
+          <Tab fx:id="tabNhapThuoc" text="Nhập Thuốc" />
+            <Tab fx:id="tabHuyThuoc" text="Hủy Thuốc">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
             <Tab fx:id="tabPhieuNhap" text="Quản Lý Phiếu Nhập">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
-            <Tab fx:id="tabNCC" text="Quản Lý Nhà Cung Cấp">
+            <Tab fx:id="tabPhieuHuy" text="Quản Lý Phiếu Hủy">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab fx:id="tabNCC" text="Nhà Cung Cấp">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab fx:id="tabLoaiThuoc" text="Loại Thuốc">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>

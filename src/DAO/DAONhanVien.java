@@ -25,6 +25,50 @@ public class DAONhanVien {
 		// TODO Auto-generated constructor stub
 		conn = DAO.getInstance().getConn();
 	}
+	
+	public boolean suaNhanVien(NhanVienBanThuoc nhanVienBanThuoc, String avatar) {
+		
+		String _avatar = "";
+		if (!avatar.isEmpty()) {
+			_avatar = ", Avatar = (SELECT * FROM OPENROWSET(BULK N'"+avatar+"', SINGLE_BLOB) as T1)";
+		}
+		String sql = "update NhaVienBanThuoc SET DiaChi = ?, GioiTinh = ?, HoTenDem = ?, NgaySinh = ?, SoCMND = ?, SoDienThoai = ?, Ten = ? "+_avatar+"WHERE NhanVienBanThuocId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setNString(1, nhanVienBanThuoc.getDiaChi());
+			ps.setBoolean(2, nhanVienBanThuoc.isGioiTinh());
+			ps.setNString(3, nhanVienBanThuoc.getHoTenDem());
+			ps.setDate(4, nhanVienBanThuoc.getNgaySinh());
+			ps.setString(5, nhanVienBanThuoc.getSoCMND());
+			ps.setString(6, nhanVienBanThuoc.getSoDienThoai());
+			ps.setNString(7, nhanVienBanThuoc.getTen());
+			ps.setString(8, nhanVienBanThuoc.getId());
+			
+			boolean rs = ps.executeUpdate() > 0;
+			rs = daoTaiKhoan.suaTaiKhoan(nhanVienBanThuoc.getTaiKhoan()) && rs;
+			
+			return rs;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean xoaNhanVienByID(String id) {
+		String sql = "delete NhaVienBanThuoc WHERE NhanVienBanThuocId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	public boolean themNhanVien(NhanVienBanThuoc nhanVienBanThuoc, String filePath) {
 		if (daoTaiKhoan.themTaiKhoan(conn, nhanVienBanThuoc)) {
@@ -480,6 +524,7 @@ public class DAONhanVien {
 				TaiKhoan taiKhoan = new TaiKhoan();
 				taiKhoan.setTenDangNhap(rs.getString("TenDangNhap"));
 				taiKhoan.setPhanQuyen(PhanQuyen.get(rs.getString("PhanQuyen").trim()));
+				taiKhoan.setMatKhau(rs.getString("MatKhau"));
 				nhanVienBanThuoc.setTaiKhoan(taiKhoan);
 				return nhanVienBanThuoc;
 			}

@@ -11,8 +11,14 @@ public class LoThuoc {
 	private Date ngaySanXuat;
 	private int soLuong;
 	private int soLuongConLai;
-	
+	private String maPhieuNhap;
 
+	public String getMaPhieuNhap() {
+		return maPhieuNhap;
+	}
+	public void setMaPhieuNhap(String maPhieuNhap) {
+		this.maPhieuNhap = maPhieuNhap;
+	}
 	public int getSoLuongConLai() {
 		return soLuongConLai;
 	}
@@ -38,47 +44,21 @@ public class LoThuoc {
 		this.soLuong = soLuong;
 	}
 	
-	public LoThuoc(Thuoc thuoc, Date ngaySanXuat, int soLuong, int soLuongConLai) {
+	@Override
+	public String toString() {
+		return "LoThuoc [thuoc=" + thuoc + ", ngaySanXuat=" + ngaySanXuat + ", soLuong=" + soLuong + ", soLuongConLai="
+				+ soLuongConLai + ", maPhieuNhap=" + maPhieuNhap + "]";
+	}
+	public LoThuoc() {
+		super();
+	}
+	public LoThuoc(Thuoc thuoc, Date ngaySanXuat, int soLuong, int soLuongConLai, String maPhieuNhap) {
 		super();
 		this.thuoc = thuoc;
 		this.ngaySanXuat = ngaySanXuat;
 		this.soLuong = soLuong;
 		this.soLuongConLai = soLuongConLai;
-	}
-	public LoThuoc() {
-		super();
-	}
-	
-	
-
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((thuoc == null) ? 0 : thuoc.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		LoThuoc other = (LoThuoc) obj;
-		if (thuoc == null) {
-			if (other.thuoc != null)
-				return false;
-		} else if (!thuoc.equals(other.thuoc))
-			return false;
-		return true;
-	}
-	@Override
-	public String toString() {
-		return "LoThuoc [thuoc=" + thuoc + ", ngaySanXuat=" + ngaySanXuat + ", soLuong=" + soLuong + ", soLuongConLai="
-				+ soLuongConLai + "]";
+		this.maPhieuNhap = maPhieuNhap;
 	}
 	public java.util.Date addDays(java.util.Date date, int days) {
 		Calendar cal = Calendar.getInstance();
@@ -106,4 +86,8 @@ public class LoThuoc {
 		return this.getThuoc().getGia() * this.getSoLuong();
 	}
 
+	public double tinhGiaTriLoThuocConLai() {
+		return this.thuoc.getGia() * this.getSoLuongConLai();
+	}
+	
 }

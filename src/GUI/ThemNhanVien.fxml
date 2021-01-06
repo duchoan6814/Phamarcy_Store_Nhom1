@@ -19,7 +19,7 @@
    <children>
       <Pane prefHeight="49.0" prefWidth="1080.0" style="-fx-background-color: #64AD4A;">
          <children>
-            <Text layoutX="447.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #fff; -fx-font-size: 20px; -fx-font-weight: bold;" text="Thêm Nhân Viên" textAlignment="CENTER" />
+            <Text fx:id="lblTitle" layoutX="447.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #fff; -fx-font-size: 20px; -fx-font-weight: bold;" text="Thêm Nhân Viên" textAlignment="CENTER" />
          </children>
       </Pane>
       <Pane layoutX="14.0" layoutY="85.0" prefHeight="446.0" prefWidth="321.0" style="-fx-background-color: #fff; -fx-border-color: grey; -fx-border-radius: 5px;">
@@ -57,7 +57,7 @@
          <padding>
             <Insets left="10.0" right="10.0" />
          </padding></Label>
-      <Pane layoutX="348.0" layoutY="85.0" prefHeight="446.0" prefWidth="723.0" style="-fx-background-color: #fff; -fx-border-color: grey; -fx-border-radius: 5px;">
+      <Pane layoutX="348.0" layoutY="85.0" prefHeight="539.0" prefWidth="723.0" style="-fx-background-color: #fff; -fx-border-color: grey; -fx-border-radius: 5px;">
          <children>
             <Label layoutX="26.0" layoutY="-9.0" style="-fx-background-color: #fff; -fx-font-size: 15px;" text="Thông Tin Cá Nhân">
                <padding>
@@ -94,7 +94,6 @@
                   <Text layoutX="357.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Giới Tính" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Text layoutX="357.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avatar" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   <Text layoutX="357.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phân Quyền" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                  <Text layoutX="357.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Địa Chỉ" GridPane.columnIndex="1" GridPane.rowIndex="12" />
                   <Text layoutX="357.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mã Nhân Viên" />
                   <TextField fx:id="txtMaNhanVien" disable="true" GridPane.rowIndex="1">
                      <GridPane.margin>
@@ -124,7 +123,6 @@
                   </DatePicker>
                   <ComboBox fx:id="cmbGioiTinh" prefHeight="26.0" prefWidth="405.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <ComboBox fx:id="cmbPhanQuyen" layoutX="357.0" layoutY="146.0" prefHeight="26.0" prefWidth="405.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                  <TextField fx:id="txtDiaChi" GridPane.columnIndex="1" GridPane.rowIndex="13" />
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                      <children>
                         <TextField fx:id="txtAvatar" prefHeight="26.0" prefWidth="273.0" />
@@ -135,16 +133,43 @@
                         </Button>
                      </children>
                   </HBox>
-                  <Text fx:id="lblSoCMND" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Text fx:id="lblSoCMND" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" text="*" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Text fx:id="lblHoVaTenDem" layoutX="357.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.rowIndex="5" />
-                  <Text fx:id="lblTen" layoutX="10.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.rowIndex="8" />
+                  <Text fx:id="lblTen" layoutX="10.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" text="*" GridPane.rowIndex="8" />
                   <Text fx:id="lblSoDienThoai" layoutX="10.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.rowIndex="14" />
                   <Text fx:id="lblAvatar" layoutX="357.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                </children>
             </GridPane>
+            <GridPane layoutX="14.0" layoutY="440.0" prefHeight="49.0" prefWidth="694.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Số nhà/ Đường" />
+                  <Text layoutX="10.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tỉnh/ Thành Phố" GridPane.columnIndex="1" />
+                  <Text layoutX="184.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quận Huyện" GridPane.columnIndex="2" />
+                  <Text layoutX="358.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phường Xã" GridPane.columnIndex="3" />
+                  <TextField fx:id="txtSoNha" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <ComboBox fx:id="cmbTinh" prefHeight="26.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="cmbHuyen" layoutX="184.0" layoutY="34.0" prefHeight="26.0" prefWidth="160.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="cmbXa" layoutX="358.0" layoutY="34.0" prefHeight="26.0" prefWidth="160.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <Text fx:id="lblDiaChi" layoutX="13.0" layoutY="510.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red; -fx-font-style: italic; -fx-font-weight: thin;" text="*" />
          </children>
       </Pane>
-      <Button fx:id="btnThem" layoutX="367.0" layoutY="564.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="193.0" style="-fx-background-color: #64AD4A; -fx-text-fill: #fff; -fx-font-size: 15; -fx-font-weight: bold;" text="Thêm" />
-      <Button fx:id="btnHuy" layoutX="590.0" layoutY="564.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="123.0" style="-fx-background-color: #F5508B; -fx-text-fill: #fff; -fx-font-size: 15; -fx-font-weight: bold;" text="Hủy" />
+      <Button fx:id="btnThem" layoutX="36.0" layoutY="553.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="150.0" style="-fx-background-color: #64AD4A; -fx-text-fill: #fff; -fx-font-size: 15; -fx-font-weight: bold;" text="Thêm" />
+      <Button fx:id="btnHuy" layoutX="208.0" layoutY="553.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="105.0" style="-fx-background-color: #F5508B; -fx-text-fill: #fff; -fx-font-size: 15; -fx-font-weight: bold;" text="Hủy" />
    </children>
 </AnchorPane>

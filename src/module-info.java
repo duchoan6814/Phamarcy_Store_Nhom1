@@ -22,4 +22,5 @@ module PhamarcyStore_Nhom1 {
 
 	opens common to javafx.base;
 	opens GUI to javafx.fxml;
+	opens entity to javafx.base;
 }

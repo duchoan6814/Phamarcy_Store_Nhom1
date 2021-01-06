@@ -69,10 +69,20 @@ public class DAOPhieuNhap {
 //		System.out.println("done");
 //	}
 
-	public List<PhieuNhapHang> filterPhieuNhap(String dateFrom , String dateTo, String nhanVien,String maPhieu){
+	public List<PhieuNhapHang> filterPhieuNhap(boolean tatCaThoiGian ,LocalDate dateFrom , LocalDate dateTo, String nhanVien,String maPhieu){
 		List<PhieuNhapHang> list = new ArrayList<PhieuNhapHang>();
 		
-		String sql = "select p.*, nv.HoTenDem, nv.Ten from [dbo].[PhieuNhapHang] p join [dbo].[NhaVienBanThuoc] nv on p.QuanLyId = nv.NhanVienBanThuocId where  CONCAT_WS(' ', nv.HoTenDem, nv.Ten) like ? and p.PhieuNhapHangId like ?";
+		String sql;
+		String _ngayLap = "";
+		
+		if (!tatCaThoiGian) {
+			java.sql.Date _dateFrom = java.sql.Date.valueOf(dateFrom.toString());
+			java.sql.Date _dateTo = java.sql.Date.valueOf(dateTo.plusDays(1).toString());
+			_ngayLap = "and ThoiGianLap between '"+_dateFrom+"' and '"+_dateTo+"'";
+		}
+		
+		sql = "select p.*, nv.HoTenDem, nv.Ten from [dbo].[PhieuNhapHang] p join [dbo].[NhaVienBanThuoc] nv on p.QuanLyId = nv.NhanVienBanThuocId where  CONCAT_WS(' ', nv.HoTenDem, nv.Ten) like ? and p.PhieuNhapHangId like ? "+_ngayLap;
+
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setNString(1, "%"+nhanVien+"%");
